@@ -1,18 +1,40 @@
 <script lang="ts">
+	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
-	export let data : PageData
+	const errorToast: ToastSettings = {
+		message: '',
+		background: 'variant-filled-error'
+	};
 
-	const { form, errors, constraints } = superForm(data.form);
+	function triggerErrorToast(message: string) {
+		errorToast.message = message;
+		toastStore.trigger(errorToast);
+	}
+
+	export let data: PageData;
+
+	const { form, enhance, errors, constraints } = superForm(data.form, {
+		taintedMessage: null,
+		onUpdate: ({ form, cancel }) => {
+			const allErrors = Object.values(form.errors).flat();
+			const uniqueErrors = [...new Set(allErrors)];
+			
+			for (const error of uniqueErrors) {
+				triggerErrorToast(error)
+			}
+		}
+	});
+
 </script>
 
 <SuperDebug data={$form} />
 
 <div>
-	<h1>Sign in</h1>
-	<form class="label" method="POST">
+	<h2>Sign in</h2>
+	<form class="label" method="POST" use:enhance>
 		<label for="username">Username</label>
 		<input
 			type="text"
@@ -24,17 +46,20 @@
 			{...$constraints.username}
 		/>
 		{#if $errors.username}<span class="invalid">{$errors.username}</span>{/if}
-		<label for="password"></label>
+		<label for="password">Password</label>
 		<input
 			type="password"
 			name="password"
 			class="input"
-			placeholder="*********"
+			placeholder="*****"
 			data-invalid={$errors.password}
 			bind:value={$form.password}
 			{...$constraints.password}
 		/>
-	
+
 		<div><button class="btn variant-filled">Login</button></div>
 	</form>
+
+	<span>or</span>
+	<div><a href="/signup" class="btn variant-filled">signup</a></div>
 </div>

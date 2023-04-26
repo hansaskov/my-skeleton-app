@@ -15,11 +15,15 @@
 		Modal,
 		Toast,
 		drawerStore,
-		storePopup
+		storePopup,
+
+		type ToastSettings
+
 	} from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import type { LayoutData } from './$types';
 	import Avatar from '$lib/components/Avatar.svelte';
+
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
@@ -32,7 +36,7 @@
 	}
 
 	export let data: LayoutData;
-	const hasSessions = data.hasSessions
+	const username = data.user?.username;
 </script>
 
 <Toast position="tr" />
@@ -76,10 +80,10 @@
 			</div>
 
 			<svelte:fragment slot="trail">
-				{#if hasSessions}
-					<Avatar />
-				{:else}
+				{#if username == null}
 					<a href="/login" class="btn variant-filled-primary">Log in</a>
+				{:else}
+					<Avatar initials={username} />
 				{/if}
 			</svelte:fragment>
 		</AppBar>

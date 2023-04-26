@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import { Prisma } from '@prisma/client';
@@ -48,19 +48,13 @@ export const actions: Actions = {
 				error.code === 'P2002' &&
 				error.message?.includes('username')
 			) {
-				return fail(400, {
-					message: 'Username already in use'
-				});
+				return setError(form, 'username', `ERROR: Username \"${form.data.username}\" already in use`)
 			}
 			if (error instanceof LuciaError && error.message === 'AUTH_DUPLICATE_KEY_ID') {
-				return fail(400, {
-					message: 'Username already in use'
-				});
+				return setError(form, 'username', `ERROR: Username \"${form.data.username}\" already in use`)
 			}
 			console.error(error);
-			return fail(500, {
-				message: 'Unknown error occurred'
-			});
+			return fail(400, { form, message: "Unknown error" })
 		}
 
 		return { form };

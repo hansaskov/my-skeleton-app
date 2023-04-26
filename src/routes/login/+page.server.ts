@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
@@ -33,7 +33,7 @@ export const actions: Actions = {
 			locals.auth.setSession(session);
 		} catch {
 			// invalid credentials
-			return fail(400);
+			return setError(form, 'password', 'invalid credentials');
 		}
 
 		return { form };

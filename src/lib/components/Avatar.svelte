@@ -8,12 +8,15 @@
 		// Close the popup when the item is clicked
 		closeQuery: '.listbox-item'
 	};
+
+	export let initials: string
+
 </script>
 
 <!-- Avatar button-->
 <button use:popup={popupSettings}>
 	<Avatar
-		initials="HA"
+		initials={initials}
 		width="w-14"
 		border="border-2 	border-surface-300-600-token hover:!border-primary-500"
 		cursor="cursor-pointer"

@@ -1,12 +1,8 @@
-import type { PageServerLoad } from "./$types";
-
-export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.auth.validate();
-	let hasSessions = false
-	if (session)
-		hasSessions = true
-
-	return { hasSessions }
+export const load = async ({ locals }) => {
+	const { user } = await locals.auth.validateUser();
+	return {
+		user
+	};
 };
 
 
