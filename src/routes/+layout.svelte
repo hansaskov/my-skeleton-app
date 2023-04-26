@@ -18,6 +18,7 @@
 		storePopup
 	} from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
+	import type { LayoutData } from "./$types";
 	import Avatar from '$lib/components/Avatar.svelte';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
@@ -29,6 +30,9 @@
 	function drawerClose(): void {
 		drawerStore.close();
 	}
+
+	// export let data: LayoutData;
+
 </script>
 
 <Toast position="tr" />
