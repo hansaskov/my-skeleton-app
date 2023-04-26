@@ -18,8 +18,10 @@
 		storePopup
 	} from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
-	import type { LayoutData } from "./$types";
+	import type { LayoutData } from './$types';
 	import Avatar from '$lib/components/Avatar.svelte';
+	import { enhance } from '$app/forms';
+	import IconButton from '$lib/components/IconButton.svelte';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
@@ -31,8 +33,8 @@
 		drawerStore.close();
 	}
 
-	// export let data: LayoutData;
-
+	export let data: LayoutData;
+	const hasSessions = data.hasSessions
 </script>
 
 <Toast position="tr" />
@@ -65,16 +67,22 @@
 			<div class="grid grid-cols-2">
 				<a
 					href="/wishlist"
-					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase">Wishlists</a
+					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase"
+					>Wishlists</a
 				>
 				<a
 					href="/events"
-					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase">Events</a
+					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase"
+					>Events</a
 				>
 			</div>
 
 			<svelte:fragment slot="trail">
-				<Avatar />
+				{#if hasSessions}
+					<Avatar />
+				{:else}
+					<a href="/login" class="btn variant-filled-primary">Log in</a>
+				{/if}
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
