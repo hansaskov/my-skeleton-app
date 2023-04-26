@@ -20,8 +20,6 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import type { LayoutData } from './$types';
 	import Avatar from '$lib/components/Avatar.svelte';
-	import { enhance } from '$app/forms';
-	import IconButton from '$lib/components/IconButton.svelte';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Avatar, popup, type PopupSettings } from '@skeletonlabs/skeleton';
-	import IconButton from './IconButton.svelte';
 
 	let popupSettings: PopupSettings = {
 		event: 'focus-click',
@@ -24,13 +23,22 @@
 <!-- Pop up -->
 <div class="card w-48 p-2" data-popup="avatarPopup">
 	<div class=" w-full">
-		<IconButton icon="lucide:gift" name="My wishlist" href="/wishlist" />
+		<a href="/wishlist" class="btn bg-primary-hover-token w-full ">
+			<iconify-icon class="w-5 justify-center" icon="lucide:gift" />
+			<p class="flex-grow text-justify"> My wishlist </p>
+		</a>
 		<hr />
-		<IconButton icon="lucide:settings" name="Settings" href="/settings" />
+		<a href="/settings" class="btn bg-primary-hover-token w-full ">
+			<iconify-icon class="w-5 justify-center" icon="lucide:settings" />
+			<p class="flex-grow text-justify"> Settings </p>
+		</a>
 		<hr />
 		<form method="POST" action="/logout">
-			<input type="submit" class="btn" value="Sign out" />
+			<button type="submit" class="btn bg-primary-hover-token w-full ">
+				<iconify-icon class="w-5 justify-center" icon="lucide:log-out" />
+				<p class="flex-grow text-justify"> Log out </p>
+			</button>
+			
 		</form>
 	</div>
-
 </div>
