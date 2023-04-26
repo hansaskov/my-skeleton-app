@@ -3,6 +3,7 @@ node_modules
 /build
 /.svelte-kit
 /package
+./prisma/dev.db
 .env
 .env.*
 !.env.example
