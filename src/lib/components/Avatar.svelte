@@ -15,8 +15,8 @@
 <button use:popup={popupSettings}>
 	<Avatar
 		initials="HA"
-		width="w-10"
-		border="border-4 	border-surface-300-600-token hover:!border-primary-500"
+		width="w-14"
+		border="border-2 	border-surface-300-600-token hover:!border-primary-500"
 		cursor="cursor-pointer"
 	/></button
 >
@@ -28,7 +28,9 @@
 		<hr />
 		<IconButton icon="lucide:settings" name="Settings" href="/settings" />
 		<hr />
-		<IconButton icon="lucide:log-out" name="Logout" href="/logout" />
+		<form method="POST" action="/logout">
+			<input type="submit" class="btn" value="Sign out" />
+		</form>
 	</div>
 
 </div>
