@@ -81,6 +81,9 @@ devDependencies:
   svelte-preprocess:
     specifier: 5.0.3
     version: 5.0.3(postcss@8.4.23)(svelte@3.58.0)(typescript@5.0.4)
+  sveltekit-superforms:
+    specifier: ^0.8.2
+    version: 0.8.2(@sveltejs/kit@1.15.8)(svelte@3.58.0)(zod@3.21.4)
   tailwindcss:
     specifier: ^3.3.1
     version: 3.3.1(postcss@8.4.23)
@@ -96,6 +99,9 @@ devDependencies:
   vitest:
     specifier: ^0.25.8
     version: 0.25.8
+  zod:
+    specifier: ^3.21.4
+    version: 3.21.4
 
 packages:
 
@@ -2132,6 +2138,18 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
+  /sveltekit-superforms@0.8.2(@sveltejs/kit@1.15.8)(svelte@3.58.0)(zod@3.21.4):
+    resolution: {integrity: sha512-lK+s41RG+zfSE8OerMPB3q4pLclut7E914F9ZWY/PHOFNvOTwEC6VYwQdvYhMO0x/aLPC5ExWVlPDZxpNbavAQ==}
+    peerDependencies:
+      '@sveltejs/kit': 1.x
+      svelte: 3.x
+      zod: 3.x
+    dependencies:
+      '@sveltejs/kit': 1.15.8(svelte@3.58.0)(vite@4.3.2)
+      svelte: 3.58.0
+      zod: 3.21.4
+    dev: true
+
   /tailwindcss@3.3.1(postcss@8.4.23):
     resolution: {integrity: sha512-Vkiouc41d4CEq0ujXl6oiGFQ7bA3WEhUZdTgXAhtKxSy49OmKs8rEfQmupsfF0IGW8fv2iQkp1EVUuapCFrZ9g==}
     engines: {node: '>=12.13.0'}
@@ -2408,4 +2426,8 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+    dev: true
+
+  /zod@3.21.4:
+    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: true
