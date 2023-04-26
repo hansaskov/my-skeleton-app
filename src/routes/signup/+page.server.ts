@@ -26,10 +26,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const form = await superValidate(request, schema);
-		if (!form.valid) {
-			// Again, always return { form } and things will just work.
+		if (!form.valid)
 			return fail(400, { form });
-		}
+	
 		try {
 			const user = await auth.createUser({
 				primaryKey: {
