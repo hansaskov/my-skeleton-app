@@ -1,16 +1,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-
-
-	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import TextField from '$lib/components/TextField.svelte';
-
+	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	
 	const errorToast: ToastSettings = {
 		message: '',
 		background: 'variant-filled-error'
 	};
-
 
 	export let data: PageData;
 	

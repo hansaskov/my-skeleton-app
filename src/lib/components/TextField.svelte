@@ -25,4 +25,4 @@
 	/>
 </label>
 
-{#if useError && $errors}<span class="btn variant-filled-error">{$errors}</span>{/if}
+{#if useError && $errors}<span class="">{$errors}</span>{/if}
