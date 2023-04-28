@@ -3,7 +3,6 @@ import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
-import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 
 const schema = z.object({

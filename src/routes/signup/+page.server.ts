@@ -45,18 +45,10 @@ export const actions: Actions = {
 				error.code === 'P2002' &&
 				error.message?.includes('username')
 			) {
-				return setError(
-					form,
-					'username',
-					`ERROR: Username \"${form.data.username}\" already in use`
-				);
+				return setError(form, 'username', `ERROR: Username "${form.data.username}" already in use`);
 			}
 			if (error instanceof LuciaError && error.message === 'AUTH_DUPLICATE_KEY_ID') {
-				return setError(
-					form,
-					'username',
-					`ERROR: Username \"${form.data.username}\" already in use`
-				);
+				return setError(form, 'username', `ERROR: Username "${form.data.username}" already in use`);
 			}
 			console.error(error);
 			return fail(400, { form, message: 'Unknown error' });

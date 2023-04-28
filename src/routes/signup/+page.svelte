@@ -13,7 +13,7 @@
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
-		onUpdate: ({ form, cancel }) => {
+		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 

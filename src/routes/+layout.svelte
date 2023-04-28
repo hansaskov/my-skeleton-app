@@ -15,8 +15,7 @@
 		Modal,
 		Toast,
 		drawerStore,
-		storePopup,
-		type ToastSettings
+		storePopup
 	} from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import type { LayoutData } from './$types';
