@@ -16,14 +16,11 @@
 		Toast,
 		drawerStore,
 		storePopup,
-
 		type ToastSettings
-
 	} from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import type { LayoutData } from './$types';
 	import Avatar from '$lib/components/Avatar.svelte';
-
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 

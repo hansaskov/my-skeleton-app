@@ -3,29 +3,28 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
-	
+
 	const errorToast: ToastSettings = {
 		message: '',
 		background: 'variant-filled-error'
 	};
 
 	export let data: PageData;
-	
+
 	const form = superForm(data.form, {
 		taintedMessage: null,
 		onUpdate: ({ form, cancel }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 
-			console.log(uniqueErrors)
-			
+			console.log(uniqueErrors);
+
 			for (const error of uniqueErrors) {
-				errorToast.message = error
-				toastStore.trigger(errorToast)
+				errorToast.message = error;
+				toastStore.trigger(errorToast);
 			}
 		}
 	});
-
 </script>
 
 <form method="POST" use:form.enhance>

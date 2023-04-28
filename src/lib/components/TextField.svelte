@@ -8,9 +8,9 @@
 
 	export let form: SuperForm<UnwrapEffects<T>, unknown>;
 	export let field: keyof z.infer<T> | FieldPath<z.infer<T>>;
-	export let useError: boolean = true
+	export let useError = true;
 
-	const { path, value, errors, constraints } = formFieldProxy(form, field) ;
+	const { path, value, errors, constraints } = formFieldProxy(form, field);
 </script>
 
 <label>
