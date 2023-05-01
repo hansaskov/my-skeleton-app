@@ -2,7 +2,10 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
-	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import { toastStore, type ToastSettings, TabGroup, Tab } from '@skeletonlabs/skeleton';
+	import { writable, type Writable } from 'svelte/store';
+
+	const tabSet: Writable<number> = writable(0);
 
 	const errorToast: ToastSettings = {
 		message: '',
@@ -27,19 +30,40 @@
 	});
 </script>
 
-<a href="/api/oauth?provider=github" class="btn  variant-filled">
-	<iconify-icon class="w-5 justify-center" icon="lucide:github" />
-	<p class="flex-grow text-justify">Continue with Github</p>
-</a>
+<div class="flex flex-col items-center justify-center pt-8 mx-auto">
+	<form method="POST" use:form.enhance>
+		<div class="card p-8 w-full text-token space-y-4">
+			<h3 class=" font-semibold">Sign in to your account</h3>
+			<TextField
+				name="username"
+				{form}
+				field="username"
+				titleName="Username"
+				placeholder="Enter your username"
+			/>
+			<TextField
+				name="password"
+				{form}
+				field="password"
+				type="password"
+				titleName="Password"
+				placeholder="********"
+			/>
 
-<tr/>
+			<button class="btn variant-filled-primary w-full">Submit</button>
 
-<form method="POST" use:form.enhance>
-	<div class="card p-4 w-full text-token space-y-4">
-		<h3>Sign in with credentials</h3>
-		<TextField name="username" {form} field="username" />
-		<TextField name="password" {form} field="password" type="password"/>
+			<p class="text-sm">
+				Don`t have an account yet? <a href="/signup"> Sign up</a>
+			</p>
+		</div>
+		
+		<hr class="!border-t-2 my-4 bg-red-600" />
+	</form>
 
-		<div><button class="btn variant-filled">Submit</button></div>
-	</div>
-</form>
+
+
+	<a href="/api/oauth?provider=github" class="btn variant-filled">
+		<iconify-icon class="w-5 justify-center" icon="lucide:github" />
+		<p class="flex-grow text-justify">Login with Github</p>
+	</a>
+</div>
