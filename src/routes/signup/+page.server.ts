@@ -26,7 +26,7 @@ const schema = z.object({
 		.refine(startsWithLetter, { message: 'Username must start with a letter from a-z' }),
 	password: z
 		.string()
-		.min(6)
+		.min(8)
 		.max(255)
 		.refine(containsNumber, { message: 'Password must contain at least one number' })
 });
