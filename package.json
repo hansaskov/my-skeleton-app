@@ -48,7 +48,7 @@
 		"@lucia-auth/oauth": "^1.0.1",
 		"@prisma/client": "^4.13.0",
 		"iconify-icon": "^1.0.7",
-		"lucia-auth": "^1.4.0",
+		"lucia-auth": "^1.5.0",
 		"prisma": "^4.13.0"
 	}
 }
