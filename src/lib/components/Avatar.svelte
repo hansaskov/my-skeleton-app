@@ -16,7 +16,7 @@
 <button use:popup={popupSettings}>
 	<Avatar
 		{initials}
-		width="w-14"
+		width="w-11"
 		border="border-2 	border-surface-300-600-token hover:!border-primary-500"
 		cursor="cursor-pointer"
 	/></button
