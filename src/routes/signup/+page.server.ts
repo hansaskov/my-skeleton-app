@@ -7,18 +7,28 @@ import { redirect } from '@sveltejs/kit';
 import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 
+function startsWithLetter(str: string) {
+	str = str.toLowerCase();
+	const c = str[0];
+	return c >= 'a' && c <= 'z';
+}
 
 function containsNumber(str: string) {
-	for (const c of str) {
-		if ( c >= '0' && c <= '9')
-			return true
-	}
-	return false
+	return Array.from(str).some((c) => c >= '0' && c <= '9');
 }
 
 const schema = z.object({
-	username: z.string().trim().min(1).max(255),
-	password: z.string().min(6).max(255).refine( containsNumber, {message: "Password must contain at least one number"} )
+	username: z
+		.string()
+		.trim()
+		.min(1)
+		.max(255)
+		.refine(startsWithLetter, { message: 'Username must start with a letter from a-z' }),
+	password: z
+		.string()
+		.min(6)
+		.max(255)
+		.refine(containsNumber, { message: 'Password must contain at least one number' })
 });
 
 // If the user exists, redirect authenticated users to the profile page.
