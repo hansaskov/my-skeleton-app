@@ -27,6 +27,10 @@
 	});
 </script>
 
+<a href="/api/oauth?provider=github" class="btn variant-filled-primary">Continue with Github</a>
+
+<tr>Or</tr>
+
 <form method="POST" use:form.enhance>
 	<div class="card p-4 w-full text-token space-y-4">
 		<h3>Sign in with credentials</h3>
