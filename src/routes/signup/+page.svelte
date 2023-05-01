@@ -17,8 +17,6 @@
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 
-			console.log(uniqueErrors);
-
 			for (const error of uniqueErrors) {
 				errorToast.message = error;
 				toastStore.trigger(errorToast);
@@ -31,7 +29,7 @@
 	<div class="card p-4 w-full text-token space-y-4">
 		<h3>Sign up with credentials</h3>
 		<TextField name="username" {form} field="username" useError={false} />
-		<TextField name="password" {form} field="password" />
+		<TextField name="password" {form} field="password" type="password"/>
 
 		<div><button class="btn variant-filled">Submit</button></div>
 	</div>

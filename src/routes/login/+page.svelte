@@ -31,7 +31,7 @@
 	<div class="card p-4 w-full text-token space-y-4">
 		<h3>Sign in with credentials</h3>
 		<TextField name="username" {form} field="username" />
-		<TextField name="password" {form} field="password" />
+		<TextField name="password" {form} field="password" type="password"/>
 
 		<div><button class="btn variant-filled">Submit</button></div>
 	</div>
