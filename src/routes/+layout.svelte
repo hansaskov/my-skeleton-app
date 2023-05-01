@@ -36,7 +36,7 @@
 	$: username = data.user?.username;
 </script>
 
-<Toast  />
+<Toast />
 <Modal />
 <Drawer>
 	<nav class="list-nav p-4">
@@ -75,7 +75,7 @@
 					>Events</a
 				>
 			</div>
-			
+
 			<svelte:fragment slot="trail">
 				{#if username == null}
 					<a href="/login" class="btn variant-filled-primary">Login</a>

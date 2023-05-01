@@ -51,16 +51,12 @@
 				Don`t have an account yet? <a href="/login"> Sign in</a>
 			</p>
 		</div>
-		
+
 		<hr class="!border-t-2 my-4 bg-red-600" />
 	</form>
-
-
 
 	<a href="/api/oauth?provider=github" class="btn variant-filled">
 		<iconify-icon class="w-5 justify-center" icon="lucide:github" />
 		<p class="flex-grow text-justify">Login with Github</p>
 	</a>
 </div>
-
-

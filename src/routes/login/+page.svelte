@@ -2,10 +2,10 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
-	import { toastStore, type ToastSettings, TabGroup, Tab } from '@skeletonlabs/skeleton';
+	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
-	
+
 	const errorToast: ToastSettings = {
 		message: '',
 		background: 'variant-filled-error'
@@ -51,11 +51,9 @@
 				Don`t have an account yet? <a href="/signup"> Sign up</a>
 			</p>
 		</div>
-		
+
 		<hr class="!border-t-2 my-4 bg-red-600" />
 	</form>
-
-
 
 	<a href="/api/oauth?provider=github" class="btn variant-filled">
 		<iconify-icon class="w-5 justify-center" icon="lucide:github" />

@@ -8,15 +8,11 @@
 
 	export let form: SuperForm<UnwrapEffects<T>, unknown>;
 	export let field: keyof z.infer<T> | FieldPath<z.infer<T>>;
-	
+
 	const { path, value, errors, constraints } = formFieldProxy(form, field);
 
 	export let titleName = String(path);
 	export let useError = true;
-
-	
-
-
 </script>
 
 <label>
@@ -31,4 +27,6 @@
 	/>
 </label>
 
-{#if useError && $errors}<span class="text-error-500-400-token font-semibold text-sm">{$errors}</span>{/if}
+{#if useError && $errors}<span class="text-error-500-400-token font-semibold text-sm"
+		>{$errors}</span
+	>{/if}
