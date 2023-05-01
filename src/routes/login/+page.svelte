@@ -27,9 +27,12 @@
 	});
 </script>
 
-<a href="/api/oauth?provider=github" class="btn variant-filled-primary">Continue with Github</a>
+<a href="/api/oauth?provider=github" class="btn  variant-filled">
+	<iconify-icon class="w-5 justify-center" icon="lucide:github" />
+	<p class="flex-grow text-justify">Continue with Github</p>
+</a>
 
-<tr>Or</tr>
+<tr/>
 
 <form method="POST" use:form.enhance>
 	<div class="card p-4 w-full text-token space-y-4">

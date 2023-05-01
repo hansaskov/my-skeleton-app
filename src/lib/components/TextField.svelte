@@ -17,7 +17,7 @@
 	<span>{String(path)}</span>
 	<input
 		type="text"
-		class="input"
+		class="input variant-form-material"
 		data-invalid={$errors}
 		bind:value={$value}
 		{...$constraints}
@@ -25,4 +25,4 @@
 	/>
 </label>
 
-{#if useError && $errors}<span class="">{$errors}</span>{/if}
+{#if useError && $errors}<span class="text-error-500-400-token font-semibold">{$errors}</span>{/if}
