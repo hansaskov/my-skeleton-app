@@ -32,7 +32,8 @@
 	}
 
 	export let data: LayoutData;
-	const username = data.user?.username;
+
+	$: username = data.user?.username;
 </script>
 
 <Toast position="tr" />
