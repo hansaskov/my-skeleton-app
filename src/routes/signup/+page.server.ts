@@ -7,9 +7,18 @@ import { redirect } from '@sveltejs/kit';
 import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 
+
+function containsNumber(str: string) {
+	for (const c of str) {
+		if ( c >= '0' && c <= '9')
+			return true
+	}
+	return false
+}
+
 const schema = z.object({
-	username: z.string().min(1),
-	password: z.string().min(1)
+	username: z.string().trim().min(1).max(255),
+	password: z.string().min(6).max(255).refine( containsNumber, {message: "Password must contain at least one number"} )
 });
 
 // If the user exists, redirect authenticated users to the profile page.
@@ -45,10 +54,10 @@ export const actions: Actions = {
 				error.code === 'P2002' &&
 				error.message?.includes('username')
 			) {
-				return setError(form, 'username', `ERROR: Username "${form.data.username}" already in use`);
+				return setError(form, 'username', `Username "${form.data.username}" already in use`);
 			}
 			if (error instanceof LuciaError && error.message === 'AUTH_DUPLICATE_KEY_ID') {
-				return setError(form, 'username', `ERROR: Username "${form.data.username}" already in use`);
+				return setError(form, 'username', `Username "${form.data.username}" already in use`);
 			}
 			console.error(error);
 			return fail(400, { form, message: 'Unknown error' });
