@@ -75,11 +75,10 @@
 					>Events</a
 				>
 			</div>
-
+			
 			<svelte:fragment slot="trail">
 				{#if username == null}
 					<a href="/login" class="btn variant-filled-primary">Login</a>
-					<a href="/signup" class="btn variant-filled-primary">signup</a>
 				{:else}
 					<Avatar initials={username} />
 				{/if}
