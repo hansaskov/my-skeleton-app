@@ -8,13 +8,19 @@
 
 	export let form: SuperForm<UnwrapEffects<T>, unknown>;
 	export let field: keyof z.infer<T> | FieldPath<z.infer<T>>;
+	
+	const { path, value, errors, constraints } = formFieldProxy(form, field);
+
+	export let titleName = String(path);
 	export let useError = true;
 
-	const { path, value, errors, constraints } = formFieldProxy(form, field);
+	
+
+
 </script>
 
 <label>
-	<span>{String(path)}</span>
+	<span>{titleName}</span>
 	<input
 		type="text"
 		class="input variant-form-material"
@@ -25,4 +31,4 @@
 	/>
 </label>
 
-{#if useError && $errors}<span class="text-error-500-400-token font-semibold">{$errors}</span>{/if}
+{#if useError && $errors}<span class="text-error-500-400-token font-semibold text-sm">{$errors}</span>{/if}
