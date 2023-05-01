@@ -36,7 +36,7 @@
 	$: username = data.user?.username;
 </script>
 
-<Toast position="tr" />
+<Toast  />
 <Modal />
 <Drawer>
 	<nav class="list-nav p-4">
