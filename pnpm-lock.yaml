@@ -10,6 +10,9 @@ dependencies:
   '@lucia-auth/oauth':
     specifier: ^1.0.1
     version: 1.0.1(lucia-auth@1.5.0)
+  '@lucia-auth/tokens':
+    specifier: ^1.0.1
+    version: 1.0.1(lucia-auth@1.5.0)
   '@prisma/client':
     specifier: ^4.13.0
     version: 4.13.0(prisma@4.13.0)
@@ -19,6 +22,9 @@ dependencies:
   lucia-auth:
     specifier: ^1.5.0
     version: 1.5.0
+  postmark:
+    specifier: ^3.0.17
+    version: 3.0.17
   prisma:
     specifier: ^4.13.0
     version: 4.13.0
@@ -431,6 +437,14 @@ packages:
       lucia-auth: 1.5.0
     dev: false
 
+  /@lucia-auth/tokens@1.0.1(lucia-auth@1.5.0):
+    resolution: {integrity: sha512-7oMdJias2W1Ta/LiCKxa5fCV7E+NIRuw02RHkaxwAN/CL/T4ew2omEBVOkpHn3KJTHMNdPlDfZ5ZT0HyIrPHbw==}
+    peerDependencies:
+      lucia-auth: 1.x
+    dependencies:
+      lucia-auth: 1.5.0
+    dev: false
+
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -817,6 +831,14 @@ packages:
       postcss: 8.4.23
       postcss-value-parser: 4.2.0
     dev: true
+
+  /axios@0.25.0:
+    resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
+    dependencies:
+      follow-redirects: 1.15.2
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -1257,6 +1279,16 @@ packages:
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
     dev: true
+
+  /follow-redirects@1.15.2:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
 
   /fraction.js@4.2.0:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
@@ -1819,6 +1851,14 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
     dev: true
+
+  /postmark@3.0.17:
+    resolution: {integrity: sha512-CXMfc4nQWzUpYjt6A5moJ5X+Q0mSLmfPi0INy9PbbzKXELiZ/pzYholis9ZGU5RHtJHvZqXRfRJYV5xhQM9xPg==}
+    dependencies:
+      axios: 0.25.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
