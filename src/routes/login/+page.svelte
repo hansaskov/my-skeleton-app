@@ -4,12 +4,14 @@
 	import TextField from '$lib/components/TextField.svelte';
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 
-	export let data: PageData;
+	
 
 	const errorToast: ToastSettings = {
 		message: '',
 		background: 'variant-filled-error'
 	};
+
+	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
@@ -30,11 +32,11 @@
 		<div class="card p-8 w-full text-token space-y-4">
 			<h3 class=" font-semibold">Sign in to your account</h3>
 			<TextField
-				name="username"
+				name="email"
 				{form}
-				field="username"
-				titleName="Username"
-				placeholder="Enter your username"
+				field="email"
+				titleName="E-mail"
+				placeholder="Enter your E-mail"
 			/>
 			<TextField
 				name="password"

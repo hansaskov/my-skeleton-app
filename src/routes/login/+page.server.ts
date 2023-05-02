@@ -6,7 +6,7 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 const schema = z.object({
-	username: z.string().min(1),
+	email: z.string().min(1).email(),
 	password: z.string().min(1)
 });
 
@@ -24,7 +24,7 @@ export const actions: Actions = {
 		const form = await superValidate(request, schema);
 		if (!form.valid) return fail(400, { form });
 		try {
-			const key = await auth.useKey('username', form.data.username, form.data.password);
+			const key = await auth.useKey('email', form.data.email, form.data.password);
 			const session = await auth.createSession(key.userId);
 			locals.auth.setSession(session);
 		} catch {

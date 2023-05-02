@@ -23,7 +23,9 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 			// create a new user if the user does not exist
 			return await createUser({
 				// attributes
-				username: providerUser.login
+				email: providerUser.email,
+				email_verified: true,
+				user_info_set: false
 			});
 		};
 		const user = await getUser();
@@ -31,9 +33,11 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 		locals.auth.setSession(session);
 	} catch (e) {
 		// invalid code
-		return new Response(null, {
+		return new Response('Unknown error', {
 			status: 500
 		});
 	}
+
+	// Go to Homepage
 	throw redirect(302, '/');
 };

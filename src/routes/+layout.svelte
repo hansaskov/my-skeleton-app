@@ -33,7 +33,7 @@
 
 	export let data: LayoutData;
 
-	$: username = data.user?.username;
+	$: user = data.user;
 </script>
 
 <Toast />
@@ -77,10 +77,17 @@
 			</div>
 
 			<svelte:fragment slot="trail">
-				{#if username == null}
-					<a href="/login" class="btn variant-filled-primary">Login</a>
+				{#if user?.username != null}
+					<Avatar initials={user} />
+				{:else if user}
+					<form method="POST" action="/logout">
+						<button type="submit" class="btn variant-filled-primary w-full my-1">
+							<iconify-icon class="w-5 justify-center" icon="lucide:log-out" />
+							<p class="flex-grow text-justify">Log out</p>
+						</button>
+					</form>
 				{:else}
-					<Avatar initials={username} />
+					<a href="/login" class="btn variant-filled-primary">Login</a>
 				{/if}
 			</svelte:fragment>
 		</AppBar>

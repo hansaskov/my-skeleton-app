@@ -3,6 +3,7 @@ import { sveltekit } from 'lucia-auth/middleware';
 import prisma from '@lucia-auth/adapter-prisma';
 import { prismaClient } from './db';
 import { dev } from '$app/environment';
+import { idToken } from "@lucia-auth/tokens";
 
 import { github } from '@lucia-auth/oauth/providers';
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
@@ -14,7 +15,9 @@ export const auth = lucia({
 	transformDatabaseUser: (userData) => {
 		return {
 			userId: userData.id,
-			username: userData.username
+			email: userData.email,
+			emailVerified: userData.email_verified,
+			userInfoSet: userData.user_info_set
 		};
 	}
 });
@@ -22,6 +25,10 @@ export const auth = lucia({
 export const githubAuth = github(auth, {
 	clientId: GITHUB_CLIENT_ID,
 	clientSecret: GITHUB_CLIENT_SECRET
+});
+
+export const emailVerificationToken = idToken(auth, "email_verification", {
+	expiresIn: 60 * 60 // 1 hour
 });
 
 export type Auth = typeof auth;

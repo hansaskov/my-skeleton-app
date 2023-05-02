@@ -10,11 +10,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model UserInfo {
+  id          String   @id @unique @default(cuid())
+  full_name   String
+  birthdate   DateTime
+  description String
+  user        AuthUser @relation(fields: [userId], references: [id])
+  userId      String   @unique
+
+  @@map("UserSettings")
+}
+
 model AuthUser {
-  id           String        @id @unique
-  username     String        @unique
-  auth_session AuthSession[]
-  auth_key     AuthKey[]
+  id String @id @unique
+  email          String        @unique
+  email_verified Boolean
+  user_info_set  Boolean
+  auth_session   AuthSession[]
+  auth_key       AuthKey[]
+  settings       UserInfo?
+
   @@map("auth_user")
 }
 
@@ -39,4 +54,14 @@ model AuthKey {
 
   @@index([user_id])
   @@map("auth_key")
+}
+
+model Email {
+  id            String   @id @unique
+  subject       String
+  email_address String
+  date_sent     DateTime
+  content       String
+
+  @@map("email")
 }
