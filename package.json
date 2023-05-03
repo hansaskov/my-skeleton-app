@@ -48,6 +48,7 @@
 		"@lucia-auth/oauth": "^1.0.1",
 		"@lucia-auth/tokens": "^1.0.1",
 		"@prisma/client": "^4.13.0",
+		"@sveltejs/adapter-vercel": "^2.4.3",
 		"iconify-icon": "^1.0.7",
 		"lucia-auth": "^1.5.0",
 		"postmark": "^3.0.17",
