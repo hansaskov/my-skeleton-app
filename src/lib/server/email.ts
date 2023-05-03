@@ -10,7 +10,7 @@ const postmarkClient = new postmark.ServerClient(POSTMARK_CLIENT_SECRET);
 const sendEmail = async (emailAddress: string, subject: string, content: string) => {
 	postmarkClient.sendEmail({
 		From: 'hans@askov.dk',
-		To: 'hans@askov.dk',
+		To: emailAddress,
 		Subject: subject,
 		TextBody: content
 	});
