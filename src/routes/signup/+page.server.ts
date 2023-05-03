@@ -62,12 +62,20 @@ export const actions: Actions = {
 			) {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
 			}
+			if (
+				error instanceof Prisma.PrismaClientKnownRequestError &&
+				error.code === 'P2002' &&
+				error.message?.includes('email')
+			) {
+				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
+			}
 			if (error instanceof LuciaError && error.message === 'AUTH_DUPLICATE_KEY_ID') {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
-			} else {
-				console.error(error);
-				return fail(400, { form, message: 'Unknown error' });
-			}
+			} 
+			
+
+			console.error(error);
+			return fail(400, { form, message: 'Unknown error' });
 		}
 
 		return { form };
