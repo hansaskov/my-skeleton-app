@@ -65,7 +65,7 @@ export const actions: Actions = {
 			if (
 				error instanceof Prisma.PrismaClientKnownRequestError &&
 				error.code === 'P2002' &&
-				error.message?.includes('email')
+				error.message?.includes('(not available)')
 			) {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
 			}
