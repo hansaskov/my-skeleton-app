@@ -16,14 +16,17 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 	if (state !== storedState) throw new Response('Invalid state', { status: 401 });
 
 	try {
-		const { existingUser, providerUser, createUser } = await githubAuth.validateCallback(code);
+		const { existingUser, providerUser, createUser, tokens, providerEmails } = await githubAuth.validateCallback(code);
+
+		console.log(providerEmails)
+		console.log(providerUser)
 
 		const getUser = async () => {
 			if (existingUser) return existingUser;
 			// create a new user if the user does not exist
 			return await createUser({
 				// attributes
-				email: providerUser.email,
+				email: providerEmails[0].email,
 				email_verified: true,
 				user_info_set: false
 			});
