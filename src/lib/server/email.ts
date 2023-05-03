@@ -30,13 +30,13 @@ export const sendEmailVerificationEmail = async (
 	emailAddress: string,
 	verificationToken: string
 ) => {
-	const verificationLink = `https://hjemmet.vercel.app/email/verification/${verificationToken}`;
+	const verificationLink = `https://hjemmet.net/email/verification/${verificationToken}`;
 	const emailContent = `Please verify your email by clicking the link \n${verificationLink}`;
 	await sendEmail(emailAddress, 'Email verification', emailContent);
 };
 
 export const sendPasswordResetEmail = async (emailAddress: string, resetToken: string) => {
-	const resetLink = `https://hjemmet.vercel.app/password-reset/${resetToken}`;
+	const resetLink = `https://hjemmet.net/password-reset/${resetToken}`;
 	const emailContent = `Please reset your password via the link below:
     
 <a href="${resetLink}">${resetLink}</a>`;
