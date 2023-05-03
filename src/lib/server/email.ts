@@ -1,9 +1,11 @@
 import { generateRandomString } from 'lucia-auth';
 import { prismaClient } from './db';
 
+import { POSTMARK_CLIENT_SECRET } from '$env/static/private';
+
 import postmark from 'postmark';
 
-const postmarkClient = new postmark.ServerClient('ce1f7c37-aef3-4e8d-a747-60d49d13b500');
+const postmarkClient = new postmark.ServerClient(POSTMARK_CLIENT_SECRET);
 
 const sendEmail = async (emailAddress: string, subject: string, content: string) => {
 	postmarkClient.sendEmail({
