@@ -22,7 +22,7 @@ export const GET: RequestHandler = async ({ params, locals }) => {
 		}
 		if (e instanceof LuciaTokenError && e.message === 'INVALID_TOKEN') {
 			// invalid link
-            return new Response(null, {
+			return new Response(null, {
 				status: 401
 			});
 		}

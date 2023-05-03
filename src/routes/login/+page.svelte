@@ -4,8 +4,6 @@
 	import TextField from '$lib/components/TextField.svelte';
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 
-	
-
 	const errorToast: ToastSettings = {
 		message: '',
 		background: 'variant-filled-error'

@@ -18,8 +18,8 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 	try {
 		const { existingUser, createUser, providerEmails } = await githubAuth.validateCallback(code);
 
-		const primaryEmail = providerEmails.find(x => x.primary)
-		if (!primaryEmail) throw new Response('Missing primary E-mail', { status: 400 })
+		const primaryEmail = providerEmails.find((x) => x.primary);
+		if (!primaryEmail) throw new Response('Missing primary E-mail', { status: 400 });
 
 		const getUser = async () => {
 			if (existingUser) return existingUser;

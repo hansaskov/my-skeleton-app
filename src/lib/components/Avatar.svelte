@@ -23,7 +23,7 @@
 >
 
 <!-- Pop up -->
-<div class="card w-48 px-1 " data-popup="avatarPopup">
+<div class="card w-48 px-1" data-popup="avatarPopup">
 	<div class=" w-full">
 		<a href="/wishlist" class="btn bg-primary-hover-token w-full my-1">
 			<iconify-icon class="w-5 justify-center" icon="lucide:gift" />

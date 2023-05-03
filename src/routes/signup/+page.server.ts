@@ -23,7 +23,7 @@ const schema = z.object({
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals }) => {
-	const {user } = await locals.auth.validateUser();
+	const { user } = await locals.auth.validateUser();
 	if (user && user.userInfoSet == false) throw redirect(302, '/signup/setup');
 	if (user) throw redirect(302, '/');
 

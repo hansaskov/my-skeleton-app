@@ -31,7 +31,7 @@ export const sendEmailVerificationEmail = async (
 	verificationToken: string
 ) => {
 	const verificationLink = `https://hjemmet.vercel.app/email/verification/${verificationToken}`;
-	const emailContent = `Please verify your email by clicking the link \n${verificationLink}`
+	const emailContent = `Please verify your email by clicking the link \n${verificationLink}`;
 	await sendEmail(emailAddress, 'Email verification', emailContent);
 };
 

@@ -21,7 +21,7 @@ declare global {
 		type UserAttributes = {
 			email: string;
 			email_verified: boolean;
-			user_info_set: boolean
+			user_info_set: boolean;
 		};
 	}
 }

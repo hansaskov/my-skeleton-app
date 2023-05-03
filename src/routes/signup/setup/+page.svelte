@@ -30,13 +30,18 @@
 	<form method="POST" use:form.enhance>
 		<div class="card p-8 w-full text-token space-y-4">
 			<h3 class=" font-semibold">Tell me about yourself</h3>
-			
-            <TextField name="full_name" field = "full_name" {form} titleName = "Your Full name" type="text" />
-            <TextField name="birthdate" field = "birthdate" {form} titleName = "Your Birthdate" type="date"/>
-            <TextAreaField name="description" field = "description" {form} titleName = "A description about you" class="textarea"/>
+
+			<TextField name="full_name" field="full_name" {form} titleName="Your Full name" type="text" />
+			<TextField name="birthdate" field="birthdate" {form} titleName="Your Birthdate" type="date" />
+			<TextAreaField
+				name="description"
+				field="description"
+				{form}
+				titleName="A description about you"
+				class="textarea"
+			/>
 
 			<button class="btn variant-filled-primary w-full">Submit</button>
-
 		</div>
 	</form>
 </div>

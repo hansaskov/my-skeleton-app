@@ -1,7 +1,7 @@
-import { generateRandomString } from "lucia-auth";
+import { generateRandomString } from 'lucia-auth';
 
-import type { Auth, Key, LuciaError } from "lucia-auth";
-import type { CreateUserAttributesParameter, LuciaUser } from "./lucia";
+import type { Auth, Key, LuciaError } from 'lucia-auth';
+import type { CreateUserAttributesParameter, LuciaUser } from './lucia';
 
 // deprecate in v2 for better api
 export const provider = <
@@ -18,9 +18,7 @@ export const provider = <
 		getTokens: (code: string) => Promise<_Tokens>;
 		getProviderUser: (
 			accessToken: string
-		) => Promise<
-			readonly [providerUserId: string, providerUser: _ProviderUser]
-		>;
+		) => Promise<readonly [providerUserId: string, providerUser: _ProviderUser]>;
 	}
 ) => {
 	return {
@@ -31,14 +29,8 @@ export const provider = <
 		},
 		validateCallback: async (code: string) => {
 			const tokens = await config.getTokens(code);
-			const [providerUserId, providerUser] = await config.getProviderUser(
-				tokens.accessToken
-			);
-			const providerAuth = await connectAuth(
-				auth,
-				config.providerId,
-				providerUserId
-			);
+			const [providerUserId, providerUser] = await config.getProviderUser(tokens.accessToken);
+			const providerAuth = await connectAuth(auth, config.providerId, providerUserId);
 			return {
 				...providerAuth,
 				providerUser: providerUser as _ProviderUser,
@@ -61,9 +53,7 @@ export type OAuthProvider<A extends Auth> = {
 		...args: any[]
 	) => Promise<{
 		existingUser: LuciaUser<A> | null;
-		createUser: (
-			attributes: CreateUserAttributesParameter<A>
-		) => Promise<LuciaUser<A>>;
+		createUser: (attributes: CreateUserAttributesParameter<A>) => Promise<LuciaUser<A>>;
 		createPersistentKey: (userId: string) => Promise<Key>;
 		providerUser: Record<string, any>;
 		tokens: {
@@ -77,7 +67,7 @@ export class LuciaOAuthRequestError extends Error {
 	public status;
 	public body;
 	constructor(status: number, body: Record<string, any> | null) {
-		super("REQUEST_FAILED");
+		super('REQUEST_FAILED');
 		this.status = status;
 		this.body = body;
 	}
@@ -88,7 +78,7 @@ export const generateState = () => {
 };
 
 export const scope = (base: string[], config: string[] = []) => {
-	return [...base, ...(config ?? [])].join(" ");
+	return [...base, ...(config ?? [])].join(' ');
 };
 
 export const connectAuth = async <_Auth extends Auth>(
@@ -103,7 +93,7 @@ export const connectAuth = async <_Auth extends Auth>(
 			return user as LuciaUser<_Auth>;
 		} catch (e) {
 			const error = e as Partial<LuciaError>;
-			if (error?.message !== "AUTH_INVALID_KEY_ID") throw e;
+			if (error?.message !== 'AUTH_INVALID_KEY_ID') throw e;
 			return null;
 		}
 	};
@@ -112,7 +102,7 @@ export const connectAuth = async <_Auth extends Auth>(
 		existingUser,
 		createPersistentKey: async (userId: string) => {
 			return await auth.createKey(userId, {
-				type: "persistent",
+				type: 'persistent',
 				providerId: providerId,
 				providerUserId,
 				password: null

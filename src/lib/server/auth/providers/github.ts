@@ -69,9 +69,13 @@ export const github = <_Auth extends Auth>(auth: _Auth, config: OAuthConfig) => 
 		validateCallback: async (code: string) => {
 			const tokens = await getTokens(code);
 			const [providerUser, providerEmails] = await Promise.all([
-				getProvider<GithubUser>("https://api.github.com/user", "bearer", tokens.accessToken),
-				getProvider<[GithubEmail]>("https://api.github.com/user/emails", "bearer", tokens.accessToken),
-			])
+				getProvider<GithubUser>('https://api.github.com/user', 'bearer', tokens.accessToken),
+				getProvider<[GithubEmail]>(
+					'https://api.github.com/user/emails',
+					'bearer',
+					tokens.accessToken
+				)
+			]);
 			const providerUserId = providerUser.id.toString();
 			const providerAuth = await connectAuth(auth, PROVIDER_ID, providerUserId);
 			return {

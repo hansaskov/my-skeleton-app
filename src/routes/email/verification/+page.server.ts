@@ -1,10 +1,8 @@
-
 import { fail, redirect } from '@sveltejs/kit';
 import { emailVerificationToken } from '$lib/server/lucia';
 import { sendEmailVerificationEmail } from '$lib/server/email';
 
 import type { Actions, PageServerLoad } from './$types';
-
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
