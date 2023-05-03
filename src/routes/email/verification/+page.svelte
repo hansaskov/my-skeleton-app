@@ -6,13 +6,16 @@
 	export let form: ActionData;
 </script>
 
-
-<h1>Email verification</h1>
-<p>Please check your inbox ({data.user.email}) for a verification email</p>
-<h2>Resend verification email</h2>
-<form method="post" use:enhance>
-	<input type="submit" value="Resend email" />
-</form>
+<div class="flex flex-col items-center justify-center pt-8 mx-auto">
+	<div class="card p-8 w-full text-token space-y-4">
+		<h1>Email verification</h1>
+		<p>Please check {data.user.email} for a verification email</p>
+		<h2>Resend verification email</h2>
+		<form method="post" use:enhance>
+			<input class="btn variant-filled-primary" type="submit" value="Resend email" />
+		</form>
+	</div>
+</div>
 
 {#if form?.message}
 	<p class="error">{form.message}</p>

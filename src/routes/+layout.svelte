@@ -77,8 +77,8 @@
 			</div>
 
 			<svelte:fragment slot="trail">
-				{#if user?.username != null}
-					<Avatar initials={user} />
+				{#if user?.email != null}
+					<Avatar initials={user.email} />
 				{:else if user}
 					<form method="POST" action="/logout">
 						<button type="submit" class="btn variant-filled-primary w-full my-1">
