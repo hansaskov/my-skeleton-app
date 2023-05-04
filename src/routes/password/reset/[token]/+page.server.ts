@@ -30,7 +30,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals, params }) => {
-		// ...
 		const form = await superValidate(request, schema);
 		if (!form.valid) return fail(400, { form });
 
@@ -47,10 +46,14 @@ export const actions: Actions = {
 				return fail(400, { form, message: 'Expired Token' });
 			}
 			if (e instanceof LuciaTokenError && e.message === 'INVALID_TOKEN') {
-				return fail(400, { form, message: 'Invald Token' });
+				return fail(400, { form, message: 'Invalid Token' });
 			}
+			console.error(e);
+			return fail(400, { form, message: 'Unknown error' });
 		}
 
-		return { form };
+		console.log(form)
+
+		throw redirect(303, '/');
 	}
 };

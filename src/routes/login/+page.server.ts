@@ -6,6 +6,7 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 const schema = z.object({
+	remember: z.boolean().optional().default(false),
 	email: z.string().min(1).email(),
 	password: z.string().min(1)
 });
@@ -27,6 +28,7 @@ export const actions: Actions = {
 			const key = await auth.useKey('email', form.data.email, form.data.password);
 			const session = await auth.createSession(key.userId);
 			locals.auth.setSession(session);
+
 		} catch {
 			// invalid credentials
 			return setError(form, 'password', 'invalid credentials');

@@ -3,6 +3,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import CheckboxField from '$lib/components/CheckboxField.svelte';
 
 	const errorToast: ToastSettings = {
 		message: '',
@@ -13,7 +14,7 @@
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
-		onUpdate: ({ form }) => {
+		onUpdated: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 
@@ -46,10 +47,7 @@
 			/>
 
 			<div class="flex items-center justify-between">
-				<label class="flex items-center space-x-2">
-					<input class="checkbox" type="checkbox" />
-					<p>Remember me</p>
-				</label>
+				<CheckboxField name="remember" {form} field="remember" titleName="Remember me"/>
 				<a class="" href="/password/reset"> forgot password?</a>
 			</div>
 
