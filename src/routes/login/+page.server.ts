@@ -4,6 +4,7 @@ import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { LuciaError } from 'lucia-auth';
 
 const schema = z.object({
 	remember: z.boolean().optional().default(false),
@@ -28,10 +29,19 @@ export const actions: Actions = {
 			const key = await auth.useKey('email', form.data.email, form.data.password);
 			const session = await auth.createSession(key.userId);
 			locals.auth.setSession(session);
+		} catch (e) {
+			if (e instanceof LuciaError) {
+				switch (e.message) {
+					case 'AUTH_INVALID_PASSWORD':
+						return setError(form, 'password', 'Invalid password');
 
-		} catch {
-			// invalid credentials
-			return setError(form, 'password', 'invalid credentials');
+					case 'AUTH_OUTDATED_PASSWORD':
+						return setError(form, 'password', 'Outdated password');
+				}
+			}
+
+			console.error(e);
+			return fail(400, { form, message: 'Unknown error' });
 		}
 
 		return { form };

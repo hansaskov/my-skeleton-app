@@ -6,7 +6,7 @@ import { redirect } from '@sveltejs/kit';
 export const GET: RequestHandler = async ({ params, locals }) => {
 	const tokenParams = params.token;
 	try {
-		const token = await emailVerificationToken.validate(tokenParams!);
+		const token = await emailVerificationToken.validate(tokenParams);
 		await auth.invalidateAllUserSessions(token.userId);
 		await auth.updateUserAttributes(token.userId, {
 			email_verified: true

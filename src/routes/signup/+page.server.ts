@@ -37,7 +37,7 @@ export const actions: Actions = {
 		const form = await superValidate(request, schema);
 		if (!form.valid) return fail(400, { form });
 
-		console.log(form.data)
+		console.log(form.data);
 
 		try {
 			const user = await auth.createUser({
@@ -52,7 +52,7 @@ export const actions: Actions = {
 					user_info_set: false
 				}
 			});
-			const session = await auth.createSession(user.userId, );
+			const session = await auth.createSession(user.userId);
 			const token = await emailVerificationToken.issue(user.userId);
 			await sendEmailVerificationEmail(user.email, token.toString());
 

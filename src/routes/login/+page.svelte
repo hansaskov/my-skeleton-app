@@ -14,7 +14,7 @@
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
-		onUpdated: ({ form }) => {
+		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 
@@ -47,7 +47,7 @@
 			/>
 
 			<div class="flex items-center justify-between">
-				<CheckboxField name="remember" {form} field="remember" titleName="Remember me"/>
+				<CheckboxField name="remember" {form} field="remember" titleName="Remember me" />
 				<a class="" href="/password/reset"> forgot password?</a>
 			</div>
 

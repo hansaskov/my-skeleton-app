@@ -18,13 +18,12 @@
 
 <label class="flex items-center space-x-2">
 	<input
-	class="checkbox"
-	type="checkbox"
-	data-invalid={$errors}
-	bind:checked={$boolValue}
-	{...$constraints}
-	{...$$restProps}
-/>
+		class="checkbox"
+		type="checkbox"
+		data-invalid={$errors}
+		bind:checked={$boolValue}
+		{...$constraints}
+		{...$$restProps}
+	/>
 	<p>{titleName}</p>
 </label>
-

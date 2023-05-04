@@ -47,7 +47,7 @@
 			/>
 
 			<div class="flex items-center justify-between">
-				<CheckboxField name="remember" {form} field="remember" titleName="Remember me"/>
+				<CheckboxField name="remember" {form} field="remember" titleName="Remember me" />
 				<a class="" href="/password/reset"> forgot password?</a>
 			</div>
 

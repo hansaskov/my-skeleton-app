@@ -20,6 +20,7 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import type { LayoutData } from './$types';
 	import Avatar from '$lib/components/Avatar.svelte';
+	import PageTransition from '$lib/components/PageTransition.svelte';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
@@ -93,8 +94,12 @@
 		</AppBar>
 	</svelte:fragment>
 	<!-- Router Slot -->
-	<div class="container p-10 mx-auto">
-		<slot />
-	</div>
+
+	<PageTransition pathname={data.pathname}>
+		<div class="container p-10 mx-auto">
+			<slot />
+		</div>
+	</PageTransition>
+
 	<!-- ---- / ---- -->
 </AppShell>

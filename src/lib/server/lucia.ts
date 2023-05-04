@@ -29,11 +29,11 @@ export const githubAuth = github(auth, {
 });
 
 export const emailVerificationToken = idToken(auth, 'email_verification', {
-	expiresIn: 60 * 60 // 1 hour
+	expiresIn: 60 * 60 * 8 // 8 hours
 });
 
 export const passwordResetToken = idToken(auth, 'password_reset', {
-	expiresIn: 60 * 60 // 1 hour
+	expiresIn: 60 * 30 // 30 minutes
 });
 
 export type Auth = typeof auth;
