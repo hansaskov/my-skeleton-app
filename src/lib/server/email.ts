@@ -1,5 +1,5 @@
 import { generateRandomString } from 'lucia-auth';
-import { prismaClient } from './db';
+import { db } from './db';
 
 import { POSTMARK_CLIENT_SECRET } from '$env/static/private';
 
@@ -15,7 +15,7 @@ const sendEmail = async (emailAddress: string, subject: string, content: string)
 		TextBody: content
 	});
 
-	await prismaClient.email.create({
+	await db.email.create({
 		data: {
 			id: generateRandomString(8),
 			subject,
@@ -36,9 +36,7 @@ export const sendEmailVerificationEmail = async (
 };
 
 export const sendPasswordResetEmail = async (emailAddress: string, resetToken: string) => {
-	const resetLink = `https://hjemmet.net/password-reset/${resetToken}`;
-	const emailContent = `Please reset your password via the link below:
-    
-<a href="${resetLink}">${resetLink}</a>`;
+	const resetLink = `https://hjemmet.net/password/reset/${resetToken}`;
+	const emailContent = `Please reset your password via the link below: \n ${resetLink}`;
 	await sendEmail(emailAddress, 'Password reset', emailContent);
 };

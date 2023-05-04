@@ -45,10 +45,19 @@
 				placeholder="********"
 			/>
 
+			<div class="flex items-center justify-between">
+				<label class="flex items-center space-x-2">
+					<input class="checkbox" type="checkbox" />
+					<p>Remember me</p>
+				</label>
+				<a class="" href="/password/reset"> forgot password?</a>
+			</div>
+
 			<button class="btn variant-filled-primary w-full">Submit</button>
 
-			<p class="text-sm">
-				Don`t have an account yet? <a href="/login"> Sign in</a>
+			<p class="flex justify-between">
+				Don`t have an account yet?
+				<a href="/login"> Sign in</a>
 			</p>
 		</div>
 

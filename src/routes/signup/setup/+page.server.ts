@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
-import { prismaClient } from '$lib/server/db';
+import { db } from '$lib/server/db';
 import { auth } from '$lib/server/lucia';
 
 const schema = z.object({
@@ -37,7 +37,7 @@ export const actions: Actions = {
 		if (!session) throw redirect(302, '/login');
 
 		try {
-			await prismaClient.userInfo.create({
+			await db.userInfo.create({
 				data: {
 					full_name: form.data.full_name,
 					birthdate: form.data.birthdate,

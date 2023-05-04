@@ -1,5 +1,5 @@
 import { createUrl, handleRequest, authorizationHeaders } from '../request';
-import { scope, provider, generateState, connectAuth } from '../core';
+import { scope, generateState, connectAuth } from '../core';
 
 import type { Auth } from 'lucia-auth';
 import type { OAuthConfig, OAuthProvider } from '../core';
@@ -88,7 +88,7 @@ export const github = <_Auth extends Auth>(auth: _Auth, config: OAuthConfig) => 
 	} as const satisfies OAuthProvider<_Auth>;
 };
 
-export const getProvider = async <T extends {}>(
+export const getProvider = async <T extends object>(
 	req_url: string,
 	headers_type: 'bearer' | 'basic',
 	accessToken: string

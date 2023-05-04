@@ -6,7 +6,7 @@ import type { CreateUserAttributesParameter, LuciaUser } from './lucia';
 // deprecate in v2 for better api
 export const provider = <
 	_Auth extends Auth,
-	_ProviderUser extends {},
+	_ProviderUser extends object,
 	_Tokens extends {
 		accessToken: string;
 	}

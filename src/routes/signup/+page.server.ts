@@ -71,8 +71,7 @@ export const actions: Actions = {
 			}
 			if (error instanceof LuciaError && error.message === 'AUTH_DUPLICATE_KEY_ID') {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
-			} 
-			
+			}
 
 			console.error(error);
 			return fail(400, { form, message: 'Unknown error' });

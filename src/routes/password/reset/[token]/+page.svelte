@@ -28,14 +28,8 @@
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>
 		<div class="card p-8 w-full text-token space-y-4">
-			<h3 class=" font-semibold">Sign in to your account</h3>
-			<TextField
-				name="email"
-				{form}
-				field="email"
-				titleName="E-mail"
-				placeholder="Enter your E-mail"
-			/>
+			<h3 class=" font-semibold">Reset password</h3>
+			<p>Write down your new password</p>
 			<TextField
 				name="password"
 				{form}
@@ -44,28 +38,7 @@
 				titleName="Password"
 				placeholder="********"
 			/>
-
-			<div class="flex items-center justify-between">
-				<label class="flex items-center space-x-2">
-					<input class="checkbox" type="checkbox" />
-					<p>Remember me</p>
-				</label>
-				<a class="" href="/password/reset"> forgot password?</a>
-			</div>
-
 			<button class="btn variant-filled-primary w-full">Submit</button>
-
-			<p class="flex justify-between">
-				Don`t have an account yet?
-				<a href="/signup"> Sign up</a>
-			</p>
 		</div>
-
-		<hr class="!border-t-2 my-4 bg-red-600" />
 	</form>
-
-	<a href="/api/oauth?provider=github" class="btn variant-filled">
-		<iconify-icon class="w-5 justify-center" icon="lucide:github" />
-		<p class="flex-grow text-justify">Login with Github</p>
-	</a>
 </div>
