@@ -28,7 +28,7 @@ export const actions: Actions = {
 			if (e instanceof LuciaError) {
 				switch (e.message) {
 					case 'AUTH_INVALID_PASSWORD':
-						return setError(form, 'password', 'Invalid password');
+						return setError(form, 'password', 'Incorrect credentials');
 
 					case 'AUTH_OUTDATED_PASSWORD':
 						return setError(form, 'password', 'Outdated password');
