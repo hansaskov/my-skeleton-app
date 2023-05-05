@@ -2,7 +2,6 @@ import { sendPasswordResetEmail } from '$lib/server/email';
 import { auth, passwordResetToken } from '$lib/server/lucia';
 import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
-import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 

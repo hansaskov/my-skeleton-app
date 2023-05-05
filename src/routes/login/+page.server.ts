@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';

@@ -3,7 +3,6 @@
 import { LuciaTokenError } from '@lucia-auth/tokens';
 import { auth, passwordResetToken } from '$lib/server/lucia';
 import type { Actions, PageServerLoad } from './$types';
-import { z } from 'zod';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';

@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth, emailVerificationToken } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
@@ -8,7 +7,6 @@ import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 import { sendEmailVerificationEmail } from '$lib/server/email';
 import { schema } from '$lib/schemas/authentication';
-
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals }) => {
