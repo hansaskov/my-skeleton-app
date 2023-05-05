@@ -56,7 +56,7 @@
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
 			<svelte:fragment slot="lead">
 				<div class="flex justify-between items-center">
-				<button class="md:hidden btn-icon bg-primary-hover-token btn-sm mr-4" on:click={drawerOpen}>
+				<button class="md:hidden btn-icon bg-primary-hover-token btn-sm mr-4" on:click={drawerOpen} id="al" aria-label="Open nav">
 					<span>
 						<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
 							<rect width="100" height="20" />
