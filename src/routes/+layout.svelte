@@ -23,8 +23,6 @@
 	import PageTransition from '$lib/components/PageTransition.svelte';
 	import PageLoadSpinner from '$lib/components/PageLoadSpinner.svelte';
 
-
-
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 	function drawerOpen(): void {
