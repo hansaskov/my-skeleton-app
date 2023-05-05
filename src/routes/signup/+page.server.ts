@@ -23,8 +23,6 @@ export const actions: Actions = {
 		const form = await superValidate(request, schema.signup);
 		if (!form.valid) return fail(400, { form });
 
-		console.log(form.data);
-
 		try {
 			const user = await auth.createUser({
 				primaryKey: {
@@ -43,26 +41,19 @@ export const actions: Actions = {
 			await sendEmailVerificationEmail(user.email, token.toString());
 
 			locals.auth.setSession(session);
-		} catch (error) {
+		} catch (e) {
 			if (
-				error instanceof Prisma.PrismaClientKnownRequestError &&
-				error.code === 'P2002' &&
-				error.message?.includes('email')
+				e instanceof Prisma.PrismaClientKnownRequestError &&
+				e.code === 'P2002' &&
+				e.message?.includes('email')
 			) {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
 			}
-			if (
-				error instanceof Prisma.PrismaClientKnownRequestError &&
-				error.code === 'P2002' &&
-				error.message?.includes('(not available)')
-			) {
-				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
-			}
-			if (error instanceof LuciaError && error.message === 'AUTH_DUPLICATE_KEY_ID') {
+			if (e instanceof LuciaError && e.message === 'AUTH_DUPLICATE_KEY_ID') {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
 			}
 
-			console.error(error);
+			console.error(e);
 			return fail(400, { form, message: 'Unknown error' });
 		}
 

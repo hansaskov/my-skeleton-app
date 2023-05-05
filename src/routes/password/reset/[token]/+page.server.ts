@@ -40,8 +40,6 @@ export const actions: Actions = {
 			return fail(400, { form, message: 'Unknown error' });
 		}
 
-		console.log(form);
-
 		throw redirect(303, '/');
 	}
 };

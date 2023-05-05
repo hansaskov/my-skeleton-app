@@ -33,8 +33,8 @@ export const actions: Actions = {
 			const user = auth.transformDatabaseUser(dbUser);
 			const token = await passwordResetToken.issue(user.userId);
 			await sendPasswordResetEmail(user.email, token.toString());
-		} catch (error) {
-			console.error(error);
+		} catch (e) {
+			console.error(e);
 			return fail(400, { form, message: 'Unknown error' });
 		}
 

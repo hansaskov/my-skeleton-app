@@ -49,8 +49,8 @@ export const actions: Actions = {
 			await auth.updateUserAttributes(session.userId, {
 				user_info_set: true
 			});
-		} catch (error) {
-			console.error(error);
+		} catch (e) {
+			console.error(e);
 			return fail(400, { form, message: 'Unknown error' });
 		}
 
