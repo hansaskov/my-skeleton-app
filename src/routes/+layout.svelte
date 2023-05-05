@@ -21,6 +21,9 @@
 	import type { LayoutData } from './$types';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import PageTransition from '$lib/components/PageTransition.svelte';
+	import PageLoadSpinner from '$lib/components/PageLoadSpinner.svelte';
+
+
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
@@ -52,6 +55,7 @@
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
 			<svelte:fragment slot="lead">
+				<div class="flex justify-between items-center">
 				<button class="md:hidden btn-icon bg-primary-hover-token btn-sm mr-4" on:click={drawerOpen}>
 					<span>
 						<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
@@ -62,6 +66,8 @@
 					</span>
 				</button>
 				<a href="/" class="text-xl btn bg-primary-hover-token font-semibold uppercase">Askov</a>
+				<PageLoadSpinner/>
+			</div>
 			</svelte:fragment>
 
 			<div class="grid grid-cols-2">
