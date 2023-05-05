@@ -7,20 +7,8 @@ import { redirect } from '@sveltejs/kit';
 import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 import { sendEmailVerificationEmail } from '$lib/server/email';
+import { schema } from '$lib/schemas/authentication';
 
-function containsNumber(str: string) {
-	return Array.from(str).some((c) => c >= '0' && c <= '9');
-}
-
-const schema = z.object({
-	remember: z.boolean().optional().default(false),
-	email: z.string().trim().min(1).max(255).email(),
-	password: z
-		.string()
-		.min(8)
-		.max(255)
-		.refine(containsNumber, { message: 'Password must contain at least one number' })
-});
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals }) => {
@@ -28,13 +16,13 @@ export const load: PageServerLoad = async ({ locals }) => {
 	if (user && user.userInfoSet == false) throw redirect(302, '/signup/setup');
 	if (user) throw redirect(302, '/');
 
-	const form = await superValidate(schema);
+	const form = await superValidate(schema.signup);
 	return { form };
 };
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
-		const form = await superValidate(request, schema);
+		const form = await superValidate(request, schema.signup);
 		if (!form.valid) return fail(400, { form });
 
 		console.log(form.data);

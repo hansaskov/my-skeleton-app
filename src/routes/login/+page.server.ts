@@ -5,25 +5,21 @@ import { fail, type Actions } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { LuciaError } from 'lucia-auth';
-
-const schema = z.object({
-	remember: z.boolean().optional().default(false),
-	email: z.string().min(1).email(),
-	password: z.string().min(1)
-});
+import { schema } from '$lib/schemas/authentication';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
 	if (session) throw redirect(302, '/');
 
-	const form = await superValidate(schema);
+	// Validates Page Schema
+	const form = await superValidate(schema.login);
 	return { form };
 };
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
-		const form = await superValidate(request, schema);
+		const form = await superValidate(request, schema.login);
 		if (!form.valid) return fail(400, { form });
 		try {
 			const key = await auth.useKey('email', form.data.email, form.data.password);

@@ -6,31 +6,20 @@ import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
-
-function containsNumber(str: string) {
-	return Array.from(str).some((c) => c >= '0' && c <= '9');
-}
-
-const schema = z.object({
-	password: z
-		.string()
-		.min(8)
-		.max(255)
-		.refine(containsNumber, { message: 'Password must contain at least one number' })
-});
+import { schema } from '$lib/schemas/authentication';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
 	if (user && user.userInfoSet == false) throw redirect(302, '/signup/setup');
 
-	const form = await superValidate(schema);
+	const form = await superValidate(schema.password);
 	return { form };
 };
 
 export const actions: Actions = {
 	default: async ({ request, locals, params }) => {
-		const form = await superValidate(request, schema);
+		const form = await superValidate(request, schema.password);
 		if (!form.valid) return fail(400, { form });
 
 		try {

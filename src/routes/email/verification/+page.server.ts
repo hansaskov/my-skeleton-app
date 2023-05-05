@@ -30,7 +30,7 @@ export const actions: Actions = {
 			const token = await emailVerificationToken.issue(user.userId);
 			await sendEmailVerificationEmail(user.email, token.toString());
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 			return fail(500, {
 				message: 'An unknown error occurred'
 			});

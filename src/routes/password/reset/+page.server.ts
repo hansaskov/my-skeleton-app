@@ -6,22 +6,20 @@ import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 
-const schema = z.object({
-	email: z.string().trim().min(1).max(255).email()
-});
+import { schema } from '$lib/schemas/authentication';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
 	if (user && user.userInfoSet == false) throw redirect(302, '/signup/setup');
 
-	const form = await superValidate(schema);
+	const form = await superValidate(schema.email);
 	return { form };
 };
 
 export const actions: Actions = {
 	default: async ({ request }) => {
-		const form = await superValidate(request, schema);
+		const form = await superValidate(request, schema.email);
 		if (!form.valid) return fail(400, { form });
 
 		try {
