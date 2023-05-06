@@ -11,6 +11,7 @@
 		AppBar,
 		AppShell,
 		Drawer,
+		LightSwitch,
 		Modal,
 		Toast,
 		drawerStore,
@@ -22,7 +23,6 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 	import PageTransition from '$lib/components/PageTransition.svelte';
 	import PageLoadSpinner from '$lib/components/PageLoadSpinner.svelte';
-	// Icon library
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
@@ -54,9 +54,9 @@
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
 			<svelte:fragment slot="lead">
-				<div class="flex justify-between items-center">
+				<div class="flex justify-between items-center gap-4">
 					<button
-						class="md:hidden btn-icon bg-primary-hover-token btn-sm mr-4"
+						class="md:hidden btn-icon btn-sm bg-primary-hover-token "
 						on:click={drawerOpen}
 						id="al"
 						aria-label="Open nav"
@@ -74,7 +74,7 @@
 				</div>
 			</svelte:fragment>
 
-			<div class="grid grid-cols-2">
+			<div class="flex justify-between items-center gap-4">
 				<a
 					href="/wishlist"
 					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase"
@@ -88,18 +88,14 @@
 			</div>
 
 			<svelte:fragment slot="trail">
-				{#if user?.email != null}
-					<Avatar initials={user.email} />
-				{:else if user}
-					<form method="POST" action="/logout">
-						<button type="submit" class="btn variant-filled-primary w-full my-1">
-							<iconify-icon class="w-5 justify-center" icon="lucide:log-out" />
-							<p class="flex-grow text-justify">Log out</p>
-						</button>
-					</form>
-				{:else}
-					<a href="/login" class="btn variant-filled-primary">Login</a>
-				{/if}
+				<div class="flex justify-between items-center gap-4">
+					<LightSwitch />
+					{#if user?.email != null}
+						<Avatar initials={user.email} />
+					{:else}
+						<a href="/login" class="btn variant-filled-secondary">Login</a>
+					{/if}
+				</div>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
