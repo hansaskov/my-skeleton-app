@@ -4,7 +4,6 @@
 	import TextField from '$lib/components/TextField.svelte';
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import CheckboxField from '$lib/components/CheckboxField.svelte';
-	import { page } from "$app/stores"
 
 	const errorToast: ToastSettings = {
 		message: '',
@@ -30,7 +29,6 @@
 		errorToast.message = data.message;
 		toastStore.trigger(errorToast);
 	}
-
 </script>
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">

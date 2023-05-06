@@ -1,22 +1,17 @@
-import { redirect } from "@sveltejs/kit";
-import type { User } from "lucia-auth";
+import { redirect } from '@sveltejs/kit';
+import type { User } from 'lucia-auth';
 
-const redirectTo = "redirectTo"
+const redirectTo = 'redirectTo';
 
-export function redirectToLogin(
-	callbackUrl: URL,
-	message: string = 'Please sign in to access this page'
-) {
+export function redirectToLogin(callbackUrl: URL, message = 'Please sign in to access this page') {
 	const path = callbackUrl.pathname + callbackUrl.search;
 	return `/login?${redirectTo}=${path}&message=${message}`;
 }
 
 export function redirectFromLogin(callbackUrl: URL) {
 	const path = callbackUrl.searchParams.get(redirectTo);
-    if (path) 
-        return `/${path.slice(1)}`
-    else 
-        return '/'
+	if (path) return `/${path.slice(1)}`;
+	else return '/';
 }
 
 export function redirectFromPrivatePage(user: User | null, callbackUrl: URL) {
