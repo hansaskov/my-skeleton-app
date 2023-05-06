@@ -5,15 +5,18 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { LuciaError } from 'lucia-auth';
 import { schema } from '$lib/schemas/authentication';
+import { redirectFromLogin } from '$lib/server/redirects';
+
 
 // If the user exists, redirect authenticated users to the profile page.
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, url}) => {
 	const session = await locals.auth.validate();
-	if (session) throw redirect(302, '/');
+	if (session) throw redirect(302, redirectFromLogin(url));
 
 	// Validates Page Schema
 	const form = await superValidate(schema.login);
-	return { form };
+	const message = url.searchParams.get("message")
+	return { form, message };
 };
 
 export const actions: Actions = {
