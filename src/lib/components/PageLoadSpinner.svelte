@@ -16,7 +16,7 @@
 
 {#if isLoading}
 	<!-- svelte-ignore empty-block -->
-	{#await wait(180) then a}
+	{#await wait(140) then a}
 		<ProgressRadial
 			stroke={125}
 			meter="stroke-primary-400"

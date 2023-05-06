@@ -14,10 +14,7 @@ export function redirectFromLogin(callbackUrl: URL) {
 	else return '/';
 }
 
-export function redirectFromPrivatePage(user: User | null, callbackUrl: URL) {
-	// Redirect to login if no user
-	if (!user) throw redirect(302, redirectToLogin(callbackUrl));
-
+export function redirectFromPrivatePage(user: User) {
 	// Redirect to email verification or setup
 	if (!user.userInfoSet) throw redirect(302, '/signup/setup');
 	if (!user.emailVerified) throw redirect(302, '/email/verification');

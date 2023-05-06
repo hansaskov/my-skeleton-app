@@ -1,5 +1,4 @@
-<div class="flex flex-col items-center justify-center pt-8 mx-auto">
-	<div class="card p-8 w-full text-token space-y-4">
-		<h3>Wishlist page</h3>
-	</div>
+<div class="flex flex-col gap-8 items-center justify-center">
+	<h1>Wishlist overview!</h1>
+	<p>This page will showcase all family members with a link to their Wishlists</p>
 </div>

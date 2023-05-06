@@ -1,11 +1,10 @@
 <script lang="ts">
 	// The ordering of these imports is critical to your app working properly
+	// Your selected Skeleton theme:
 	import '../theme.postcss';
 	// If you have source.organizeImports set to true in VSCode, then it will auto change this ordering
 	import '@skeletonlabs/skeleton/styles/all.css';
 	// Most of your app wide CSS should be put in this file
-	// Icon library
-	import 'iconify-icon';
 	import '../app.postcss';
 	// Skeleton UI framework
 	import {
@@ -17,11 +16,13 @@
 		drawerStore,
 		storePopup
 	} from '@skeletonlabs/skeleton';
+	import 'iconify-icon';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import type { LayoutData } from './$types';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import PageTransition from '$lib/components/PageTransition.svelte';
 	import PageLoadSpinner from '$lib/components/PageLoadSpinner.svelte';
+	// Icon library
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 

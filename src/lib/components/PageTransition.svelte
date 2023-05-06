@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
+	import { fly, type FlyParams } from 'svelte/transition';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 
 	export let pathname: string;
 
-	const duration = 300;
-	const delay = duration + 50;
-	const y = 10;
+	const duration = 250;
+	const delay = duration + 33;
+	const y = 8;
 
-	const transitionIn = { easing: cubicOut, y, duration, delay };
+	const transitionIn: FlyParams = { easing: cubicOut, y, duration, delay };
 	const transitionOut = { easing: cubicIn, y: -y, duration };
 </script>
 
