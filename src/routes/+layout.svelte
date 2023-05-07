@@ -39,6 +39,17 @@
 	$: user = data.user;
 </script>
 
+<svelte:head>
+	<meta
+			charset="utf-8"
+			name="Auth Aap"
+			content="App for testing authentication made by Hans Askov visit my github https://github/hansaskov"
+		/>
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		%sveltekit.head%
+</svelte:head>
+
 <Toast />
 <Modal />
 <Drawer>
