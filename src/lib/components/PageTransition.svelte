@@ -22,7 +22,11 @@
 </script>
 
 {#key isLoading}
-	<div in:fly={transitionIn} out:fly={transitionOut}>
-		<slot />
-	</div>
+	{#if isLoading}
+		<div />
+	{:else}
+		<div in:fly={transitionIn} out:fly={transitionOut}>
+			<slot />
+		</div>
+	{/if}
 {/key}
