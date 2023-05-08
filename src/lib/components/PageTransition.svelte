@@ -2,7 +2,16 @@
 	import { fly, type FlyParams } from 'svelte/transition';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 
-	export let pathname: string;
+	import { beforeNavigate, afterNavigate } from '$app/navigation';
+
+	let isLoading = false;
+	beforeNavigate(({ to }) => {
+		if (to?.route.id) {
+			isLoading = true;
+		}
+	});
+
+	afterNavigate(() => (isLoading = false));
 
 	const duration = 250;
 	const delay = duration + 33;
@@ -12,8 +21,12 @@
 	const transitionOut = { easing: cubicIn, y: -y, duration };
 </script>
 
-{#key pathname}
-	<div in:fly={transitionIn} out:fly={transitionOut}>
-		<slot />
-	</div>
+{#key isLoading}
+	{#if isLoading}
+		<div in:fly={transitionIn} out:fly={transitionOut} />
+	{:else}
+		<div in:fly={transitionIn} out:fly={transitionOut}>
+			<slot />
+		</div>
+	{/if}
 {/key}
