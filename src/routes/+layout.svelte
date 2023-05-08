@@ -101,7 +101,7 @@
 	</svelte:fragment>
 	<!-- Router Slot -->
 
-	<PageTransition>
+	<PageTransition pathname={data.pathname}>
 		<div class="container p-10 mx-auto">
 			<slot />
 		</div>

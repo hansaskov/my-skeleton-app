@@ -17,16 +17,14 @@
 	const delay = duration + 33;
 	const y = 8;
 
+	export let pathname: string;
+
 	const transitionIn: FlyParams = { easing: cubicOut, y, duration, delay };
 	const transitionOut = { easing: cubicIn, y: -y, duration };
 </script>
 
-{#key isLoading}
-	{#if isLoading}
-		<div />
-	{:else}
-		<div in:fly={transitionIn} out:fly={transitionOut}>
-			<slot />
-		</div>
-	{/if}
+{#key pathname}
+	<div in:fly={transitionIn} out:fly={transitionOut}>
+		<slot />
+	</div>
 {/key}
