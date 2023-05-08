@@ -23,7 +23,7 @@
 
 {#key isLoading}
 	{#if isLoading}
-		<div in:fly={transitionIn} out:fly={transitionOut} />
+		<div />
 	{:else}
 		<div in:fly={transitionIn} out:fly={transitionOut}>
 			<slot />
