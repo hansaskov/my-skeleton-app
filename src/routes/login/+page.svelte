@@ -33,7 +33,7 @@
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>
-		<div class="card p-8 w-full text-token space-y-4 ">
+		<div class="card p-8 w-full text-token space-y-4">
 			<h3 class=" font-semibold">Sign in to your account</h3>
 			<TextField
 				name="email"

@@ -39,7 +39,6 @@
 	$: user = data.user;
 </script>
 
-
 <Toast />
 <Modal />
 <Drawer>
@@ -57,7 +56,7 @@
 			<svelte:fragment slot="lead">
 				<div class="flex justify-between items-center gap-4">
 					<button
-						class="md:hidden btn-icon btn-sm bg-primary-hover-token "
+						class="md:hidden btn-icon btn-sm bg-primary-hover-token"
 						on:click={drawerOpen}
 						id="al"
 						aria-label="Open nav"
