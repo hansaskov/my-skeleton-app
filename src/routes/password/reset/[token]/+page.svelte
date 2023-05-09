@@ -3,19 +3,25 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
 	import { errorToast, toastTrigger } from '$lib/components/Toasts';
+	import { isLoadingForm } from '$lib/stores.ts/loading';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
+		delayMs: 100,
 		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				toastTrigger(errorToast, error)
+				toastTrigger(errorToast, error);
 			}
 		}
+	});
+
+	form.delayed.subscribe((v) => {
+		$isLoadingForm = v;
 	});
 </script>
 

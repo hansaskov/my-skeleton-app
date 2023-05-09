@@ -28,6 +28,7 @@
 	form.delayed.subscribe((v) => {
 		$isLoadingForm = v;
 	});
+	
 </script>
 
 <Seo title="Askov | Login" type="WebPage" description="Login to hjemmet.net" />

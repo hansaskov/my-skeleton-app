@@ -4,11 +4,13 @@
 	import TextField from '$lib/components/TextField.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
+	import { isLoadingForm } from '$lib/stores.ts/loading';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
+		delayMs: 100,
 		onUpdated: ({ form }) => {
 			if (form.valid) {
 				const message = `Password reset sent to ${form.data.email}`;
@@ -23,6 +25,13 @@
 			}
 		}
 	});
+
+	form.delayed.subscribe((v) => {
+		$isLoadingForm = v;
+	});
+
+
+
 </script>
 
 <Seo

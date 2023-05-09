@@ -4,11 +4,13 @@
 	import TextField from '$lib/components/TextField.svelte';
 	import TextAreaField from '$lib/components/TextAreaField.svelte';
 	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
+	import { isLoadingForm } from '$lib/stores.ts/loading';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
+		delayMs: 100,
 		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
@@ -17,6 +19,10 @@
 				toastTrigger(errorToast, error)
 			}
 		}
+	});
+
+	form.delayed.subscribe((v) => {
+		$isLoadingForm = v;
 	});
 
 	if (data.message) {
