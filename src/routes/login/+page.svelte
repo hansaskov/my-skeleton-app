@@ -4,6 +4,7 @@
 	import TextField from '$lib/components/TextField.svelte';
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import CheckboxField from '$lib/components/CheckboxField.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	const errorToast: ToastSettings = {
 		message: '',
@@ -30,6 +31,8 @@
 		toastStore.trigger(errorToast);
 	}
 </script>
+
+<Seo title="Askov | Login" type="WebPage" description="Login to hjemmet.net" />
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>

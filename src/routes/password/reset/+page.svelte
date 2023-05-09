@@ -3,6 +3,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import Seo from '$lib/components/Seo.svelte';
 
 	const errorToast: ToastSettings = {
 		message: '',
@@ -34,6 +35,12 @@
 		}
 	});
 </script>
+
+<Seo
+	title="Askov | Password reset"
+	type="WebPage"
+	description="Page to reset the password given an email"
+/>
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>

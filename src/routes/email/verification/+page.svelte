@@ -1,10 +1,17 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Seo from '$lib/components/Seo.svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
 	export let form: ActionData;
 </script>
+
+<Seo
+	title="Askov | E-mail Verification"
+	type="WebPage"
+	description="Please check and verify your email by navigating to the link send in your inbox"
+/>
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<div class="card p-8 w-full text-token space-y-4">

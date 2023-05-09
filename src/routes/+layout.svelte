@@ -76,14 +76,14 @@
 
 			<div class="flex justify-between items-center gap-4">
 				<a
-					href="/wishlist"
+					href="/public"
 					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase"
-					>Wishlists</a
+					>Public</a
 				>
 				<a
-					href="/events"
+					href="/protected"
 					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase"
-					>Events</a
+					>protected</a
 				>
 			</div>
 

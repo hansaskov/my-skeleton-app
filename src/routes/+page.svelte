@@ -1,3 +1,13 @@
+<script>
+	import Seo from '$lib/components/Seo.svelte';
+</script>
+
+<Seo
+	title="Askov | Frontpage"
+	type="WebPage"
+	description="Page containning explanation of how this webiste works and to check out the authentication flow"
+/>
+
 <div class="flex flex-col gap-8 items-center justify-center">
 	<h1>Welcome!</h1>
 	<p>
