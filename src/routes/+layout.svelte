@@ -106,7 +106,7 @@
 	<!-- Router Slot -->
 
 	<PageTransition>
-		<main class="container p-10 mx-auto transition-transform {positionClasses}">
+		<main class="container p-4 mx-auto transition-transform {positionClasses}">
 			<slot />
 		</main>
 	</PageTransition>
