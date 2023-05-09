@@ -33,7 +33,7 @@ export const sendEmailVerificationEmail = async (
 	redirectPath: string | null
 ) => {
 	let verificationLink = `https://hjemmet.net/email/verification/${verificationToken}`;
-	if (redirectPath) verificationLink = verificationLink + `?${redirectTo}=${redirectPath}`
+	if (redirectPath) verificationLink = verificationLink + `?${redirectTo}=${redirectPath}`;
 	const emailContent = `Please verify your email by clicking the link \n${verificationLink}`;
 	await sendEmail(emailAddress, 'Email verification', emailContent);
 };

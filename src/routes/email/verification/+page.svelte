@@ -29,7 +29,17 @@
 		<h1>Email verification</h1>
 		<p>Please check {data.user.email} for a verification email</p>
 		<h2>Resend verification email</h2>
-		<form method="post" use:enhance>
+		<form
+			method="POST"
+			use:enhance={() => {
+				return async ({ result }) => {
+					if (result.type === 'success') {
+						successToast.message = 'E-mail sent';
+						toastStore.trigger(successToast);
+					}
+				};
+			}}
+		>
 			<input class="btn variant-filled-primary" type="submit" value="Resend email" />
 		</form>
 	</div>

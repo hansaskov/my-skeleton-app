@@ -14,7 +14,7 @@ export const callbacks = {
 	},
 	email: {
 		page: '/email/verification',
-		message: 'Please verify your E-mail'
+		message: 'Please check your inbox and verify your E-mail'
 	}
 };
 
@@ -29,7 +29,7 @@ export function createCallbackUrl({ page, message }: CallbackParam, url: URL) {
 	const redirectToPath = url.searchParams.get(redirectTo);
 
 	let path = '';
-
+	
 	if (redirectToPath) {
 		path = sanityzeUrl(redirectToPath);
 	} else {

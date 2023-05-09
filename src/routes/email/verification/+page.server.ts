@@ -29,7 +29,7 @@ export const actions: Actions = {
 		}
 		try {
 			const token = await emailVerificationToken.issue(user.userId);
-			const path = url.searchParams.get(redirectTo)
+			const path = url.searchParams.get(redirectTo);
 			await sendEmailVerificationEmail(user.email, token.toString(), path);
 		} catch (e) {
 			console.error(e);

@@ -5,6 +5,7 @@
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import CheckboxField from '$lib/components/CheckboxField.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import { page } from '$app/stores';
 
 	const errorToast: ToastSettings = {
 		message: '',
@@ -63,7 +64,7 @@
 
 			<p class="flex justify-between">
 				Don`t have an account yet?
-				<a href="/signup"> Sign up</a>
+				<a href="/signup{$page.url.search}"> Sign up</a>
 			</p>
 		</div>
 

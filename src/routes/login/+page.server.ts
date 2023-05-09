@@ -1,7 +1,6 @@
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
-import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { LuciaError } from 'lucia-auth';
 import { schema } from '$lib/schemas/authentication';
@@ -10,7 +9,7 @@ import { redirectFromSignin } from '$lib/server/redirects';
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const { user } = await locals.auth.validateUser();
-	redirectFromSignin(user, url)
+	redirectFromSignin(user, url);
 
 	// Validates Page Schema
 	const form = await superValidate(schema.login);
