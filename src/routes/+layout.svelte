@@ -51,7 +51,10 @@
 	</nav>
 </Drawer>
 
-<AppShell class="transition-transform {positionClasses}" slotSidebarLeft="w-0 md:w-52 bg-surface-500/10">
+<AppShell
+	class="transition-transform {positionClasses}"
+	slotSidebarLeft="w-0 md:w-52 bg-surface-500/10"
+>
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
 			<svelte:fragment slot="lead">

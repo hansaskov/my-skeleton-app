@@ -5,7 +5,6 @@
 
 	// Only show spinner if page transition takes more than 100ms
 	const wait = (delay: number | undefined) => new Promise((res) => setTimeout(res, delay));
-
 </script>
 
 {#if $isLoadingForm || $isLoadingPage}

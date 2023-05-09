@@ -16,7 +16,7 @@
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				toastTrigger(errorToast, error)
+				toastTrigger(errorToast, error);
 			}
 		}
 	});
@@ -26,7 +26,7 @@
 	});
 
 	if (data.message) {
-		toastTrigger(successToast, data.message)
+		toastTrigger(successToast, data.message);
 	}
 </script>
 

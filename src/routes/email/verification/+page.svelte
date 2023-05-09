@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Seo from '$lib/components/Seo.svelte';
-	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import { toastStore } from '@skeletonlabs/skeleton';
 	import type { ActionData, PageData } from './$types';
 	import { successToast, toastTrigger } from '$lib/components/Toasts';
 
@@ -9,7 +9,7 @@
 	export let form: ActionData;
 
 	if (data.message) {
-		toastTrigger(successToast, data.message)
+		toastTrigger(successToast, data.message);
 	}
 </script>
 

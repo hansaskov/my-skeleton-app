@@ -14,13 +14,13 @@
 		onUpdated: ({ form }) => {
 			if (form.valid) {
 				const message = `Password reset sent to ${form.data.email}`;
-				toastTrigger(successToast, message)
+				toastTrigger(successToast, message);
 			} else {
 				const allErrors = Object.values(form.errors).flat();
 				const uniqueErrors = [...new Set(allErrors)];
 
 				for (const error of uniqueErrors) {
-					toastTrigger(errorToast, error)
+					toastTrigger(errorToast, error);
 				}
 			}
 		}
@@ -29,9 +29,6 @@
 	form.delayed.subscribe((v) => {
 		$isLoadingForm = v;
 	});
-
-
-
 </script>
 
 <Seo

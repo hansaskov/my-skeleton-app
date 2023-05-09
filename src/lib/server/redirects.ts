@@ -29,7 +29,7 @@ export function createCallbackUrl({ page, message }: CallbackParam, url: URL) {
 	const redirectToPath = url.searchParams.get(redirectTo);
 
 	let path = '';
-	
+
 	if (redirectToPath) {
 		path = sanityzeUrl(redirectToPath);
 	} else {

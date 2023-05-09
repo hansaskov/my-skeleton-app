@@ -7,13 +7,13 @@
 	const duration = 250;
 	const delay = duration + 33;
 	const y = 8;
-	
+
 	beforeNavigate(({ to }) => {
 		if (to?.route.id) {
 			isLoadingPage.set(true);
 		}
 	});
-	afterNavigate(() => (isLoadingPage.set(false)));
+	afterNavigate(() => isLoadingPage.set(false));
 
 	const transitionIn: FlyParams = { easing: cubicOut, y, duration, delay };
 	const transitionOut: FlyParams = { easing: cubicIn, y: -y, duration };

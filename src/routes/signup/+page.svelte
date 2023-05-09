@@ -17,7 +17,7 @@
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				toastTrigger(errorToast, error)
+				toastTrigger(errorToast, error);
 			}
 		}
 	});
@@ -27,7 +27,11 @@
 	});
 </script>
 
-<Seo title="Askov | Setup" type="WebPage" description="Signup page to create an account for hjemmet.net" />
+<Seo
+	title="Askov | Setup"
+	type="WebPage"
+	description="Signup page to create an account for hjemmet.net"
+/>
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>
@@ -51,14 +55,25 @@
 
 			<div class="flex items-center justify-between">
 				<CheckboxField name="remember" {form} field="remember" titleName="Remember me" />
-				<a class="unstyled text-secondary-600 dark:text-primary-400 bg-tertiary-hover-token  underline font-semibold rounded-lg px-2" color="variant-filled-secondary" href="/password/reset">Forgot password?</a>
+				<a
+					class="unstyled text-secondary-600 dark:text-primary-400 bg-tertiary-hover-token underline font-semibold rounded-lg px-2"
+					color="variant-filled-secondary"
+					href="/password/reset">Forgot password?</a
+				>
 			</div>
 
-			<button class="btn bg-secondary-500 text-white w-full dark:bg-primary-600 dark:text-black">Submit</button>
+			<button class="btn bg-secondary-500 text-white w-full dark:bg-primary-600 dark:text-black"
+				>Submit</button
+			>
 
 			<p class="flex justify-between">
 				Don`t have an account yet?
-				<a class="unstyled text-secondary-600 dark:text-primary-400 bg-tertiary-hover-token  underline font-semibold rounded-lg px-2" href="/login"> Sign in</a>
+				<a
+					class="unstyled text-secondary-600 dark:text-primary-400 bg-tertiary-hover-token underline font-semibold rounded-lg px-2"
+					href="/login"
+				>
+					Sign in</a
+				>
 			</p>
 		</div>
 
