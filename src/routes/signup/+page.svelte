@@ -5,6 +5,7 @@
 	import CheckboxField from '$lib/components/CheckboxField.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import { errorToast, toastTrigger } from '$lib/components/Toasts';
+	import Seo from '$lib/components/Seo.svelte';
 
 	export let data: PageData;
 
@@ -25,6 +26,8 @@
 		$isLoadingForm = v;
 	});
 </script>
+
+<Seo title="Askov | Setup" type="WebPage" description="Signup page to create an account for hjemmet.net" />
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>
