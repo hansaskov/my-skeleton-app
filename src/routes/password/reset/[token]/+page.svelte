@@ -2,12 +2,7 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
-	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
-
-	const errorToast: ToastSettings = {
-		message: '',
-		background: 'variant-filled-error'
-	};
+	import { errorToast, toastTrigger } from '$lib/components/Toasts';
 
 	export let data: PageData;
 
@@ -18,8 +13,7 @@
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				errorToast.message = error;
-				toastStore.trigger(errorToast);
+				toastTrigger(errorToast, error)
 			}
 		}
 	});

@@ -3,18 +3,13 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { ActionData, PageData } from './$types';
+	import { successToast, toastTrigger } from '$lib/components/Toasts';
 
 	export let data: PageData;
 	export let form: ActionData;
 
-	const successToast: ToastSettings = {
-		message: '',
-		background: 'variant-filled-success'
-	};
-
 	if (data.message) {
-		successToast.message = data.message;
-		toastStore.trigger(successToast);
+		toastTrigger(successToast, data.message)
 	}
 </script>
 

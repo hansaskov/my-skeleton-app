@@ -2,18 +2,8 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
-	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import TextAreaField from '$lib/components/TextAreaField.svelte';
-
-	const errorToast: ToastSettings = {
-		message: '',
-		background: 'variant-filled-error'
-	};
-
-	const successToast: ToastSettings = {
-		message: '',
-		background: 'variant-filled-success'
-	};
+	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
 
 	export let data: PageData;
 
@@ -24,15 +14,13 @@
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				errorToast.message = error;
-				toastStore.trigger(errorToast);
+				toastTrigger(errorToast, error)
 			}
 		}
 	});
 
 	if (data.message) {
-		successToast.message = data.message;
-		toastStore.trigger(successToast);
+		toastTrigger(successToast, data.message)
 	}
 </script>
 

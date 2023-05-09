@@ -2,18 +2,8 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
-	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import Seo from '$lib/components/Seo.svelte';
-
-	const errorToast: ToastSettings = {
-		message: '',
-		background: 'variant-filled-error'
-	};
-
-	const successToast: ToastSettings = {
-		message: '',
-		background: 'variant-filled-success'
-	};
+	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
 
 	export let data: PageData;
 
@@ -21,15 +11,14 @@
 		taintedMessage: null,
 		onUpdated: ({ form }) => {
 			if (form.valid) {
-				successToast.message = `Password reset sent to ${form.data.email}`;
-				toastStore.trigger(successToast);
+				const message = `Password reset sent to ${form.data.email}`;
+				toastTrigger(successToast, message)
 			} else {
 				const allErrors = Object.values(form.errors).flat();
 				const uniqueErrors = [...new Set(allErrors)];
 
 				for (const error of uniqueErrors) {
-					errorToast.message = error;
-					toastStore.trigger(errorToast);
+					toastTrigger(errorToast, error)
 				}
 			}
 		}

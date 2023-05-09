@@ -2,33 +2,33 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/TextField.svelte';
-	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import CheckboxField from '$lib/components/CheckboxField.svelte';
-
-	const errorToast: ToastSettings = {
-		message: '',
-		background: 'variant-filled-error'
-	};
+	import { isLoadingForm } from '$lib/stores.ts/loading';
+	import { errorToast, toastTrigger } from '$lib/components/Toasts';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
-		onUpdated: ({ form }) => {
+		delayMs: 100,
+		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				errorToast.message = error;
-				toastStore.trigger(errorToast);
+				toastTrigger(errorToast, error)
 			}
 		}
+	});
+
+	form.delayed.subscribe((v) => {
+		$isLoadingForm = v;
 	});
 </script>
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>
-		<div class="card p-8 w-full text-token space-y-4">
+		<div class="card p-8 w-full space-y-4">
 			<h3 class=" font-semibold">Sign up with a new account</h3>
 			<TextField
 				name="email"
@@ -48,14 +48,14 @@
 
 			<div class="flex items-center justify-between">
 				<CheckboxField name="remember" {form} field="remember" titleName="Remember me" />
-				<a class="" href="/password/reset"> forgot password?</a>
+				<a class="font-semibold rounded-lg px-2" color="variant-filled-secondary" href="/password/reset">Forgot password?</a>
 			</div>
 
 			<button class="btn variant-filled-primary w-full">Submit</button>
 
 			<p class="flex justify-between">
 				Don`t have an account yet?
-				<a href="/login"> Sign in</a>
+				<a class="font-semibold rounded-lg px-2" href="/login"> Sign in</a>
 			</p>
 		</div>
 

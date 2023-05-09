@@ -1,21 +1,14 @@
 <script lang="ts">
-	import { beforeNavigate, afterNavigate } from '$app/navigation';
+	import { isLoadingForm, isLoadingPage } from '$lib/stores.ts/loading';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { fade } from 'svelte/transition';
 
 	// Only show spinner if page transition takes more than 100ms
 	const wait = (delay: number | undefined) => new Promise((res) => setTimeout(res, delay));
 
-	let isLoading = false;
-	beforeNavigate(({ to }) => {
-		if (to?.route.id) {
-			isLoading = true;
-		}
-	});
-	afterNavigate(() => (isLoading = false));
 </script>
 
-{#if isLoading}
+{#if $isLoadingForm || $isLoadingPage}
 	<!-- svelte-ignore empty-block -->
 	{#await wait(150) then}
 		<div transition:fade>

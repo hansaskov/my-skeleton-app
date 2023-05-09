@@ -33,6 +33,7 @@
 	function drawerClose(): void {
 		drawerStore.close();
 	}
+	$: positionClasses = $drawerStore.open ? 'translate-x-[25%]' : '';
 
 	export let data: LayoutData;
 
@@ -44,13 +45,13 @@
 <Drawer>
 	<nav class="list-nav p-4">
 		<ul>
-			<li><a href="/wishlist" on:click={drawerClose}>Wishlists</a></li>
-			<li><a href="/events" on:click={drawerClose}>Events</a></li>
+			<li><a href="/public" on:click={drawerClose}>Public</a></li>
+			<li><a href="/protected" on:click={drawerClose}>Protected</a></li>
 		</ul>
 	</nav>
 </Drawer>
 
-<AppShell slotSidebarLeft="w-0 md:w-52 bg-surface-500/10">
+<AppShell class="transition-transform {positionClasses}" slotSidebarLeft="w-0 md:w-52 bg-surface-500/10">
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
 			<svelte:fragment slot="lead">
@@ -102,9 +103,9 @@
 	<!-- Router Slot -->
 
 	<PageTransition>
-		<div class="container p-10 mx-auto">
+		<main class="container p-10 mx-auto transition-transform {positionClasses}">
 			<slot />
-		</div>
+		</main>
 	</PageTransition>
 
 	<!-- ---- / ---- -->
