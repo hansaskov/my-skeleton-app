@@ -11,7 +11,7 @@
 	<h1>Public page</h1>
 	<p>Everyone can view the contents of this page</p>
 	{#if data.user}
+		<h2>Hidden data</h2>
 		<p>Hidden data can only be seen when logged in</p>
-		{data.user.email}
 	{/if}
 </div>
