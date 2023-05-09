@@ -4,6 +4,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { db } from '$lib/server/db';
 import { auth } from '$lib/server/lucia';
+import { callbacks, createCallbackUrl, getCallbackUrl } from '$lib/server/redirects';
 
 const schema = z.object({
 	full_name: z.string(),
@@ -11,21 +12,22 @@ const schema = z.object({
 	description: z.string()
 });
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, url }) => {
 	const { user } = await locals.auth.validateUser();
-	// If the user exists, redirect authenticated users to the profile page.
-	if (!user) throw redirect(302, '/login');
+
+	// If the user is not logged in, return them to login page
+	if (!user) throw redirect(302, createCallbackUrl(callbacks.login, url));
+
 	// If the user is missing userdata keep them on the page
-	if (user.userInfoSet == false) {
+	if (!user.userInfoSet) {
 		const form = await superValidate(schema);
-		return { form };
+		const message = url.searchParams.get('message');
+		return { form, message };
 	}
 	// Is their email is not verified, redirect to the email verification otherwise redirect to the home page
-	if (!user.emailVerified) {
-		throw redirect(302, '/email/verification');
-	} else {
-		throw redirect(302, '/');
-	}
+	if (!user.emailVerified) throw redirect(302, createCallbackUrl(callbacks.email, url));
+
+	throw redirect(302, getCallbackUrl(url));
 };
 
 export const actions: Actions = {

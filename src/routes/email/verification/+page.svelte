@@ -1,10 +1,21 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Seo from '$lib/components/Seo.svelte';
+	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
 	export let form: ActionData;
+
+	const successToast: ToastSettings = {
+		message: '',
+		background: 'variant-filled-success'
+	};
+
+	if (data.message) {
+		successToast.message = data.message;
+		toastStore.trigger(successToast);
+	}
 </script>
 
 <Seo

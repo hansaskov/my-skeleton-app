@@ -1,11 +1,9 @@
 import type { PageServerLoad } from './$types';
-import { redirectFromPrivatePage, redirectToLogin } from '$lib/server/redirects';
-import { redirect } from '@sveltejs/kit';
+import { redirectFromPrivatePage } from '$lib/server/redirects';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
-	const { user } = await locals.auth.validateUser();
-	if (!user) throw redirect(302, redirectToLogin(url));
-	redirectFromPrivatePage(user);
+	let { user } = await locals.auth.validateUser();
+	user = redirectFromPrivatePage(user, url)
 
 	return {
 		user

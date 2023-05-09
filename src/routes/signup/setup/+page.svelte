@@ -10,6 +10,11 @@
 		background: 'variant-filled-error'
 	};
 
+	const successToast: ToastSettings = {
+		message: '',
+		background: 'variant-filled-success'
+	};
+
 	export let data: PageData;
 
 	const form = superForm(data.form, {
@@ -24,6 +29,11 @@
 			}
 		}
 	});
+
+	if (data.message) {
+		successToast.message = data.message;
+		toastStore.trigger(successToast);
+	}
 </script>
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">

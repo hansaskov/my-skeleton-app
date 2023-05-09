@@ -2,17 +2,16 @@ import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth, emailVerificationToken } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import { Prisma } from '@prisma/client';
-import { redirect } from '@sveltejs/kit';
 import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 import { sendEmailVerificationEmail } from '$lib/server/email';
 import { schema } from '$lib/schemas/authentication';
+import { redirectFromSignin } from '$lib/server/redirects';
 
 // If the user exists, redirect authenticated users to the profile page.
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, url }) => {
 	const { user } = await locals.auth.validateUser();
-	if (user && user.userInfoSet == false) throw redirect(302, '/signup/setup');
-	if (user) throw redirect(302, '/');
+	redirectFromSignin(user, url)
 
 	const form = await superValidate(schema.signup);
 	return { form };
