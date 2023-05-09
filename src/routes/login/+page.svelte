@@ -28,7 +28,6 @@
 	form.delayed.subscribe((v) => {
 		$isLoadingForm = v;
 	});
-	
 </script>
 
 <Seo title="Askov | Login" type="WebPage" description="Login to hjemmet.net" />
@@ -55,14 +54,24 @@
 
 			<div class="flex items-center justify-between">
 				<CheckboxField name="remember" {form} field="remember" titleName="Remember me" />
-				<a class="font-semibold" href="/password/reset">Forgot password?</a>
+				<a
+					class="unstyled text-secondary-600 dark:text-primary-400 bg-tertiary-hover-token underline font-semibold rounded-lg px-2"
+					href="/password/reset">Forgot password?</a
+				>
 			</div>
 
-			<button class="btn variant-filled-primary w-full">Submit</button>
+			<button class="btn bg-secondary-500 text-white w-full dark:bg-primary-600 dark:text-black"
+				>Submit</button
+			>
 
 			<p class="flex justify-between">
 				Don`t have an account yet?
-				<a class="font-semibold rounded-lg px-2" href="/signup{$page.url.search}"> Sign up</a>
+				<a
+					class="unstyled text-secondary-600 dark:text-primary-400 bg-tertiary-hover-token underline font-semibold rounded-lg px-2"
+					href="/signup{$page.url.search}"
+				>
+					Sign up</a
+				>
 			</p>
 		</div>
 
