@@ -4,6 +4,7 @@ import { db } from './db';
 import { POSTMARK_CLIENT_SECRET } from '$env/static/private';
 
 import postmark from 'postmark';
+import { redirectTo } from './redirects';
 
 const postmarkClient = new postmark.ServerClient(POSTMARK_CLIENT_SECRET);
 
@@ -28,9 +29,11 @@ const sendEmail = async (emailAddress: string, subject: string, content: string)
 
 export const sendEmailVerificationEmail = async (
 	emailAddress: string,
-	verificationToken: string
+	verificationToken: string,
+	redirectPath: string | null
 ) => {
-	const verificationLink = `https://hjemmet.net/email/verification/${verificationToken}`;
+	let verificationLink = `https://hjemmet.net/email/verification/${verificationToken}`;
+	if (redirectPath) verificationLink = verificationLink + `?${redirectTo}=${redirectPath}`
 	const emailContent = `Please verify your email by clicking the link \n${verificationLink}`;
 	await sendEmail(emailAddress, 'Email verification', emailContent);
 };

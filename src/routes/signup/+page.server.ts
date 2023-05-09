@@ -6,19 +6,19 @@ import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 import { sendEmailVerificationEmail } from '$lib/server/email';
 import { schema } from '$lib/schemas/authentication';
-import { redirectFromSignin } from '$lib/server/redirects';
+import { redirectFromSignin, redirectTo } from '$lib/server/redirects';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const { user } = await locals.auth.validateUser();
-	redirectFromSignin(user, url)
+	redirectFromSignin(user, url);
 
 	const form = await superValidate(schema.signup);
 	return { form };
 };
 
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	default: async ({ request, locals, url }) => {
 		const form = await superValidate(request, schema.signup);
 		if (!form.valid) return fail(400, { form });
 
@@ -37,7 +37,8 @@ export const actions: Actions = {
 			});
 			const session = await auth.createSession(user.userId);
 			const token = await emailVerificationToken.issue(user.userId);
-			await sendEmailVerificationEmail(user.email, token.toString());
+			const path = url.searchParams.get(redirectTo);
+			await sendEmailVerificationEmail(user.email, token.toString(), path);
 
 			locals.auth.setSession(session);
 		} catch (e) {

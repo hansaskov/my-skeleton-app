@@ -2,8 +2,9 @@ import { auth, emailVerificationToken } from '$lib/server/lucia';
 import { LuciaTokenError } from '@lucia-auth/tokens';
 import type { RequestHandler } from './$types';
 import { redirect } from '@sveltejs/kit';
+import { getCallbackUrl } from '$lib/server/redirects';
 
-export const GET: RequestHandler = async ({ params, locals }) => {
+export const GET: RequestHandler = async ({ params, locals, url }) => {
 	const tokenParams = params.token;
 	try {
 		const token = await emailVerificationToken.validate(tokenParams);
@@ -27,5 +28,6 @@ export const GET: RequestHandler = async ({ params, locals }) => {
 			});
 		}
 	}
-	throw redirect(302, '/');
+
+	throw redirect(302, getCallbackUrl(url));
 };

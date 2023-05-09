@@ -3,7 +3,7 @@ import { emailVerificationToken } from '$lib/server/lucia';
 import { sendEmailVerificationEmail } from '$lib/server/email';
 
 import type { Actions, PageServerLoad } from './$types';
-import { callbacks, createCallbackUrl, getCallbackUrl } from '$lib/server/redirects';
+import { callbacks, createCallbackUrl, getCallbackUrl, redirectTo } from '$lib/server/redirects';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const { user } = await locals.auth.validateUser();
@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ locals }) => {
+	default: async ({ locals, url }) => {
 		const { user } = await locals.auth.validateUser();
 		if (!user || user.emailVerified) {
 			return fail(401, {
@@ -29,7 +29,8 @@ export const actions: Actions = {
 		}
 		try {
 			const token = await emailVerificationToken.issue(user.userId);
-			await sendEmailVerificationEmail(user.email, token.toString());
+			const path = url.searchParams.get(redirectTo)
+			await sendEmailVerificationEmail(user.email, token.toString(), path);
 		} catch (e) {
 			console.error(e);
 			return fail(500, {
