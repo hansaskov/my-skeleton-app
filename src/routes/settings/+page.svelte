@@ -6,7 +6,7 @@
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<div class="card p-8 w-full text-token space-y-4">
-		<h1>Settings</h1>
+		<h1 class="h1">Settings</h1>
 		<p>User id: {data.user.userId}</p>
 		<p>Email: {data.user.email}</p>
 	</div>

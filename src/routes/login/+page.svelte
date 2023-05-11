@@ -35,7 +35,7 @@
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>
 		<div class="card p-8 w-full space-y-4">
-			<h3 class=" font-semibold">Sign in to your account</h3>
+			<h3 class="h3 font-semibold">Sign in to your account</h3>
 			<TextField
 				name="email"
 				{form}
@@ -54,24 +54,14 @@
 
 			<div class="flex items-center justify-between">
 				<CheckboxField name="remember" {form} field="remember" titleName="Remember me" />
-				<a
-					class="unstyled text-secondary-600 dark:text-primary-400 bg-tertiary-hover-token underline font-semibold rounded-lg px-2"
-					href="/password/reset">Forgot password?</a
-				>
+				<a class="anchor text-blue-600" href="/password/reset">Forgot password?</a>
 			</div>
 
-			<button class="btn bg-secondary-500 text-white w-full dark:bg-primary-600 dark:text-black"
-				>Submit</button
-			>
+			<button class="btn variant-filled-primary w-full">Submit</button>
 
 			<p class="flex justify-between">
 				Don`t have an account yet?
-				<a
-					class="unstyled text-secondary-600 dark:text-primary-400 bg-tertiary-hover-token underline font-semibold rounded-lg px-2"
-					href="/signup{$page.url.search}"
-				>
-					Sign up</a
-				>
+				<a class=" anchor text-blue-600" href="/signup{$page.url.search}"> Sign up</a>
 			</p>
 		</div>
 

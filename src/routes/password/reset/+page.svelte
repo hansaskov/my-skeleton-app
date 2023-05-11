@@ -40,7 +40,7 @@
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>
 		<div class="card p-8 w-full text-token space-y-4">
-			<h3 class=" font-semibold">Reset password</h3>
+			<h3 class="h3 font-semibold">Reset password</h3>
 			<p>Choose an E-mail to be sent a password reset link</p>
 			<TextField
 				name="email"

@@ -13,9 +13,9 @@
 		<div transition:fade>
 			<ProgressRadial
 				stroke={125}
-				meter="stroke-primary-400"
-				track="stroke-primary-500/30"
-				width="w-8"
+				meter="stroke-secondary-500"
+				track="stroke-primary-800/20"
+				width="w-10"
 			/>
 		</div>
 	{/await}

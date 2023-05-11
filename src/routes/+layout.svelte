@@ -3,7 +3,7 @@
 	// Your selected Skeleton theme:
 	import '../theme.postcss';
 	// If you have source.organizeImports set to true in VSCode, then it will auto change this ordering
-	import '@skeletonlabs/skeleton/styles/all.css';
+	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 	// Skeleton UI framework
@@ -97,7 +97,7 @@
 					{#if user?.email != null}
 						<Avatar initials={user.email} />
 					{:else}
-						<a href="/login" class="btn variant-filled-secondary">Login</a>
+						<a href="/login" class="btn variant-filled-primary">Login</a>
 					{/if}
 				</div>
 			</svelte:fragment>

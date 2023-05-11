@@ -9,9 +9,9 @@
 />
 
 <div class="flex flex-col gap-8 items-center justify-center">
-	<h1>Welcome!</h1>
-	<p>
+	<h1 class="h1">Welcome!</h1>
+	<blockquote class="blockquote">
 		Check out the Login form, to see the authentication workflow. It is possible to login using
 		email or github. It is fully intigrated with password reset and email verification
-	</p>
+	</blockquote>
 </div>

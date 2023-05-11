@@ -2,7 +2,7 @@
 	import { Avatar, popup, type PopupSettings } from '@skeletonlabs/skeleton';
 
 	let popupSettings: PopupSettings = {
-		event: 'focus-click',
+		event: 'click',
 		target: 'avatarPopup',
 		placement: 'bottom-end',
 		// Close the popup when the item is clicked
@@ -16,6 +16,7 @@
 <button use:popup={popupSettings}>
 	<Avatar
 		{initials}
+		fill="fill-tertiary-50"
 		width="w-11"
 		border="border-2 	border-surface-300-600-token hover:!border-primary-500"
 		cursor="cursor-pointer"

@@ -21,9 +21,9 @@
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<div class="card p-8 w-full text-token space-y-4">
-		<h1>Email verification</h1>
+		<h1 class="h1">Email verification</h1>
 		<p>Please check {data.user.email} for a verification email</p>
-		<h2>Resend verification email</h2>
+		<h2 class="h2">Resend verification email</h2>
 		<form
 			method="POST"
 			use:enhance={() => {

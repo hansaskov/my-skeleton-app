@@ -8,10 +8,10 @@
 <Seo title="Askov | Public" type="WebPage" description="Showcase how a public site is accessable" />
 
 <div class="flex flex-col gap-8 items-center justify-center">
-	<h1>Public page</h1>
-	<p>Everyone can view the contents of this page</p>
+	<h1 class="h1">Public page</h1>
+	<blockquote class="blockquote">Everyone can view the contents of this page</blockquote>
 	{#if data.user}
-		<h2>Hidden data</h2>
-		<p>Hidden data can only be seen when logged in</p>
+		<h1 class="h1">Hidden data</h1>
+		<blockquote class="blockquote">Hidden data can only be seen when logged in</blockquote>
 	{/if}
 </div>
