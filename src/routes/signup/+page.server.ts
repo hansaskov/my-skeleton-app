@@ -7,7 +7,7 @@ import type { PageServerLoad } from './$types';
 import { sendEmailVerificationEmail } from '$lib/server/email';
 import { schema } from '$lib/schemas/authentication';
 import { redirectFromSignin, redirectTo } from '$lib/server/redirects';
-import { ratelimit } from '$lib/server/ratelimiter';
+import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals, url }) => {
@@ -19,17 +19,9 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, locals, url, getClientAddress }) => {
+	default: async ({ request, locals, url }) => {
 		const form = await superValidate(request, schema.signup);
 		if (!form.valid) return fail(400, { form });
-
-		const ip = getClientAddress();
-		const rateLimitAttempt = await ratelimit.email.limit(ip);
-		if (!rateLimitAttempt.success) {
-			const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);
-			form.errors._errors = [`Too many requests. Please try again in ${timeRemaining} seconds.`];
-			return fail(429, { form });
-		}
 
 		try {
 			const user = await auth.createUser({
@@ -60,6 +52,11 @@ export const actions: Actions = {
 			}
 			if (e instanceof LuciaError && e.message === 'AUTH_DUPLICATE_KEY_ID') {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
+			}
+			if (e instanceof PostmarkError && e.code == 429) {
+				form.errors._errors ||= [];
+				form.errors._errors.push(e.message);
+				return fail(400, { form });
 			}
 
 			console.error(e);
