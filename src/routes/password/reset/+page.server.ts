@@ -6,6 +6,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 
 import { schema } from '$lib/schemas/authentication';
+import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals }) => {
@@ -32,10 +33,18 @@ export const actions: Actions = {
 			}
 			const user = auth.transformDatabaseUser(dbUser);
 			const token = await passwordResetToken.issue(user.userId);
-			await sendPasswordResetEmail(user.email, token.toString());
+			await sendPasswordResetEmail(user, token.toString());
 		} catch (e) {
+			if (e instanceof PostmarkError && e.code == 429) {
+				form.errors._errors ||= [];
+				form.errors._errors.push(e.message);
+				return fail(400, { form });
+			}
+
 			console.error(e);
-			return fail(400, { form, message: 'Unknown error' });
+			form.errors._errors ||= [];
+			form.errors._errors.push('Unknown error');
+			return fail(400, { form });
 		}
 
 		return { form };

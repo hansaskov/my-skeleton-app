@@ -24,15 +24,11 @@ export const actions: Actions = {
 		if (!form.valid) return fail(400, { form });
 
 		const ip = getClientAddress();
-		const rateLimitAttempt = await ratelimit.limit(ip);
+		const rateLimitAttempt = await ratelimit.auth.limit(ip);
 		if (!rateLimitAttempt.success) {
 			const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);
-			form.errors._errors ||= [];
-
-			form.errors._errors.push(`Too many requests. Please try again in ${timeRemaining} seconds.`);
-			return fail(429, {
-				form
-			});
+			form.errors._errors = [`Too many requests. Please try again in ${timeRemaining} seconds.`];
+			return fail(429, { form });
 		}
 
 		try {
@@ -51,7 +47,9 @@ export const actions: Actions = {
 			}
 
 			console.error(e);
-			return fail(400, { form, message: 'Unknown error' });
+			form.errors._errors ||= [];
+			form.errors._errors.push('Unknown error has occured');
+			return fail(400, { form });
 		}
 
 		return { form };

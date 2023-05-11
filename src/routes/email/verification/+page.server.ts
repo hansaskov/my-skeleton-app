@@ -4,6 +4,7 @@ import { sendEmailVerificationEmail } from '$lib/server/email';
 
 import type { Actions, PageServerLoad } from './$types';
 import { callbacks, createCallbackUrl, getCallbackUrl, redirectTo } from '$lib/server/redirects';
+import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const { user } = await locals.auth.validateUser();
@@ -27,11 +28,16 @@ export const actions: Actions = {
 				message: 'Unauthorized'
 			});
 		}
+
 		try {
 			const token = await emailVerificationToken.issue(user.userId);
 			const path = url.searchParams.get(redirectTo);
-			await sendEmailVerificationEmail(user.email, token.toString(), path);
+			await sendEmailVerificationEmail(user, token.toString(), path);
 		} catch (e) {
+			if (e instanceof PostmarkError && e.code == 429) {
+				console.error(e);
+				return fail(429, { message: e.message });
+			}
 			console.error(e);
 			return fail(500, {
 				message: 'An unknown error occurred'

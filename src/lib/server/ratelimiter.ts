@@ -7,7 +7,17 @@ export const kv = new Redis({
 	token: KV_REST_API_TOKEN
 });
 
-export const ratelimit = new Ratelimit({
-	redis: kv,
-	limiter: Ratelimit.slidingWindow(5, '10 s')
-});
+export const ratelimit = {
+	auth: new Ratelimit({
+		redis: kv,
+		analytics: true,
+		prefix: 'ratelimit:auth',
+		limiter: Ratelimit.slidingWindow(5, '10s')
+	}),
+	email: new Ratelimit({
+		redis: kv,
+		analytics: true,
+		prefix: 'ratelimit:email',
+		limiter: Ratelimit.slidingWindow(1, '60s')
+	})
+};

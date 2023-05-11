@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Seo from '$lib/components/Seo.svelte';
-	import { toastStore } from '@skeletonlabs/skeleton';
 	import type { ActionData, PageData } from './$types';
-	import { successToast, toastTrigger } from '$lib/components/Toasts';
+	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -29,8 +28,9 @@
 			use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === 'success') {
-						successToast.message = 'E-mail sent';
-						toastStore.trigger(successToast);
+						toastTrigger(successToast, 'E-mail sent');
+					} else if (result.type === 'failure') {
+						toastTrigger(errorToast, result.data?.message);
 					}
 				};
 			}}
