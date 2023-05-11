@@ -50,6 +50,8 @@
 		"@lucia-auth/tokens": "^1.0.1",
 		"@prisma/client": "^4.14.0",
 		"@sveltejs/adapter-vercel": "^2.4.3",
+		"@upstash/ratelimit": "^0.4.3",
+		"@upstash/redis": "^1.20.6",
 		"iconify-icon": "^1.0.7",
 		"lucia-auth": "^1.5.0",
 		"postmark": "^3.0.18",
