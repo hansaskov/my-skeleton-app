@@ -54,14 +54,14 @@
 
 			<div class="flex items-center justify-between">
 				<CheckboxField name="remember" {form} field="remember" titleName="Remember me" />
-				<a class="anchor text-blue-600" href="/password/reset">Forgot password?</a>
+				<a class="anchor text-blue-800 text-opacity-80" href="/password/reset">Forgot password?</a>
 			</div>
 
 			<button class="btn variant-filled-primary w-full">Submit</button>
 
 			<p class="flex justify-between">
 				Don`t have an account yet?
-				<a class=" anchor text-blue-600" href="/signup{$page.url.search}"> Sign up</a>
+				<a class=" anchor text-blue-800 text-opacity-80" href="/signup{$page.url.search}"> Sign up</a>
 			</p>
 		</div>
 

@@ -55,7 +55,7 @@
 
 			<div class="flex items-center justify-between">
 				<CheckboxField name="remember" {form} field="remember" titleName="Remember me" />
-				<a class="anchor text-blue-600" color="variant-filled-secondary" href="/password/reset"
+				<a class="anchor text-blue-700" color="variant-filled-secondary" href="/password/reset"
 					>Forgot password?</a
 				>
 			</div>
@@ -64,11 +64,11 @@
 
 			<p class="flex justify-between">
 				Don`t have an account yet?
-				<a class="anchor text-blue-600" href="/login"> Sign in</a>
+				<a class="anchor text-blue-700" href="/login"> Sign in</a>
 			</p>
 		</div>
 
-		<hr class="!border-t-2 my-4 bg-red-600" />
+		<hr class="!border-t-2 my-4" />
 	</form>
 
 	<a href="/api/oauth?provider=github" class="btn variant-filled">
