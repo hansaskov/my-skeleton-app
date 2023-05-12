@@ -1,38 +1,29 @@
-# create-svelte
+# The Hjemmet Stack
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Build a typesafe fullstack application from database to the frontend to ensure less bugs and faster iterations.
 
-## Creating a project
+![The stack](static/Hjemmet%20stack.png)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Introduction
+The hjemmet stack is build upon three fundemental parts, User Experience, Typesafety and Customizability. 
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## User Experience
+As all good developers know, the most important part of web development is to deliver products to our users. User expreiences not only comes from the functionality of our web apps, but especially from the small details most don't notice. An example of this can be seen with optimistic load transitions, where the animation to a new page begins before that page is loaded, making the transition seamless. The UI is written using Skeleton UI and Tailwind for fast iterations. 
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## Typesafety
+Moving fast requires confidence and courage, which is only possible if we can trust the code we write. The Hjemmet stack enables end-to-end typesafety from the database to the client. If a variable is changed in the database the typescript compiler errors everywhere in the code where the change is not implemented. This is integrated using Prisma for typesafte between the database and the server. Where zod and superform is used for typesafety between the server and client. 
+
+## Customizability
+The hjemmet stack uses Lucia-auth for authentication as it allows for fine control over the authentication flow which is something that is lacking from other libraries like next-auth or backend as a service providers.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've created a project and installed dependencies with `pnpm install` start a development server:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm run dev
 ```
 
-## Building
+## Hosting
+Hosting is done automatically each time main branch is updated. This will trigger a rebuild and deploy the new feature within 30 seconds.  
 
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
