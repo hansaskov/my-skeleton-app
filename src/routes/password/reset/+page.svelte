@@ -12,16 +12,16 @@
 		taintedMessage: null,
 		delayMs: 100,
 		onUpdated: ({ form }) => {
-			if (form.valid) {
-				const message = `Password reset sent to ${form.data.email}`;
-				toastTrigger(successToast, message);
-			} else {
-				const allErrors = Object.values(form.errors).flat();
-				const uniqueErrors = [...new Set(allErrors)];
-
+			
+			const allErrors = Object.values(form.errors).flat();
+			const uniqueErrors = [...new Set(allErrors)];
+			if (uniqueErrors.length > 0) {
 				for (const error of uniqueErrors) {
 					toastTrigger(errorToast, error);
 				}
+			} else {
+				const message = `Password reset sent to ${form.data.email}`;
+				toastTrigger(successToast, message);
 			}
 		}
 	});

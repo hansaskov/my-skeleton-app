@@ -38,7 +38,7 @@ export const actions: Actions = {
 			if (e instanceof PostmarkError && e.code == 429) {
 				form.errors._errors ||= [];
 				form.errors._errors.push(e.message);
-				return fail(400, { form });
+				return fail(429, { form });
 			}
 
 			console.error(e);
