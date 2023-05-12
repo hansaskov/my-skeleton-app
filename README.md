@@ -4,6 +4,11 @@ Construct a type-safe full-stack application from the database to the frontend t
 
 ![The stack](static/Hjemmet%20stack.png)
 
+<p align="center">
+Prisma + Lucia-auth + Sveltekit  + Skeleton UI
+</p>
+
+
 ## Introduction
 
 The Hjemmet stack is built upon three fundamental components: User Experience, Type Safety, and Customizability.
