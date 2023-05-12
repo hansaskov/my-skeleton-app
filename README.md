@@ -24,9 +24,9 @@ The Hjemmet stack employs Lucia-auth for authentication, as it allows for fine c
 
 Sveltekit on the edge allows for fast user interactions. The pages recieves a 100% lighthouse as it is very fast and responsive. 
 
-<div style="display: flex; justify-content: center;">
-  <img src="static/Lighthouse_score_login.png" alt="Lighthouse performance" style="width: 80%; padding-right: 10px;">
-</div>
+<p align="center">
+  <img src="static/Lighthouse_score_login.png" alt="Lighthouse performance" style="width: 80%">
+</p>
 
 ## Developing
 
