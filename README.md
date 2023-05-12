@@ -5,8 +5,12 @@ Construct a type-safe full-stack application from the database to the frontend t
 ![The stack](static/Hjemmet%20stack.png)
 
 <p align="center">
-Prisma + Lucia-auth + Sveltekit  + Skeleton UI
+  <a href="https://www.prisma.io/">Prisma</a> + 
+  <a href="https://lucia-auth.com/">Lucia-auth</a> + 
+  <a href="https://svelte.dev/">Sveltekit</a> + 
+  <a href="https://www.skeleton.dev/">Skeleton UI</a>
 </p>
+
 
 
 ## Introduction
