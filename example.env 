@@ -1,5 +1,0 @@
-# Change the filename to be ".env" to enable the secrets
-
-DATABASE_URL="file:./dev.db"
-GITHUB_CLIENT_ID=""
-GITHUB_CLIENT_SECRET=""
