@@ -1,15 +1,19 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider          = "postgresql"
+  url               = env("POSTGRES_PRISMA_URL")
+  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
@@ -25,13 +29,16 @@ model UserInfo {
 }
 
 model AuthUser {
-  id             String        @id @unique
-  email          String        @unique
+  id             String             @id @unique
+  email          String             @unique
   email_verified Boolean
   user_info_set  Boolean
   auth_session   AuthSession[]
   auth_key       AuthKey[]
   settings       UserInfo?
+  wishlists      WishlistsOnUsers[]
+  families       FamiliesOnUsers[]
+  EventsOnUsers  EventsOnUsers[]
 
   @@map("auth_user")
 }
@@ -67,4 +74,126 @@ model Email {
   content       String
 
   @@map("email")
+}
+
+// Wishlist relations
+
+model Wish {
+  id          String   @id @unique @default(cuid())
+  name        String
+  price       Int
+  currency    Currency
+  description String
+  image_url   String
+  updated_at  DateTime @default(now()) @updatedAt
+  wishlist    Wishlist @relation(fields: [wishlist_id], references: [id])
+  wishlist_id String
+}
+
+model Wishlist {
+  id        String             @id @unique @default(cuid())
+  name      String
+  is_public Boolean
+  users     WishlistsOnUsers[]
+  wishes    Wish[]
+}
+
+model WishlistsOnUsers {
+  wishlist      Wishlist     @relation(fields: [wishlist_id], references: [id])
+  wishlist_id   String
+  user          AuthUser     @relation(fields: [user_id], references: [id])
+  user_id       String
+  wishlist_role WishlistRole
+  updated_at    DateTime     @default(now()) @updatedAt
+
+  @@id([wishlist_id, user_id])
+}
+
+enum Currency {
+  DKK
+  EUR
+  USD
+}
+
+enum WishlistRole {
+  EDITABLE
+  INTERACTABLE
+  VIEWABLE
+}
+
+// Family relations
+
+model CaroselItem {
+  id          String @id @unique @default(cuid())
+  title       String
+  image_url   String
+  description String
+  family      Family @relation(fields: [family_id], references: [id])
+  family_id   String
+}
+
+model Family {
+  id            String            @id @unique @default(cuid())
+  name          String
+  is_public     Boolean
+  users         FamiliesOnUsers[]
+  carosel_items CaroselItem[]
+}
+
+model FamiliesOnUsers {
+  family      Family     @relation(fields: [family_id], references: [id])
+  family_id   String
+  user        AuthUser   @relation(fields: [user_id], references: [id])
+  user_id     String
+  family_role FamilyRole
+
+  @@id([family_id, user_id])
+}
+
+enum FamilyRole {
+  MODERATOR
+  MEMBER
+}
+
+// Events
+
+model Address {
+  id          String  @id @unique @default(cuid())
+  address     String
+  postal_code Int
+  city        String
+  event       Event[]
+}
+
+model Event {
+  id            String          @id @unique @default(cuid())
+  title         String
+  address       Address         @relation(fields: [address_id], references: [id])
+  address_id    String
+  description   String
+  start_date    DateTime
+  end_date      DateTime
+  updated_at    DateTime        @default(now()) @updatedAt
+  EventsOnUsers EventsOnUsers[]
+}
+
+model EventsOnUsers {
+  event    Event    @relation(fields: [event_id], references: [id])
+  event_id String
+  user     AuthUser @relation(fields: [user_id], references: [id])
+  user_id  String
+
+  @@id([event_id, user_id])
+}
+
+enum EventRole {
+  ORANIZER
+  GUEST
+}
+
+enum AttendanceStatus {
+  INVITED
+  GOING
+  MAYBE
+  NOT_GOING
 }
