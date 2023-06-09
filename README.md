@@ -11,8 +11,6 @@ Construct a type-safe full-stack application from the database to the frontend t
   <a href="https://www.skeleton.dev/">Skeleton UI</a>
 </p>
 
-
-
 ## Introduction
 
 The Hjemmet stack is built upon three fundamental components: User Experience, Type Safety, and Customizability.
@@ -31,7 +29,7 @@ The Hjemmet stack employs Lucia-auth for authentication, as it allows for fine c
 
 ## Performance
 
-Sveltekit on the edge allows for fast user interactions. The pages recieves a 100% lighthouse as it is very fast and responsive. 
+Sveltekit on the edge allows for fast user interactions. The pages recieves a 100% lighthouse as it is very fast and responsive.
 
 <p align="center">
   <img src="static/Lighthouse_score_login.png" alt="Lighthouse performance" style="width: 80%">

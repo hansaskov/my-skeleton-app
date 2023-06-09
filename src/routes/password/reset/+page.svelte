@@ -12,7 +12,6 @@
 		taintedMessage: null,
 		delayMs: 100,
 		onUpdated: ({ form }) => {
-			
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 			if (uniqueErrors.length > 0) {

@@ -29,8 +29,8 @@
 				return async ({ result }) => {
 					if (result.type === 'success') {
 						toastTrigger(successToast, 'E-mail sent');
-					} else if (result.type === 'failure') {
-						toastTrigger(errorToast, result.data?.message);
+					} else if (result.type === 'failure' && result.data) {
+						toastTrigger(errorToast, 'Too many requests sent, please wait');
 					}
 				};
 			}}
