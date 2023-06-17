@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-	import TextField from '$lib/components/TextField.svelte';
+	import TextField from '$lib/components/form/TextField.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
 	import { isLoadingForm } from '$lib/stores.ts/loading';

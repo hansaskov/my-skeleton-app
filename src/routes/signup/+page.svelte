@@ -1,17 +1,19 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-	import TextField from '$lib/components/TextField.svelte';
-	import CheckboxField from '$lib/components/CheckboxField.svelte';
+	import TextField from '$lib/components/form/TextField.svelte';
+	import CheckboxField from '$lib/components/form/CheckboxField.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import { errorToast, toastTrigger } from '$lib/components/Toasts';
 	import Seo from '$lib/components/Seo.svelte';
+	import { schema } from '$lib/schemas/authentication';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
 		delayMs: 100,
+		validators: schema.login,
 		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
