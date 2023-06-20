@@ -15,7 +15,7 @@
 </script>
 
 <label>
-	<span>{titleName}</span>
+	<span class="capitalize">{titleName}</span>
 	<textarea
 		class="textarea variant-form-material"
 		data-invalid={$errors}

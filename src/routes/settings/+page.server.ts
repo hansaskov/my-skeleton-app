@@ -2,10 +2,8 @@ import type { PageServerLoad } from './$types';
 import { redirectFromPrivatePage } from '$lib/server/redirects';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
-	let { user } = await locals.auth.validateUser();
-	user = redirectFromPrivatePage(user, url);
+	const { user: authUser } = await locals.auth.validateUser();
+	const { userInfo, user } = await redirectFromPrivatePage(authUser, url);
 
-	return {
-		user
-	};
+	return { userInfo, user };
 };

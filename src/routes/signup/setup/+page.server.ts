@@ -9,7 +9,8 @@ import { callbacks, createCallbackUrl, getCallbackUrl } from '$lib/server/redire
 const schema = z.object({
 	full_name: z.string(),
 	birthdate: z.date(),
-	description: z.string()
+	description: z.string(),
+	image_url: z.string().url().nullish()
 });
 
 export const load: PageServerLoad = async ({ locals, url }) => {
@@ -44,6 +45,7 @@ export const actions: Actions = {
 					full_name: form.data.full_name,
 					birthdate: form.data.birthdate,
 					description: form.data.description,
+					image_url: form.data.image_url,
 					userId: session.userId
 				}
 			});

@@ -10,12 +10,14 @@
 	};
 
 	export let initials: string;
+	export let src: string | undefined | null;
 </script>
 
 <!-- Avatar button-->
 <button use:popup={popupSettings}>
 	<Avatar
 		{initials}
+		src={src || 'Default_pfp.svg'}
 		fill="fill-tertiary-50"
 		width="w-11"
 		border="border-2 	border-surface-300-600-token hover:!border-primary-500"

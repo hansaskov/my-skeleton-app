@@ -1,5 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { User } from 'lucia-auth';
+import { db } from './db';
 
 export const redirectTo = 'redirectTo';
 
@@ -48,13 +49,21 @@ export function getCallbackUrl(callbackUrl: URL) {
 	else return '/';
 }
 
-export function redirectFromPrivatePage(user: User | null, url: URL) {
+export async function redirectFromPrivatePage(user: User | null, url: URL) {
 	// Redirect to email verification or setup
 	if (!user) throw redirect(302, createCallbackUrl(callbacks.login, url));
 	if (!user.userInfoSet) throw redirect(302, createCallbackUrl(callbacks.setup, url));
 	if (!user.emailVerified) throw redirect(302, createCallbackUrl(callbacks.email, url));
 
-	return user;
+	const userInfo = await db.userInfo.findUnique({
+		where: {
+			userId: user.userId
+		}
+	});
+
+	if (!userInfo) throw redirect(302, createCallbackUrl(callbacks.setup, url));
+
+	return { userInfo, user };
 }
 
 export function redirectFromSignin(user: User | null, url: URL) {

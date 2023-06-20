@@ -5,6 +5,8 @@
 	import TextAreaField from '$lib/components/form/TextAreaField.svelte';
 	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
+	import { FileDropzone } from '@skeletonlabs/skeleton';
+	import { handleFileUpload } from '../../api/upload/handleFileUpload';
 
 	export let data: PageData;
 
@@ -28,12 +30,14 @@
 	if (data.message) {
 		toastTrigger(successToast, data.message);
 	}
+
+	const form_data = form.form;
 </script>
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>
 		<div class="card p-8 w-full text-token space-y-4">
-			<h3 class=" font-semibold">Tell me about yourself</h3>
+			<h3 class="h3 font-semibold">Tell me about yourself</h3>
 
 			<TextField name="full_name" field="full_name" {form} titleName="Your Full name" type="text" />
 			<TextField name="birthdate" field="birthdate" {form} titleName="Your Birthdate" type="date" />
@@ -42,8 +46,29 @@
 				field="description"
 				{form}
 				titleName="A description about you"
-				class="textarea"
 			/>
+
+			<TextField
+				name="image_url"
+				class="input variant-ghost-surface"
+				field="image_url"
+				{form}
+				titleName="Profile picture (optional)"
+				disabled={true}
+			/>
+
+			<FileDropzone
+				name="image.upload"
+				accept="image/*"
+				on:change={async (e) => {
+					$form_data.image_url = await handleFileUpload(e);
+				}}
+			>
+				<svelte:fragment slot="lead">
+					<iconify-icon icon="lucide:file-input" width="32" height="32" />
+				</svelte:fragment>
+				<svelte:fragment slot="meta">PNG, JPG and SVG allowed.</svelte:fragment>
+			</FileDropzone>
 
 			<button class="btn variant-filled-primary w-full">Submit</button>
 		</div>

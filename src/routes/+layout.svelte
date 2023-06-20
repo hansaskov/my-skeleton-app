@@ -38,6 +38,7 @@
 	export let data: LayoutData;
 
 	$: user = data.user;
+	$: userInfo = data.userInfo;
 </script>
 
 <Toast />
@@ -95,7 +96,7 @@
 				<div class="flex justify-between items-center gap-4">
 					<LightSwitch />
 					{#if user?.email != null}
-						<Avatar initials={user.email} />
+						<Avatar initials={user.email} src={userInfo?.image_url} />
 					{:else}
 						<a href="/login" class="btn variant-filled-primary">Login</a>
 					{/if}
