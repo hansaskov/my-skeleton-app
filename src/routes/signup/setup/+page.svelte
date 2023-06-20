@@ -50,11 +50,11 @@
 
 			<TextField
 				name="image_url"
-				class="input variant-ghost-surface"
+				class="input variant-ghost-surface pointer-events-none opacity-50 bg-gray-200 "
+				readonly
 				field="image_url"
 				{form}
 				titleName="Profile picture (optional)"
-				disabled={true}
 			/>
 
 			<FileDropzone

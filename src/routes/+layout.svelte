@@ -106,11 +106,12 @@
 	</svelte:fragment>
 	<!-- Router Slot -->
 
-	<PageTransition>
-		<main class="container p-4 mx-auto transition-transform {positionClasses}">
-			<slot />
-		</main>
-	</PageTransition>
-
+	<main>
+		<PageTransition>
+			<div class="container p-4 mx-auto transition-transform {positionClasses}">
+				<slot />
+			</div>
+		</PageTransition>
+	</main>
 	<!-- ---- / ---- -->
 </AppShell>
