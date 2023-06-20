@@ -6,7 +6,7 @@
 	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import { FileDropzone } from '@skeletonlabs/skeleton';
-	import { handleFileUpload } from '../../api/upload/handleFileUpload';
+	import { handleFileUpload } from '../../api/upload/client/handleFileUpload';
 
 	export let data: PageData;
 

@@ -44,7 +44,7 @@ async function handleFileUpload(e: Event) {
 		const presignedUrlResponse = await fetchPresignedUrl(file);
 		const { presignedUrl, objectKey } = await presignedUrlResponse.json();
 		await uploadToR2(presignedUrl, file);
-		return `https://image.hjemmet.net/${objectKey}`;
+		return `${objectKey}`;
 	}
 }
 

@@ -5,12 +5,13 @@ import { superValidate } from 'sveltekit-superforms/server';
 import { db } from '$lib/server/db';
 import { auth } from '$lib/server/lucia';
 import { callbacks, createCallbackUrl, getCallbackUrl } from '$lib/server/redirects';
+import { renameObjectKey } from '../../api/upload/server/renameFile';
 
 const schema = z.object({
 	full_name: z.string(),
 	birthdate: z.date(),
 	description: z.string(),
-	image_url: z.string().url().nullish()
+	image_url: z.string().nullish()
 });
 
 export const load: PageServerLoad = async ({ locals, url }) => {
@@ -39,7 +40,24 @@ export const actions: Actions = {
 		const session = await locals.auth.validate();
 		if (!session) throw redirect(302, '/login');
 
+		const prefix = 'temp/';
+		if (form.data.image_url && !form.data.image_url.startsWith(prefix)) {
+			return fail(400, {
+				form,
+				message: `The file ${form.data.image_url} is not uploaded to the temp folder`
+			});
+		}
+
 		try {
+			// Move the file away from the temp storage for it to become persistant.
+			if (form.data.image_url) {
+				const oldKey = form.data.image_url;
+				const newKey = form.data.image_url.substring(prefix.length);
+				await renameObjectKey(oldKey, newKey);
+				form.data.image_url = `https://image.hjemmet.net/${newKey}`;
+			}
+
+			// Create the user info inside sequel db
 			await db.userInfo.create({
 				data: {
 					full_name: form.data.full_name,
