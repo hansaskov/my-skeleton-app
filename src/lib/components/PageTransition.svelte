@@ -23,7 +23,7 @@
 	{#if $isLoadingPage}
 		<div />
 	{:else}
-		<div in:fly={transitionIn} out:fly={transitionOut}>
+		<div in:fly|global={transitionIn} out:fly|global={transitionOut}>
 			<slot />
 		</div>
 	{/if}

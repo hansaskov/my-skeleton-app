@@ -10,7 +10,7 @@
 {#if $isLoadingForm || $isLoadingPage}
 	<!-- svelte-ignore empty-block -->
 	{#await wait(150) then}
-		<div transition:fade>
+		<div transition:fade|global>
 			<ProgressRadial
 				stroke={125}
 				meter="stroke-secondary-500"
