@@ -18,7 +18,7 @@
 
 <div class="flex flex-col gap-2 items-center justify-between">
 	<div class="card p-8 w-full text-token space-y-4">
-		<h1 class="h1">{data.userInfo.full_name}</h1>
+		<h1 class="h1">{data.userInfo.fullname}</h1>
 		<p>E-mail: {data.user?.email}</p>
 		<p>Birthday: {day} / {month} / {year}</p>
 		<p>Description: {data.userInfo?.description}</p>

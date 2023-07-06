@@ -20,12 +20,12 @@
 <div class="flex flex-col gap-2 items-center justify-between">
 	<div class="card p-8 w-full text-token space-y-4">
 		<h1 class="h1">Protected Page!</h1>
-		<p>Name: {data.userInfo.full_name}</p>
+		<p>Name: {data.userInfo.fullname}</p>
 		<p>E-mail: {data.user.email}</p>
 		<p>Birthday: {day} / {month} / {year}</p>
 		<p>Description: {data.userInfo.description}</p>
 		<Avatar
-			src={data.userInfo.image_url || 'Default_pfp.svg'}
+			src={data.userInfo.imageUrl || 'Default_pfp.svg'}
 			fill="fill-tertiary-80"
 			width="w-20"
 			border="border-2 	border-surface-300-600-token"

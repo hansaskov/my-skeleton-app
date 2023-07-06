@@ -1,7 +1,6 @@
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth, emailVerificationToken } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
-import { Prisma } from '@prisma/client';
 import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 import { sendEmailVerificationEmail } from '$lib/server/email/send';
@@ -43,13 +42,6 @@ export const actions: Actions = {
 
 			locals.auth.setSession(session);
 		} catch (e) {
-			if (
-				e instanceof Prisma.PrismaClientKnownRequestError &&
-				e.code === 'P2002' &&
-				e.message?.includes('email')
-			) {
-				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
-			}
 			if (e instanceof LuciaError && e.message === 'AUTH_DUPLICATE_KEY_ID') {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
 			}

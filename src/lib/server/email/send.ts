@@ -1,30 +1,16 @@
-import { generateRandomString, type User } from 'lucia-auth';
-import { db } from '../db';
-
 import { Errors } from 'postmark';
 import { redirectTo } from '../redirects';
 import { ratelimit } from '../ratelimit/ratelimiter';
 import { postmarkClient } from '../postmark';
+import type { User } from 'lucia-auth';
 
 const sendEmail = async (user: User, subject: string, content: string) => {
-	const emailPromise = postmarkClient.sendEmail({
+	await postmarkClient.sendEmail({
 		From: 'hans@askov.dk',
 		To: user.email,
 		Subject: subject,
 		TextBody: content
 	});
-
-	const dbPromise = db.email.create({
-		data: {
-			id: generateRandomString(8),
-			subject,
-			email_address: user.email,
-			content,
-			date_sent: new Date()
-		}
-	});
-
-	await Promise.all([emailPromise, dbPromise]);
 };
 
 export const sendEmailVerificationEmail = async (

@@ -3,10 +3,10 @@ import { auth, passwordResetToken } from '$lib/server/lucia';
 import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
-import { db } from '$lib/server/db';
 
 import { schema } from '$lib/schemas/authentication';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
+import { db } from '$lib/server/planetscale';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals }) => {
@@ -23,15 +23,20 @@ export const actions: Actions = {
 		if (!form.valid) return fail(400, { form });
 
 		try {
-			const dbUser = await db.authUser.findFirst({
-				where: {
-					email: form.data.email
-				}
+			const dbUser = await db.query.user.findFirst({
+				where: (user, { eq }) => eq(user.email, form.data.email)
 			});
+
 			if (!dbUser) {
 				return setError(form, 'email', `E-mail "${form.data.email}" does not exist`);
 			}
-			const user = auth.transformDatabaseUser(dbUser);
+			const user = auth.transformDatabaseUser({
+				id: dbUser.id,
+				email: dbUser.email,
+				email_verified: dbUser.isEmailVerified,
+				user_info_set: dbUser.isUserInfoSet
+			});
+
 			const token = await passwordResetToken.issue(user.userId);
 			await sendPasswordResetEmail(user, token.toString());
 		} catch (e) {

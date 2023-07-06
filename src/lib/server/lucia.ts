@@ -1,15 +1,15 @@
 import lucia from 'lucia-auth';
 import { sveltekit } from 'lucia-auth/middleware';
-import prisma from '@lucia-auth/adapter-prisma';
-import { db } from './db';
+import { planetscale } from '@lucia-auth/adapter-mysql';
 import { dev } from '$app/environment';
 import { idToken } from '@lucia-auth/tokens';
 
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
 import { github } from './auth/providers/github';
+import { ps_connection } from './planetscale';
 
 export const auth = lucia({
-	adapter: prisma(db),
+	adapter: planetscale(ps_connection as any),
 	env: dev ? 'DEV' : 'PROD',
 	middleware: sveltekit(),
 	transformDatabaseUser: (userData) => {

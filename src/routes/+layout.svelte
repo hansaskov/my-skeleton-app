@@ -96,7 +96,7 @@
 				<div class="flex justify-between items-center gap-4">
 					<LightSwitch />
 					{#if user?.email != null}
-						<Avatar initials={user.email} src={userInfo?.image_url} />
+						<Avatar initials={user.email} src={userInfo?.imageUrl} />
 					{:else}
 						<a href="/login" class="btn variant-filled-primary">Login</a>
 					{/if}

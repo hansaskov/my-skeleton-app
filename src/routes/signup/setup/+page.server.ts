@@ -2,10 +2,12 @@ import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
-import { db } from '$lib/server/db';
 import { auth } from '$lib/server/lucia';
 import { callbacks, createCallbackUrl, getCallbackUrl } from '$lib/server/redirects';
 import { renameObjectKey } from '../../api/upload/server/renameFile';
+import { db } from '$lib/server/planetscale';
+import { userInfo } from '$lib/schemas/drizzle/schema';
+import { generateRandomString } from 'lucia-auth';
 
 const schema = z.object({
 	full_name: z.string(),
@@ -57,15 +59,14 @@ export const actions: Actions = {
 				form.data.image_url = `https://image.hjemmet.net/${newKey}`;
 			}
 
-			// Create the user info inside sequel db
-			await db.userInfo.create({
-				data: {
-					full_name: form.data.full_name,
-					birthdate: form.data.birthdate,
-					description: form.data.description,
-					image_url: form.data.image_url,
-					userId: session.userId
-				}
+			// Create the user info
+			await db.insert(userInfo).values({
+				id: generateRandomString(255),
+				fullname: form.data.full_name,
+				birthdate: form.data.birthdate,
+				description: form.data.description,
+				imageUrl: form.data.image_url,
+				userId: session.userId
 			});
 
 			await auth.updateUserAttributes(session.userId, {

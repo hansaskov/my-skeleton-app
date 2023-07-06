@@ -1,4 +1,4 @@
-import { db } from '$lib/server/db';
+import { db } from '$lib/server/planetscale';
 
 export const load = async ({ locals, url }) => {
 	const { user } = await locals.auth.validateUser();
@@ -8,10 +8,8 @@ export const load = async ({ locals, url }) => {
 		return { pathname };
 	}
 
-	const userInfo = await db.userInfo.findUnique({
-		where: {
-			userId: user.userId
-		}
+	const userInfo = await db.query.userInfo.findFirst({
+		where: (userInfo, { eq }) => eq(userInfo.userId, user.userId)
 	});
 
 	return {

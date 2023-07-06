@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { User } from 'lucia-auth';
-import { db } from './db';
+import { db } from './planetscale';
 
 export const redirectTo = 'redirectTo';
 
@@ -55,10 +55,8 @@ export async function redirectFromPrivatePage(user: User | null, url: URL) {
 	if (!user.userInfoSet) throw redirect(302, createCallbackUrl(callbacks.setup, url));
 	if (!user.emailVerified) throw redirect(302, createCallbackUrl(callbacks.email, url));
 
-	const userInfo = await db.userInfo.findUnique({
-		where: {
-			userId: user.userId
-		}
+	const userInfo = await db.query.userInfo.findFirst({
+		where: (userInfo, { eq }) => eq(userInfo.userId, user.userId)
 	});
 
 	if (!userInfo) throw redirect(302, createCallbackUrl(callbacks.setup, url));
