@@ -1,5 +1,5 @@
 import { Ratelimit } from '@upstash/ratelimit';
-import { kv } from './redis';
+import { kv } from '../redis';
 
 export const ratelimit = {
 	auth: new Ratelimit({

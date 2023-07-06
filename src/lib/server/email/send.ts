@@ -1,13 +1,10 @@
 import { generateRandomString, type User } from 'lucia-auth';
-import { db } from './db';
+import { db } from '../db';
 
-import { POSTMARK_CLIENT_SECRET } from '$env/static/private';
-
-import postmark from 'postmark';
-import { redirectTo } from './redirects';
-import { ratelimit } from './ratelimiter';
-
-const postmarkClient = new postmark.ServerClient(POSTMARK_CLIENT_SECRET);
+import { Errors } from 'postmark';
+import { redirectTo } from '../redirects';
+import { ratelimit } from '../ratelimit/ratelimiter';
+import { postmarkClient } from '../postmark';
 
 const sendEmail = async (user: User, subject: string, content: string) => {
 	const emailPromise = postmarkClient.sendEmail({
@@ -39,7 +36,7 @@ export const sendEmailVerificationEmail = async (
 	if (!rateLimitAttempt.success) {
 		const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);
 		const message = `Email already sent. Please check your inbox or try again in ${timeRemaining} seconds.`;
-		throw new postmark.Errors.RateLimitExceededError(message, 429, 429);
+		throw new Errors.RateLimitExceededError(message, 429, 429);
 	}
 
 	let verificationLink = `https://hjemmet.net/email/verification/${verificationToken}`;
@@ -53,7 +50,7 @@ export const sendPasswordResetEmail = async (user: User, resetToken: string) => 
 	if (!rateLimitAttempt.success) {
 		const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);
 		const message = `Email already sent. Please check your inbox or try again in ${timeRemaining} seconds.`;
-		throw new postmark.Errors.RateLimitExceededError(message, 429, 429);
+		throw new Errors.RateLimitExceededError(message, 429, 429);
 	}
 
 	const resetLink = `https://hjemmet.net/password/reset/${resetToken}`;

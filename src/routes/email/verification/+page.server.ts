@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { emailVerificationToken } from '$lib/server/lucia';
-import { sendEmailVerificationEmail } from '$lib/server/email';
+import { sendEmailVerificationEmail } from '$lib/server/email/send';
 
 import type { Actions, PageServerLoad } from './$types';
 import { callbacks, createCallbackUrl, getCallbackUrl, redirectTo } from '$lib/server/redirects';

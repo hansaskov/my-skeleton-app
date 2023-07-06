@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 import { LuciaError } from 'lucia-auth';
 import { schema } from '$lib/schemas/authentication';
 import { redirectFromSignin } from '$lib/server/redirects';
-import { ratelimit } from '$lib/server/ratelimiter';
+import { ratelimit } from '$lib/server/ratelimit/ratelimiter';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals, url }) => {

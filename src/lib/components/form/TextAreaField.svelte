@@ -17,6 +17,7 @@
 <label>
 	<span class="capitalize">{titleName}</span>
 	<textarea
+		name={field}
 		class="textarea variant-form-material"
 		data-invalid={$errors}
 		bind:value={$value}

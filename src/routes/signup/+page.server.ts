@@ -4,7 +4,7 @@ import { fail, type Actions } from '@sveltejs/kit';
 import { Prisma } from '@prisma/client';
 import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
-import { sendEmailVerificationEmail } from '$lib/server/email';
+import { sendEmailVerificationEmail } from '$lib/server/email/send';
 import { schema } from '$lib/schemas/authentication';
 import { redirectFromSignin, redirectTo } from '$lib/server/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';

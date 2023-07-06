@@ -31,6 +31,7 @@ export const POST = async ({ request }): Promise<Response> => {
 	}
 
 	// To avoid any weird characters in the file name, we are using a slugifyString function to transform the file name into a URL-friendly string. We are also adding a timestamp to the file name to make sure we don't have any conflicts.
+	// All files are uploaded to the temp folder. If it is not moved it will be deleted after 24 hours.
 	const objectKey = `temp/${slugifyString(Date.now().toString())}-${slugifyString(fileName)}`;
 
 	// We are then using the getSignedUrl function from the @aws-sdk/s3-request-presigner package to generate a pre-signed URL. We are using the PutObjectCommand to create a new object in our bucket. We are also setting the  ACL  to  public-read  to make sure the file is publicly accessible.

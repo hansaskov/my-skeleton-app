@@ -17,6 +17,7 @@
 
 <label class="flex items-center space-x-2">
 	<input
+		name={field}
 		class="checkbox"
 		type="checkbox"
 		data-invalid={$errors}

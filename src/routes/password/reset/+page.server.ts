@@ -1,4 +1,4 @@
-import { sendPasswordResetEmail } from '$lib/server/email';
+import { sendPasswordResetEmail } from '$lib/server/email/send';
 import { auth, passwordResetToken } from '$lib/server/lucia';
 import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
