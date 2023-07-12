@@ -1,19 +1,19 @@
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { callbacks, createCallbackUrl, getCallbackUrl } from '$lib/server/redirects';
-import { renameObjectKey } from '../../api/upload/server/renameFile';
+import { moveFileFromTempFolder, renameObjectKey } from '../../api/upload/server/renameFile';
 import { db } from '$lib/server/planetscale';
 import { userInfo } from '$lib/schemas/drizzle/schema';
 import { generateRandomString } from 'lucia-auth';
 
 const schema = z.object({
-	full_name: z.string(),
+	fullname: z.string(),
 	birthdate: z.date(),
 	description: z.string(),
-	image_url: z.string().nullish()
+	imageUrl: z.string().nullish()
 });
 
 export const load: PageServerLoad = async ({ locals, url }) => {
@@ -31,6 +31,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	// Is their email is not verified, redirect to the email verification otherwise redirect to the home page
 	if (!user.emailVerified) throw redirect(302, createCallbackUrl(callbacks.email, url));
 
+	// If all is well, go to the callback url or home if it does not exist
 	throw redirect(302, getCallbackUrl(url));
 };
 
@@ -42,30 +43,19 @@ export const actions: Actions = {
 		const session = await locals.auth.validate();
 		if (!session) throw redirect(302, '/login');
 
-		const prefix = 'temp/';
-		if (form.data.image_url && !form.data.image_url.startsWith(prefix)) {
-			return fail(400, {
-				form,
-				message: `The file ${form.data.image_url} is not uploaded to the temp folder`
-			});
-		}
-
 		try {
 			// Move the file away from the temp storage for it to become persistant.
-			if (form.data.image_url) {
-				const oldKey = form.data.image_url;
-				const newKey = form.data.image_url.substring(prefix.length);
-				await renameObjectKey(oldKey, newKey);
-				form.data.image_url = `https://image.hjemmet.net/${newKey}`;
+			if (form.data.imageUrl) {
+				form.data.imageUrl = await moveFileFromTempFolder(form.data.imageUrl);
 			}
 
 			// Create the user info
 			await db.insert(userInfo).values({
 				id: generateRandomString(255),
-				fullname: form.data.full_name,
+				fullname: form.data.fullname,
 				birthdate: form.data.birthdate,
 				description: form.data.description,
-				imageUrl: form.data.image_url,
+				imageUrl: form.data.imageUrl,
 				userId: session.userId
 			});
 

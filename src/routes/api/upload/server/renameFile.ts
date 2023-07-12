@@ -21,4 +21,12 @@ async function renameObjectKey(oldKey: string, newKey: string): Promise<void> {
 	);
 }
 
-export { renameObjectKey };
+const prefix = 'temp/';
+async function moveFileFromTempFolder(url: string) {
+	const oldKey = url;
+	const newKey = url.substring(prefix.length);
+	await renameObjectKey(oldKey, newKey);
+	return `https://image.hjemmet.net/${newKey}`;
+}
+
+export { renameObjectKey, moveFileFromTempFolder };

@@ -1,5 +1,16 @@
-import { mysqlTable, bigint, varchar, boolean, datetime } from 'drizzle-orm/mysql-core';
+import { mysqlTable, bigint, varchar, boolean, datetime, mysqlEnum } from 'drizzle-orm/mysql-core';
 import { relations } from 'drizzle-orm';
+
+// Enums for mysql schema
+const enums: {
+	currency: readonly [string, ...string[]];
+	wishlistRole: readonly [string, ...string[]];
+	familyRole: readonly [string, ...string[]];
+} = {
+	currency: ['DKK', 'EUR', 'USD', 'GBP'],
+	wishlistRole: ['EDITABLE', 'INTERACTABLE', 'VIEWABLE'],
+	familyRole: ['MODERATOR', 'MEMBER']
+};
 
 // Lucia Auth schema
 export const user = mysqlTable('auth_user', {
@@ -41,3 +52,43 @@ export const usersRelation = relations(user, ({ one }) => ({
 		references: [userInfo.userId]
 	})
 }));
+
+// Wish schema
+export const wish = mysqlTable('wish', {
+	id: varchar('id', { length: 255 }).primaryKey(),
+	name: varchar('name', { length: 256 }).notNull(),
+	price: bigint('price', { mode: 'number' }).notNull(),
+	currency: mysqlEnum('currency', enums.currency).default('DKK').notNull(),
+	description: varchar('description', { length: 1024 }).notNull(),
+	imageUrl: varchar('image_url', { length: 512 }).notNull(),
+	updatedAt: datetime('updated_at').notNull(),
+
+	wishlistId: varchar('wishlist_id', { length: 255 }).notNull()
+});
+
+export const wishlist = mysqlTable('wishlist', {
+	id: varchar('id', { length: 255 }).primaryKey(),
+	name: varchar('name', { length: 255 }).notNull(),
+	is_public: boolean('is_public').notNull().default(true)
+});
+
+export const wishlistOnUsers = mysqlTable('wishlist_on_users', {
+	wishlistId: varchar('wishlist_id', { length: 255 }).notNull(),
+	userId: varchar('user_id', { length: 255 }).notNull(),
+	wishlistRole: mysqlEnum('wishlist_role', enums.wishlistRole).default('VIEWABLE').notNull(),
+	updatedAt: datetime('updated_at').notNull()
+});
+
+// Family schema
+export const family = mysqlTable('family', {
+	id: varchar('id', { length: 255 }).primaryKey(),
+	name: varchar('name', { length: 255 }).notNull(),
+	is_public: boolean('is_public').notNull().default(true)
+});
+
+export const familiesOnUsers = mysqlTable('families_on_users', {
+	familyId: varchar('family_id', { length: 255 }).notNull(),
+	userId: varchar('user_id', { length: 255 }).notNull(),
+	familyRole: mysqlEnum('family_role', enums.familyRole).default('MEMBER').notNull(),
+	updatedAt: datetime('updated_at').notNull()
+});

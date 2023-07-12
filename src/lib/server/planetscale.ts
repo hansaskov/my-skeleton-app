@@ -3,7 +3,17 @@ import { drizzle } from 'drizzle-orm/planetscale-serverless';
 
 import { PLANETSCALE_HOST, PLANETSCALE_PASSWORD, PLANETSCALE_USERNAME } from '$env/static/private';
 
-import { key, session, user, userInfo } from '$lib/schemas/drizzle/schema';
+import {
+	familiesOnUsers,
+	family,
+	key,
+	session,
+	user,
+	userInfo,
+	wish,
+	wishlist,
+	wishlistOnUsers
+} from '$lib/schemas/drizzle/schema';
 
 const config: Config = {
 	host: PLANETSCALE_HOST,
@@ -14,4 +24,6 @@ const config: Config = {
 // create the connection
 export const ps_connection = connect(config);
 
-export const db = drizzle(ps_connection, { schema: { key, session, user, userInfo } });
+export const db = drizzle(ps_connection, {
+	schema: { key, session, user, userInfo, family, familiesOnUsers, wish, wishlist, wishlistOnUsers }
+});
