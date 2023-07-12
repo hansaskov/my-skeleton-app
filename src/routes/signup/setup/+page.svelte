@@ -5,7 +5,7 @@
 	import TextAreaField from '$lib/components/form/TextAreaField.svelte';
 	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
-	import { FileDropzone } from '@skeletonlabs/skeleton';
+	import { Avatar, FileDropzone } from '@skeletonlabs/skeleton';
 	import { handleFileUpload } from '../../api/upload/client/handleFileUpload';
 
 	export let data: PageData;
@@ -36,32 +36,28 @@
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
 	<form method="POST" use:form.enhance>
-		<div class="card p-8 w-full text-token space-y-4">
+		<div class="card p-8 w-fit text-token space-y-4">
 			<h3 class="h3 font-semibold">Tell me about yourself</h3>
 
-			<TextField name="full_name" field="full_name" {form} titleName="Your Full name" type="text" />
-			<TextField name="birthdate" field="birthdate" {form} titleName="Your Birthdate" type="date" />
-			<TextAreaField
-				name="description"
-				field="description"
-				{form}
-				titleName="A description about you"
-			/>
-
+			<TextField field="fullname" {form} titleName="Your Full name" type="text" />
+			<TextField field="birthdate" {form} titleName="Your Birthdate" type="date" />
+			<TextAreaField field="description"	{form}	titleName="A description about you"	/>
+ 
 			<TextField
-				name="image_url"
-				class="input variant-ghost-surface pointer-events-none opacity-50 bg-gray-200 "
 				readonly
-				field="image_url"
+				class="input variant-ghost-surface pointer-events-none opacity-50 bg-gray-200 "
+				field="imageUrl"
 				{form}
 				titleName="Profile picture (optional)"
 			/>
 
+
+			<div class="flex w-fit items-center justify-between">
 			<FileDropzone
 				name="image.upload"
 				accept="image/*"
 				on:change={async (e) => {
-					$form_data.image_url = await handleFileUpload(e);
+					$form_data.imageUrl = await handleFileUpload(e);
 				}}
 			>
 				<svelte:fragment slot="lead">
@@ -70,6 +66,11 @@
 				<svelte:fragment slot="meta">PNG, JPG and SVG allowed.</svelte:fragment>
 			</FileDropzone>
 
+
+			{#if $form_data.imageUrl}
+					<Avatar class="ml-4 w-1/3 "  src= "https://image.hjemmet.net/{$form_data.imageUrl}"></Avatar>
+			{/if}
+		</div>
 			<button class="btn variant-filled-primary w-full">Submit</button>
 		</div>
 	</form>
