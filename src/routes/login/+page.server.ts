@@ -4,7 +4,7 @@ import { fail, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { LuciaError } from 'lucia-auth';
 import { schema } from '$lib/schemas/authentication';
-import { handleSigninRedirect } from '$lib/server/redirects';
+import { handleSignedinRedirect } from '$lib/server/redirects';
 import { ratelimit } from '$lib/server/ratelimit/ratelimiter';
 
 // If the user exists, redirect authenticated users to the profile page.
@@ -15,7 +15,7 @@ export const load: PageServerLoad = async (event) => {
 	]);
 	if (!user) return { form };
 
-	handleSigninRedirect(user, event);
+	handleSignedinRedirect(user, event);
 };
 
 export const actions: Actions = {

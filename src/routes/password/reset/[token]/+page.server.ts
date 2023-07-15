@@ -7,22 +7,16 @@ import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';
 import { redirect } from 'sveltekit-flash-message/server';
+import { handleSignedinRedirect } from '$lib/server/redirects';
 
-// If the user exists, redirect authenticated users to the profile page.
-export const load: PageServerLoad = async ({ locals, params }) => {
-	const { user } = await locals.auth.validateUser();
-	if (user && user.userInfoSet == false) throw redirect(302, '/signup/setup');
+export const load: PageServerLoad = async (event) => {
+	const [form, { user }] = await Promise.all([
+		superValidate(schema.password),
+		event.locals.auth.validateUser()
+	]);
+	if (!user) return { form };
 
-	try {
-		await passwordResetToken.validate(params.token ?? '');
-	} catch (e) {
-		if (e instanceof LuciaTokenError && e.message === 'INVALID_TOKEN') {
-			throw redirect(302, '/');
-		}
-	}
-
-	const form = await superValidate(schema.password);
-	return { form };
+	handleSignedinRedirect(user, event);
 };
 
 export const actions: Actions = {

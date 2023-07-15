@@ -7,15 +7,17 @@ import type { Actions, PageServerLoad } from './$types';
 import { schema } from '$lib/schemas/authentication';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 import { db } from '$lib/server/planetscale';
-import { redirect } from 'sveltekit-flash-message/server';
+import { handleSignedinRedirect } from '$lib/server/redirects';
 
 // If the user exists, redirect authenticated users to the profile page.
-export const load: PageServerLoad = async ({ locals }) => {
-	const { user } = await locals.auth.validateUser();
-	if (user && user.userInfoSet == false) throw redirect(302, '/signup/setup');
+export const load: PageServerLoad = async (event) => {
+	const [form, { user }] = await Promise.all([
+		superValidate(schema.login),
+		event.locals.auth.validateUser()
+	]);
 
-	const form = await superValidate(schema.email);
-	return { form };
+	if (!user) return { form };
+	handleSignedinRedirect(user, event);
 };
 
 export const actions: Actions = {

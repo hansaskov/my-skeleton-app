@@ -50,7 +50,7 @@ export async function redirectFromPrivatePage(user: User | null, event: RequestE
 	return { userInfo, user };
 }
 
-export function handleSigninRedirect(user: User, event: RequestEvent): never {
+export function handleSignedinRedirect(user: User, event: RequestEvent): never {
 	if (!user.userInfoSet) throw redirect(302, callbacks.setup.page, callbacks.setup.message, event);
 	if (!user.emailVerified)
 		throw redirect(302, callbacks.email.page, callbacks.email.message, event);
