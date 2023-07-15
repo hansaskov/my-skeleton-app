@@ -3,13 +3,13 @@
 import { LuciaTokenError } from '@lucia-auth/tokens';
 import { auth, passwordResetToken } from '$lib/server/lucia';
 import type { Actions, PageServerLoad } from './$types';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';
-import { createCallbackUrl, callbacks } from '$lib/server/redirects';
+import { redirect } from 'sveltekit-flash-message/server';
 
 // If the user exists, redirect authenticated users to the profile page.
-export const load: PageServerLoad = async ({ locals, params, url }) => {
+export const load: PageServerLoad = async ({ locals, params }) => {
 	const { user } = await locals.auth.validateUser();
 	if (user && user.userInfoSet == false) throw redirect(302, '/signup/setup');
 

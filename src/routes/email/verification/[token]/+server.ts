@@ -1,10 +1,9 @@
 import { auth, emailVerificationToken } from '$lib/server/lucia';
 import { LuciaTokenError } from '@lucia-auth/tokens';
 import type { RequestHandler } from './$types';
-import { redirect } from '@sveltejs/kit';
-import { getCallbackUrl } from '$lib/server/redirects';
+import { redirect } from 'sveltekit-flash-message/server';
 
-export const GET: RequestHandler = async ({ params, locals, url }) => {
+export const GET: RequestHandler = async ({ params, locals }) => {
 	const tokenParams = params.token;
 	try {
 		const token = await emailVerificationToken.validate(tokenParams);
@@ -25,5 +24,5 @@ export const GET: RequestHandler = async ({ params, locals, url }) => {
 		}
 	}
 
-	throw redirect(302, getCallbackUrl(url));
+	throw redirect(302, '/');
 };

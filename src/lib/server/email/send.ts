@@ -1,5 +1,4 @@
 import { Errors } from 'postmark';
-import { redirectTo } from '../redirects';
 import { ratelimit } from '../ratelimit/ratelimiter';
 import { postmarkClient } from '../postmark';
 import type { User } from 'lucia-auth';
@@ -13,11 +12,7 @@ const sendEmail = async (user: User, subject: string, content: string) => {
 	});
 };
 
-export const sendEmailVerificationEmail = async (
-	user: User,
-	verificationToken: string,
-	redirectPath: string | null
-) => {
+export const sendEmailVerificationEmail = async (user: User, verificationToken: string) => {
 	const rateLimitAttempt = await ratelimit.email.verification.limit(user.userId);
 	if (!rateLimitAttempt.success) {
 		const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);
@@ -25,8 +20,7 @@ export const sendEmailVerificationEmail = async (
 		throw new Errors.RateLimitExceededError(message, 429, 429);
 	}
 
-	let verificationLink = `https://hjemmet.net/email/verification/${verificationToken}`;
-	if (redirectPath) verificationLink = verificationLink + `?${redirectTo}=${redirectPath}`;
+	const verificationLink = `https://hjemmet.net/email/verification/${verificationToken}`;
 	const emailContent = `Please verify your email by clicking the link \n${verificationLink}`;
 	return await sendEmail(user, 'Email verification', emailContent);
 };

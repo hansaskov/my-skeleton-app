@@ -15,7 +15,7 @@
 		Modal,
 		Toast,
 		drawerStore,
-		storePopup
+		storePopup,
 	} from '@skeletonlabs/skeleton';
 	import 'iconify-icon';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
@@ -23,23 +23,39 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 	import PageTransition from '$lib/components/PageTransition.svelte';
 	import PageLoadSpinner from '$lib/components/PageLoadSpinner.svelte';
-
+	import { getFlash } from 'sveltekit-flash-message/client';
+	import { page } from '$app/stores';
+	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
-
-	function drawerOpen(): void {
-		drawerStore.open();
-	}
 
 	function drawerClose(): void {
 		drawerStore.close();
 	}
-	$: positionClasses = $drawerStore.open ? 'translate-x-[25%]' : '';
+
+	const flash = getFlash(page, {
+		clearOnNavigate: false
+	});
+
+	flash.subscribe(($flash) => {
+		console.log($flash);
+		if (!$flash) return;
+		
+		if ($flash.type === 'error') {
+			toastTrigger(errorToast, $flash.message);	
+		}
+		if ($flash.type ==='success') {
+			toastTrigger(successToast, $flash.message);	
+		}
+	
+	})
 
 	export let data: LayoutData;
 
 	$: user = data.user;
 	$: userInfo = data.userInfo;
+	$: positionClasses = $drawerStore.open ? 'translate-x-[25%]' : '';
 </script>
+
 
 <Toast />
 <Modal />
@@ -62,7 +78,9 @@
 				<div class="flex justify-between items-center gap-4">
 					<button
 						class="md:hidden btn-icon btn-sm bg-primary-hover-token"
-						on:click={drawerOpen}
+						on:click={() => {
+							drawerStore.open();
+						}}
 						id="al"
 						aria-label="Open nav"
 					>

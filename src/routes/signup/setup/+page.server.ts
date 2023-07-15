@@ -1,13 +1,14 @@
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
-import { fail, redirect } from '@sveltejs/kit';
-import { message, setError, superValidate } from 'sveltekit-superforms/server';
+import { fail } from '@sveltejs/kit';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
-import { callbacks, createCallbackUrl, getCallbackUrl } from '$lib/server/redirects';
-import { moveFileFromTempFolder, renameObjectKey } from '../../api/upload/server/renameFile';
+import { callbacks } from '$lib/server/redirects';
+import { moveFileFromTempFolder } from '../../api/upload/server/renameFile';
 import { db } from '$lib/server/planetscale';
 import { userInfo } from '$lib/schemas/drizzle/schema';
 import { generateRandomString } from 'lucia-auth';
+import { redirect } from 'sveltekit-flash-message/server';
 
 const schema = z.object({
 	fullname: z.string(),
@@ -16,23 +17,23 @@ const schema = z.object({
 	imageUrl: z.string().nullish()
 });
 
-export const load: PageServerLoad = async ({ locals, url }) => {
-	const { user } = await locals.auth.validateUser();
+export const load: PageServerLoad = async (event) => {
+	const { user } = await event.locals.auth.validateUser();
 
 	// If the user is not logged in, return them to login page
-	if (!user) throw redirect(302, createCallbackUrl(callbacks.login, url));
+	if (!user) throw redirect(302, callbacks.login.page, callbacks.login.message, event);
 
 	// If the user is missing userdata keep them on the page
 	if (!user.userInfoSet) {
 		const form = await superValidate(schema);
-		const message = url.searchParams.get('message');
-		return { form, message };
+		return { form };
 	}
 	// Is their email is not verified, redirect to the email verification otherwise redirect to the home page
-	if (!user.emailVerified) throw redirect(302, createCallbackUrl(callbacks.email, url));
+	if (!user.emailVerified)
+		throw redirect(302, callbacks.email.page, callbacks.email.message, event);
 
-	// If all is well, go to the callback url or home if it does not exist
-	throw redirect(302, getCallbackUrl(url));
+	// If all is well, go to the homepage
+	throw redirect(302, '/');
 };
 
 export const actions: Actions = {

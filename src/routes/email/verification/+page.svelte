@@ -7,9 +7,6 @@
 	export let data: PageData;
 	export let form: ActionData;
 
-	if (data.message) {
-		toastTrigger(successToast, data.message);
-	}
 </script>
 
 <Seo

@@ -1,5 +1,6 @@
-import { redirect, type Actions } from '@sveltejs/kit';
+import type { Actions } from '@sveltejs/kit';
 import { auth } from '$lib/server/lucia';
+import { redirect } from 'sveltekit-flash-message/server';
 
 export const actions: Actions = {
 	default: async ({ locals }) => {

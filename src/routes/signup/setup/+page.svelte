@@ -3,7 +3,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/form/TextField.svelte';
 	import TextAreaField from '$lib/components/form/TextAreaField.svelte';
-	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
+	import { errorToast, toastTrigger } from '$lib/components/Toasts';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import { Avatar, FileDropzone } from '@skeletonlabs/skeleton';
 	import { handleFileUpload } from '../../api/upload/client/handleFileUpload';
@@ -26,10 +26,6 @@
 	form.delayed.subscribe((v) => {
 		$isLoadingForm = v;
 	});
-
-	if (data.message) {
-		toastTrigger(successToast, data.message);
-	}
 
 	const form_data = form.form;
 </script>

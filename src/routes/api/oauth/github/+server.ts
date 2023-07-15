@@ -1,5 +1,6 @@
 import { auth, githubAuth } from '$lib/server/lucia';
-import { redirect, type RequestHandler } from '@sveltejs/kit';
+import type { RequestHandler } from '@sveltejs/kit';
+import { redirect } from 'sveltekit-flash-message/server';
 
 export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 	// get code and state params from url

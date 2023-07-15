@@ -1,12 +1,13 @@
 import { sendPasswordResetEmail } from '$lib/server/email/send';
 import { auth, passwordResetToken } from '$lib/server/lucia';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 
 import { schema } from '$lib/schemas/authentication';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 import { db } from '$lib/server/planetscale';
+import { redirect } from 'sveltekit-flash-message/server';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async ({ locals }) => {

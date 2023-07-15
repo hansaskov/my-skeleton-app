@@ -1,8 +1,9 @@
 import { db } from '$lib/server/planetscale';
 import type { LayoutServerLoad } from './$types';
+import { loadFlash } from 'sveltekit-flash-message/server';
 
-export const load: LayoutServerLoad = async ({ locals, url }) => {
-	const { user } = await locals.auth.validateUser();
+export const load: LayoutServerLoad = loadFlash(async (event) => {
+	const { user } = await event.locals.auth.validateUser();
 
 	if (!user) {
 		return;
@@ -16,4 +17,4 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
 		user,
 		userInfo
 	};
-};
+});

@@ -1,13 +1,4 @@
-import {
-	mysqlTable,
-	mysqlSchema,
-	AnyMySqlColumn,
-	varchar,
-	tinyint,
-	bigint,
-	datetime
-} from 'drizzle-orm/mysql-core';
-import { sql } from 'drizzle-orm';
+import { mysqlTable, varchar, tinyint, bigint, datetime } from 'drizzle-orm/mysql-core';
 
 export const authKey = mysqlTable('auth_key', {
 	id: varchar('id', { length: 255 }).primaryKey().notNull(),

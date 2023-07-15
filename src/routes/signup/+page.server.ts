@@ -5,20 +5,24 @@ import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 import { sendEmailVerificationEmail } from '$lib/server/email/send';
 import { schema } from '$lib/schemas/authentication';
-import { redirectFromSignin, redirectTo } from '$lib/server/redirects';
+import { handleSigninRedirect } from '$lib/server/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 
 // If the user exists, redirect authenticated users to the profile page.
-export const load: PageServerLoad = async ({ locals, url }) => {
-	const { user } = await locals.auth.validateUser();
-	redirectFromSignin(user, url);
+export const load: PageServerLoad = async (event) => {
+	// Use Promise.all to await both promises simultaneously
+	const [form, { user }] = await Promise.all([
+		superValidate(schema.login),
+		event.locals.auth.validateUser()
+	]);
 
-	const form = await superValidate(schema.signup);
-	return { form };
+	if (!user) return { form };
+
+	handleSigninRedirect(user, event);
 };
 
 export const actions: Actions = {
-	default: async ({ request, locals, url }) => {
+	default: async ({ request, locals }) => {
 		const form = await superValidate(request, schema.signup);
 		if (!form.valid) return fail(400, { form });
 
@@ -37,8 +41,7 @@ export const actions: Actions = {
 			});
 			const session = await auth.createSession(user.userId);
 			const token = await emailVerificationToken.issue(user.userId);
-			const path = url.searchParams.get(redirectTo);
-			await sendEmailVerificationEmail(user, token.toString(), path);
+			await sendEmailVerificationEmail(user, token.toString());
 
 			locals.auth.setSession(session);
 		} catch (e) {

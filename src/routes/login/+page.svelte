@@ -23,8 +23,6 @@
 		}
 	});
 
-	if (data.message) toastTrigger(errorToast, data.message);
-
 	form.delayed.subscribe((v) => {
 		$isLoadingForm = v;
 	});
