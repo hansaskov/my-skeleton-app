@@ -44,7 +44,7 @@ export const actions: Actions = {
 			await sendPasswordResetEmail(user, token.toString());
 		} catch (e) {
 			if (e instanceof PostmarkError && e.code == 429) {
-				return setError(form, 'Rate Limit Exceeded');
+				return setError(form, e.message);
 			}
 
 			console.error(e);
