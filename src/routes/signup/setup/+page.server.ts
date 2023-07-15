@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { message, superValidate } from 'sveltekit-superforms/server';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { callbacks, createCallbackUrl, getCallbackUrl } from '$lib/server/redirects';
 import { moveFileFromTempFolder, renameObjectKey } from '../../api/upload/server/renameFile';
@@ -64,7 +64,7 @@ export const actions: Actions = {
 			});
 		} catch (e) {
 			console.error(e);
-			return fail(400, { form, message: 'Unknown error' });
+			return setError(form, 'Unknown error');
 		}
 
 		return { form };

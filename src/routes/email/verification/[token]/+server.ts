@@ -15,17 +15,13 @@ export const GET: RequestHandler = async ({ params, locals, url }) => {
 		const session = await auth.createSession(token.userId);
 		locals.auth.setSession(session);
 	} catch (e) {
-		if (e instanceof LuciaTokenError && e.message === 'EXPIRED_TOKEN') {
-			// expired token/link
-			return new Response(null, {
-				status: 401
-			});
-		}
-		if (e instanceof LuciaTokenError && e.message === 'INVALID_TOKEN') {
-			// invalid link
-			return new Response(null, {
-				status: 401
-			});
+		if (e instanceof LuciaTokenError) {
+			switch (e.message) {
+				case 'EXPIRED_TOKEN':
+					return new Response(null, { status: 401 });
+				case 'INVALID_TOKEN':
+					return new Response(null, { status: 401 });
+			}
 		}
 	}
 

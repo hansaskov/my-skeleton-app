@@ -25,10 +25,10 @@ export const actions: Actions = {
 
 		const ip = getClientAddress();
 		const rateLimitAttempt = await ratelimit.auth.limit(ip);
+
 		if (!rateLimitAttempt.success) {
 			const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);
-			form.errors._errors = [`Too many requests. Please try again in ${timeRemaining} seconds.`];
-			return fail(429, { form });
+			return setError(form, `Too many requests. Please try again in ${timeRemaining} seconds.`);
 		}
 
 		try {
@@ -38,18 +38,16 @@ export const actions: Actions = {
 		} catch (e) {
 			if (e instanceof LuciaError) {
 				switch (e.message) {
-					case 'AUTH_INVALID_PASSWORD' || 'AUTH_INVALID_KEY_ID':
-						return setError(form, 'password', 'Incorrect credentials');
-
+					case 'AUTH_INVALID_KEY_ID':
+						return setError(form, 'Incorrect credentials');
+					case 'AUTH_INVALID_PASSWORD':
+						return setError(form, 'Incorrect credentials');
 					case 'AUTH_OUTDATED_PASSWORD':
-						return setError(form, 'password', 'Outdated password');
+						return setError(form, 'Outdated password');
 				}
 			}
-
 			console.error(e);
-			form.errors._errors ||= [];
-			form.errors._errors.push('Unknown error has occured');
-			return fail(400, { form });
+			return setError(form, 'Something went wront, please try again');
 		}
 
 		return { form };

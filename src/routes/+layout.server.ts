@@ -1,11 +1,11 @@
 import { db } from '$lib/server/planetscale';
+import type { LayoutServerLoad } from './$types';
 
-export const load = async ({ locals, url }) => {
+export const load: LayoutServerLoad = async ({ locals, url }) => {
 	const { user } = await locals.auth.validateUser();
-	const { pathname } = url;
 
 	if (!user) {
-		return { pathname };
+		return;
 	}
 
 	const userInfo = await db.query.userInfo.findFirst({
@@ -14,7 +14,6 @@ export const load = async ({ locals, url }) => {
 
 	return {
 		user,
-		userInfo,
-		pathname
+		userInfo
 	};
 };

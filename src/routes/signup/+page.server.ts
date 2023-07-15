@@ -46,15 +46,11 @@ export const actions: Actions = {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
 			}
 			if (e instanceof PostmarkError && e.code == 429) {
-				form.errors._errors ||= [];
-				form.errors._errors.push(e.message);
-				return fail(400, { form });
+				return setError(form, 'Rate Limit Exceeded');
 			}
 
 			console.error(e);
-			form.errors._errors ||= [];
-			form.errors._errors.push('Unknown error has occured');
-			return fail(400, { form });
+			return setError(form, 'Unknown error has occured');
 		}
 
 		return { form };
