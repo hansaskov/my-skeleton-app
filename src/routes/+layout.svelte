@@ -104,6 +104,7 @@
 					>Public</a
 				>
 				<a
+					data-sveltekit-preload-data="tap"
 					href="/protected"
 					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase"
 					>protected</a
