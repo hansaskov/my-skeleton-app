@@ -89,8 +89,8 @@ devDependencies:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.26)
   drizzle-kit:
-    specifier: ^0.19.5
-    version: 0.19.5
+    specifier: ^0.19.6
+    version: 0.19.6
   eslint:
     specifier: ^8.45.0
     version: 8.45.0
@@ -119,8 +119,8 @@ devDependencies:
     specifier: ^5.0.4
     version: 5.0.4(postcss@8.4.26)(svelte@4.0.5)(typescript@5.1.6)
   sveltekit-flash-message:
-    specifier: ^2.0.0
-    version: 2.0.0(@sveltejs/kit@1.22.3)(svelte@4.0.5)
+    specifier: ^2.1.0
+    version: 2.1.0(@sveltejs/kit@1.22.3)(svelte@4.0.5)
   sveltekit-superforms:
     specifier: ^1.3.0
     version: 1.3.0(@sveltejs/kit@1.22.3)(svelte@4.0.5)(zod@3.21.4)
@@ -2619,8 +2619,8 @@ packages:
       wordwrap: 1.0.0
     dev: true
 
-  /drizzle-kit@0.19.5:
-    resolution: {integrity: sha512-eX+M4QpPLbbZwLUamCxRhS9Y98ppZLk3jew2FghKoAr7bGEC3omFIm+YPiwtrhe/alZZgrJCn/1TDTRHwo1r9w==}
+  /drizzle-kit@0.19.6:
+    resolution: {integrity: sha512-Feb/9yKPn6rZI95NvaUwTwpfRJkwGx9MR7ObhUropm+rEwcT9BfHdiJXGzLf4oNcoSFCqmY7zIj8j92lusjyRA==}
     hasBin: true
     dependencies:
       '@drizzle-team/studio': 0.0.1
@@ -4014,8 +4014,8 @@ packages:
     dependencies:
       glob: 7.2.3
 
-  /rollup@3.26.2:
-    resolution: {integrity: sha512-6umBIGVz93er97pMgQO08LuH3m6PUb3jlDUUGFsNJB6VgTCUaDFpupf5JfU30529m/UKOgmiX+uY6Sx8cOYpLA==}
+  /rollup@3.26.3:
+    resolution: {integrity: sha512-7Tin0C8l86TkpcMtXvQu6saWH93nhG3dGQ1/+l5V2TDMceTxO7kDiK6GzbfLWNNxqJXm591PcEZUozZm51ogwQ==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -4323,8 +4323,8 @@ packages:
       magic-string: 0.30.1
       periscopic: 3.1.0
 
-  /sveltekit-flash-message@2.0.0(@sveltejs/kit@1.22.3)(svelte@4.0.5):
-    resolution: {integrity: sha512-WdfpnS81+I/HY80rS5m16QkjJAXvdcm537EiSVfCNyTS1IMTFkXk4oFlPQSjOPPt34Tl5prOJJZqIWljBnEa/Q==}
+  /sveltekit-flash-message@2.1.0(@sveltejs/kit@1.22.3)(svelte@4.0.5):
+    resolution: {integrity: sha512-I9UOYsFpONLu9erXHG8CeHW1tQVZguRUDXV3NHbi6kVA4jPG12R2ypJBrcYW7UyZOLBp3Y3FdVyemkaAmfwr/w==}
     peerDependencies:
       '@sveltejs/kit': 1.x
       svelte: 3.x || 4.x
@@ -4579,7 +4579,7 @@ packages:
       '@types/node': 20.4.2
       esbuild: 0.18.13
       postcss: 8.4.26
-      rollup: 3.26.2
+      rollup: 3.26.3
     optionalDependencies:
       fsevents: 2.3.2
 

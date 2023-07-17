@@ -1,4 +1,4 @@
-import { mysqlTable, bigint, varchar, boolean, datetime, mysqlEnum } from 'drizzle-orm/mysql-core';
+import { mysqlTable, bigint, varchar, boolean, datetime, mysqlEnum, unique } from 'drizzle-orm/mysql-core';
 import { relations } from 'drizzle-orm';
 
 // Enums for mysql schema
@@ -43,7 +43,7 @@ export const userInfo = mysqlTable('user_info', {
 	description: varchar('description', { length: 1024 }).notNull(),
 	imageUrl: varchar('image_url', { length: 512 }),
 
-	userId: varchar('user_id', { length: 255 }).notNull()
+	userId: varchar('user_id', { length: 255 }).notNull().unique()
 });
 
 export const usersRelation = relations(user, ({ one }) => ({
@@ -63,7 +63,7 @@ export const wish = mysqlTable('wish', {
 	imageUrl: varchar('image_url', { length: 512 }).notNull(),
 	updatedAt: datetime('updated_at').notNull(),
 
-	wishlistId: varchar('wishlist_id', { length: 255 }).notNull()
+	wishlistId: varchar('wishlist_id', { length: 255 }).notNull().unique()
 });
 
 export const wishlist = mysqlTable('wishlist', {
@@ -76,8 +76,11 @@ export const wishlistOnUsers = mysqlTable('wishlist_on_users', {
 	wishlistId: varchar('wishlist_id', { length: 255 }).notNull(),
 	userId: varchar('user_id', { length: 255 }).notNull(),
 	wishlistRole: mysqlEnum('wishlist_role', enums.wishlistRole).default('VIEWABLE').notNull(),
-	updatedAt: datetime('updated_at').notNull()
-});
+	updatedAt: datetime('updated_at').notNull(),
+}, 
+(t) => ({
+	first: unique().on(t.userId, t.wishlistId)
+}));
 
 // Family schema
 export const family = mysqlTable('family', {
@@ -91,4 +94,7 @@ export const familiesOnUsers = mysqlTable('families_on_users', {
 	userId: varchar('user_id', { length: 255 }).notNull(),
 	familyRole: mysqlEnum('family_role', enums.familyRole).default('MEMBER').notNull(),
 	updatedAt: datetime('updated_at').notNull()
-});
+},
+(t) => ({
+	first: unique().on(t.userId, t.familyId)
+}));

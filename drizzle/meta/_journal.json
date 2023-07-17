@@ -1,48 +1,55 @@
 {
-	"version": "5",
-	"dialect": "mysql",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "5",
-			"when": 1688646635750,
-			"tag": "0000_useful_human_cannonball",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "5",
-			"when": 1688651006954,
-			"tag": "0001_silent_karnak",
-			"breakpoints": true
-		},
-		{
-			"idx": 2,
-			"version": "5",
-			"when": 1688653075656,
-			"tag": "0002_bitter_wraith",
-			"breakpoints": true
-		},
-		{
-			"idx": 3,
-			"version": "5",
-			"when": 1688656367172,
-			"tag": "0003_purple_wither",
-			"breakpoints": true
-		},
-		{
-			"idx": 4,
-			"version": "5",
-			"when": 1688658038930,
-			"tag": "0004_overconfident_marvel_apes",
-			"breakpoints": true
-		},
-		{
-			"idx": 5,
-			"version": "5",
-			"when": 1689094475678,
-			"tag": "0005_pretty_marrow",
-			"breakpoints": true
-		}
-	]
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1688646635750,
+      "tag": "0000_useful_human_cannonball",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1688651006954,
+      "tag": "0001_silent_karnak",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1688653075656,
+      "tag": "0002_bitter_wraith",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1688656367172,
+      "tag": "0003_purple_wither",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1688658038930,
+      "tag": "0004_overconfident_marvel_apes",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1689094475678,
+      "tag": "0005_pretty_marrow",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1689601338031,
+      "tag": "0006_fantastic_mercury",
+      "breakpoints": true
+    }
+  ]
 }
