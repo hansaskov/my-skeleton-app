@@ -6,26 +6,23 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { page } from '$app/stores';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
-	import { errorToast, toastTrigger } from '$lib/components/Toasts';
+	import { toastManager } from '$lib/components/ToastManager';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
-		delayMs: 100,
+		delayMs: 150,
 		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
-
 			for (const error of uniqueErrors) {
-				toastTrigger(errorToast, error);
+				toastManager.trigger.error(error)
 			}
 		}
 	});
 
-	form.delayed.subscribe((v) => {
-		$isLoadingForm = v;
-	});
+	form.delayed.subscribe((v) => $isLoadingForm = v );
 </script>
 
 <Seo title="Askov | Login" type="WebPage" description="Login to hjemmet.net" />
@@ -35,14 +32,12 @@
 		<div class="card p-8 w-full space-y-4">
 			<h3 class="h3 font-semibold">Sign in to your account</h3>
 			<TextField
-				name="email"
 				{form}
 				field="email"
 				titleName="E-mail"
 				placeholder="Enter your E-mail"
 			/>
 			<TextField
-				name="password"
 				{form}
 				field="password"
 				type="password"

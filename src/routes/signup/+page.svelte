@@ -4,29 +4,27 @@
 	import TextField from '$lib/components/form/TextField.svelte';
 	import CheckboxField from '$lib/components/form/CheckboxField.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
-	import { errorToast, toastTrigger } from '$lib/components/Toasts';
 	import Seo from '$lib/components/Seo.svelte';
 	import { schema } from '$lib/schemas/authentication';
+	import { toastManager } from '$lib/components/ToastManager';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
-		delayMs: 100,
+		delayMs: 150,
 		validators: schema.login,
 		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				toastTrigger(errorToast, error);
+				toastManager.trigger.error(error)
 			}
 		}
 	});
 
-	form.delayed.subscribe((v) => {
-		$isLoadingForm = v;
-	});
+	form.delayed.subscribe(v => $isLoadingForm = v);
 </script>
 
 <Seo

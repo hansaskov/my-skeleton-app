@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import Seo from '$lib/components/Seo.svelte';
 	import type { ActionData, PageData } from './$types';
-	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
+	import { toastManager } from '$lib/components/ToastManager';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -25,9 +25,9 @@
 			use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === 'success') {
-						toastTrigger(successToast, 'E-mail sent');
+						toastManager.trigger.success('E-mail sent')
 					} else if (result.type === 'failure' && result.data) {
-						toastTrigger(errorToast, 'Too many requests sent, please wait');
+						toastManager.trigger.error('Too many requests sent, please wait')
 					}
 				};
 			}}

@@ -3,31 +3,29 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/form/TextField.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
+	import { toastManager } from '$lib/components/ToastManager';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
-		delayMs: 100,
+		delayMs: 150,
 		onUpdated: ({ form }) => {
-			const allErrors = Object.values(form.errors).flat();
-			const uniqueErrors = [...new Set(allErrors)];
-			if (uniqueErrors.length > 0) {
+			if (!form.valid) {
+				const allErrors = Object.values(form.errors).flat();
+				const uniqueErrors = [...new Set(allErrors)];
 				for (const error of uniqueErrors) {
-					toastTrigger(errorToast, error);
+					toastManager.trigger.error(error)
 				}
-			} else {
-				const message = `Password reset sent to ${form.data.email}`;
-				toastTrigger(successToast, message);
+			}
+			else if (form.posted) {
+				toastManager.trigger.success(`Password reset sent to ${form.data.email}`)
 			}
 		}
 	});
 
-	form.delayed.subscribe((v) => {
-		$isLoadingForm = v;
-	});
+	form.delayed.subscribe((v) => $isLoadingForm = v);
 </script>
 
 <Seo

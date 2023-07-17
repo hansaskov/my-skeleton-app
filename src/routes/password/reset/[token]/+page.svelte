@@ -2,28 +2,26 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/form/TextField.svelte';
-	import { errorToast, toastTrigger } from '$lib/components/Toasts';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import { schema } from '$lib/schemas/authentication';
+	import { toastManager } from '$lib/components/ToastManager';
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
-		delayMs: 100,
+		delayMs: 150,
 		validators: schema.password,
 		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				toastTrigger(errorToast, error);
+				toastManager.trigger.error(error)
 			}
 		}
 	});
+	form.delayed.subscribe(v =>	$isLoadingForm = v);
 
-	form.delayed.subscribe((v) => {
-		$isLoadingForm = v;
-	});
 </script>
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">
