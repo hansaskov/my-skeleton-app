@@ -3,8 +3,8 @@
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { fade } from 'svelte/transition';
 
-	// Only show spinner if page transition takes more than 100ms
-	const wait = (delay: number | undefined) => new Promise((res) => setTimeout(res, delay));
+	// Only show spinner if page transition takes more than 150ms
+	const wait = (delay: number) => new Promise((res) => setTimeout(res, delay));
 </script>
 
 {#if $isLoadingForm || $isLoadingPage}

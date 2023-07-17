@@ -4,9 +4,9 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { isLoadingPage } from '$lib/stores.ts/loading';
 
-	const duration = 250;
-	const delay = duration + 33;
-	const y = 8;
+	const duration = 150;
+	const delay = duration + 20;
+	const y = 4;
 
 	beforeNavigate(({ to }) => {
 		if (to?.route.id) {

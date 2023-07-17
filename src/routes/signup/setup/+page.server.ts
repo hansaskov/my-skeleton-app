@@ -21,7 +21,7 @@ export const load: PageServerLoad = async (event) => {
 	const { user } = await event.locals.auth.validateUser();
 
 	// If the user is not logged in, return them to login page
-	if (!user) throw redirect(302, callbacks.login.page, callbacks.login.message, event);
+	if (!user) throw redirect(302, callbacks.login.page, callbacks.login, event);
 
 	// If the user is missing userdata keep them on the page
 	if (!user.userInfoSet) {
@@ -29,8 +29,7 @@ export const load: PageServerLoad = async (event) => {
 		return { form };
 	}
 	// Is their email is not verified, redirect to the email verification otherwise redirect to the home page
-	if (!user.emailVerified)
-		throw redirect(302, callbacks.email.page, callbacks.email.message, event);
+	if (!user.emailVerified) throw redirect(302, callbacks.email.page, callbacks.email, event);
 
 	// If all is well, go to the homepage
 	throw redirect(302, '/');

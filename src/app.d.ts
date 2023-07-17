@@ -8,7 +8,11 @@ declare global {
 			auth: import('lucia-auth').AuthRequest;
 		}
 		interface PageData {
-			flash?: { type: 'success' | 'error'; message: string };
+			flash?: {
+				type: 'success' | 'error';
+				message: string;
+				page: string;
+			};
 		}
 		// interface Locals {}
 		// interface PageData {}

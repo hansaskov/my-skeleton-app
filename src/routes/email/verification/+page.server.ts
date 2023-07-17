@@ -10,8 +10,8 @@ import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 export const load: PageServerLoad = async (event) => {
 	const { user } = await event.locals.auth.validateUser();
 
-	if (!user) throw redirect(302, callbacks.login.page, callbacks.login.message, event);
-	if (!user.userInfoSet) throw redirect(302, callbacks.setup.page, callbacks.setup.message, event);
+	if (!user) throw redirect(302, callbacks.login.page, callbacks.login, event);
+	if (!user.userInfoSet) throw redirect(302, callbacks.setup.page, callbacks.setup, event);
 	if (!user.emailVerified) return { user };
 
 	throw redirect(302, '/');

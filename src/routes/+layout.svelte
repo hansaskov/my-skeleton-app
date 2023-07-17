@@ -13,7 +13,6 @@
 		Drawer,
 		LightSwitch,
 		Modal,
-		Toast,
 		drawerStore,
 		storePopup,
 	} from '@skeletonlabs/skeleton';
@@ -23,31 +22,8 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 	import PageTransition from '$lib/components/PageTransition.svelte';
 	import PageLoadSpinner from '$lib/components/PageLoadSpinner.svelte';
-	import { getFlash } from 'sveltekit-flash-message/client';
-	import { page } from '$app/stores';
-	import { errorToast, successToast, toastTrigger } from '$lib/components/Toasts';
+	import FlashMessageToast from '$lib/components/FlashMessageToast.svelte';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
-
-	function drawerClose(): void {
-		drawerStore.close();
-	}
-
-	const flash = getFlash(page, {
-		clearOnNavigate: false
-	});
-
-	flash.subscribe(($flash) => {
-		console.log($flash);
-		if (!$flash) return;
-		
-		if ($flash.type === 'error') {
-			toastTrigger(errorToast, $flash.message);	
-		}
-		if ($flash.type ==='success') {
-			toastTrigger(successToast, $flash.message);	
-		}
-	
-	})
 
 	export let data: LayoutData;
 
@@ -57,13 +33,13 @@
 </script>
 
 
-<Toast />
+<FlashMessageToast />
 <Modal />
 <Drawer>
 	<nav class="list-nav p-4">
 		<ul>
-			<li><a href="/public" on:click={drawerClose}>Public</a></li>
-			<li><a href="/protected" on:click={drawerClose}>Protected</a></li>
+			<li><a href="/public" on:click={drawerStore.close}>Public</a></li>
+			<li><a href="/protected" on:click={drawerStore.close}>Protected</a></li>
 		</ul>
 	</nav>
 </Drawer>
