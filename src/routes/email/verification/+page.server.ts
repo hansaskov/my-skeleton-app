@@ -4,7 +4,7 @@ import { emailVerificationToken } from '$lib/server/lucia';
 import { sendEmailVerificationEmail } from '$lib/server/email/send';
 
 import type { Actions, PageServerLoad } from './$types';
-import { callbacks } from '$lib/server/redirects';
+import { callbacks } from '$lib/server/redirects/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 
 export const load: PageServerLoad = async (event) => {
@@ -21,11 +21,8 @@ export const actions: Actions = {
 	default: async ({ locals }) => {
 		const { user } = await locals.auth.validateUser();
 		if (!user || user.emailVerified) {
-			return fail(401, {
-				message: 'Unauthorized'
-			});
+			return fail(401, { message: 'Unauthorized' });
 		}
-
 		try {
 			const token = await emailVerificationToken.issue(user.userId);
 			await sendEmailVerificationEmail(user, token.toString());
@@ -34,9 +31,7 @@ export const actions: Actions = {
 				return fail(429, { message: e.message });
 			}
 			console.error(e);
-			return fail(500, {
-				message: 'An unknown error occurred'
-			});
+			return fail(500, { message: 'An unknown error occurred' });
 		}
 	}
 };

@@ -3,7 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
-import { callbacks } from '$lib/server/redirects';
+import { callbacks } from '$lib/server/redirects/redirects';
 import { moveFileFromTempFolder } from '../../api/upload/server/renameFile';
 import { db } from '$lib/server/planetscale';
 import { userInfo } from '$lib/schemas/drizzle/schema';

@@ -7,7 +7,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { schema } from '$lib/schemas/authentication';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 import { db } from '$lib/server/planetscale';
-import { handleSignedinRedirect } from '$lib/server/redirects';
+import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async (event) => {

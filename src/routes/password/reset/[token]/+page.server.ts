@@ -7,7 +7,7 @@ import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';
 import { redirect } from 'sveltekit-flash-message/server';
-import { handleSignedinRedirect } from '$lib/server/redirects';
+import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
 
 export const load: PageServerLoad = async (event) => {
 	const [form, { user }] = await Promise.all([

@@ -1,5 +1,5 @@
 import type { User } from 'lucia-auth';
-import { db } from './planetscale';
+import { db } from '../planetscale';
 import { redirect } from 'sveltekit-flash-message/server';
 import type { RequestEvent } from '@sveltejs/kit';
 

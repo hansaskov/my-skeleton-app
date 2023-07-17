@@ -5,7 +5,7 @@ import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 import { sendEmailVerificationEmail } from '$lib/server/email/send';
 import { schema } from '$lib/schemas/authentication';
-import { handleSignedinRedirect } from '$lib/server/redirects';
+import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 
 // If the user exists, redirect authenticated users to the profile page.
