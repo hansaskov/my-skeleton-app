@@ -9,15 +9,15 @@
 		closeQuery: '.listbox-item'
 	};
 
-	export let initials: string;
-	export let src: string | undefined | null;
+	export let initials: string | undefined = undefined;
+	export let src: string | undefined = undefined;
 </script>
 
 <!-- Avatar button-->
 <button use:popup={popupSettings}>
 	<Avatar
-		{initials}
-		src={src || 'Default_pfp.svg'}
+		initials = {initials}
+		src={src}
 		fill="fill-tertiary-50"
 		width="w-11"
 		border="border-2 	border-surface-300-600-token hover:!border-primary-500"
