@@ -7,7 +7,6 @@ import {
 	mysqlEnum,
 	unique
 } from 'drizzle-orm/mysql-core';
-import { relations } from 'drizzle-orm';
 
 // Enums for mysql schema
 const enums: {
@@ -53,13 +52,6 @@ export const userInfo = mysqlTable('user_info', {
 
 	userId: varchar('user_id', { length: 255 }).notNull().unique()
 });
-
-export const usersRelation = relations(user, ({ one }) => ({
-	userInfo: one(userInfo, {
-		fields: [user.id],
-		references: [userInfo.userId]
-	})
-}));
 
 // Wish schema
 export const wish = mysqlTable('wish', {

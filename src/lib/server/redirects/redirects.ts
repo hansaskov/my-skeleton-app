@@ -1,7 +1,7 @@
 import type { User } from 'lucia-auth';
-import { db } from '../planetscale';
 import { redirect } from 'sveltekit-flash-message/server';
 import type { RequestEvent } from '@sveltejs/kit';
+import { getUserInfo } from '../drizzle/userinfo/select';
 
 export const callbacks = {
 	login: {
@@ -32,9 +32,7 @@ export async function redirectFromPrivatePage(user: User | null, event: RequestE
 	if (!user.userInfoSet) throw redirect(302, callbacks.setup.page, callbacks.setup, event);
 	if (!user.emailVerified) throw redirect(302, callbacks.email.page, callbacks.email, event);
 
-	const userInfo = await db.query.userInfo.findFirst({
-		where: (userInfo, { eq }) => eq(userInfo.userId, user.userId)
-	});
+	const userInfo = await getUserInfo(user.userId);
 
 	if (!userInfo) throw redirect(302, callbacks.setup.page, callbacks.setup, event);
 

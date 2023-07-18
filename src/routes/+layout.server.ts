@@ -1,4 +1,4 @@
-import { db } from '$lib/server/planetscale';
+import { getUserInfo } from '$lib/server/drizzle/userinfo/select';
 import type { LayoutServerLoad } from './$types';
 import { loadFlash } from 'sveltekit-flash-message/server';
 
@@ -9,9 +9,7 @@ export const load: LayoutServerLoad = loadFlash(async (event) => {
 		return;
 	}
 
-	const userInfo = await db.query.userInfo.findFirst({
-		where: (userInfo, { eq }) => eq(userInfo.userId, user.userId)
-	});
+	const userInfo = await getUserInfo(user.userId);
 
 	return {
 		user,

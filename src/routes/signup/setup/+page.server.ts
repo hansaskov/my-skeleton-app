@@ -5,10 +5,10 @@ import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { callbacks } from '$lib/server/redirects/redirects';
 import { moveFileFromTempFolder } from '../../api/upload/server/renameFile';
-import { db } from '$lib/server/planetscale';
-import { userInfo } from '$lib/schemas/drizzle/schema';
+import { userInfo } from '$lib/server/drizzle/schema';
 import { generateRandomString } from 'lucia-auth';
 import { redirect } from 'sveltekit-flash-message/server';
+import { db } from '$lib/server/drizzle/db';
 
 const schema = z.object({
 	fullname: z.string(),
