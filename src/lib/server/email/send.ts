@@ -12,7 +12,7 @@ const sendEmail = async (user: User, subject: string, content: string) => {
 	});
 };
 
-export const sendEmailVerificationEmail = async (user: User, verificationToken: string) => {
+export const sendVerificationEmail = async (user: User, verificationToken: string) => {
 	const rateLimitAttempt = await ratelimit.email.verification.limit(user.userId);
 	if (!rateLimitAttempt.success) {
 		const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);

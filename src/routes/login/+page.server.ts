@@ -23,15 +23,15 @@ export const actions: Actions = {
 		const form = await superValidate(request, schema.login);
 		if (!form.valid) return fail(400, { form });
 
-		const ip = getClientAddress();
-		const rateLimitAttempt = await ratelimit.auth.limit(ip);
-
-		if (!rateLimitAttempt.success) {
-			const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);
-			return setError(form, `Too many requests. Please try again in ${timeRemaining} seconds.`);
-		}
-
 		try {
+			const ip = getClientAddress();
+			const rateLimitAttempt = await ratelimit.auth.limit(ip);
+
+			if (!rateLimitAttempt.success) {
+				const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);
+				return setError(form, `Too many requests. Please try again in ${timeRemaining} seconds.`);
+			}
+
 			const key = await auth.useKey('email', form.data.email, form.data.password);
 			const session = await auth.createSession(key.userId);
 			locals.auth.setSession(session);

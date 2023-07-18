@@ -1,7 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import { emailVerificationToken } from '$lib/server/lucia';
-import { sendEmailVerificationEmail } from '$lib/server/email/send';
+import { sendVerificationEmail } from '$lib/server/email/send';
 
 import type { Actions, PageServerLoad } from './$types';
 import { callbacks } from '$lib/server/redirects/redirects';
@@ -11,7 +11,8 @@ export const load: PageServerLoad = async (event) => {
 	const { user } = await event.locals.auth.validateUser();
 
 	if (!user) throw redirect(302, callbacks.login.page, callbacks.login, event);
-	if (!user.userInfoSet) throw redirect(302, callbacks.setup.page, callbacks.setup, event);
+	if (!user.userInfoSet)
+		throw redirect(302, callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
 	if (!user.emailVerified) return { user };
 
 	throw redirect(302, '/');
@@ -25,7 +26,7 @@ export const actions: Actions = {
 		}
 		try {
 			const token = await emailVerificationToken.issue(user.userId);
-			await sendEmailVerificationEmail(user, token.toString());
+			await sendVerificationEmail(user, token.toString());
 		} catch (e) {
 			if (e instanceof PostmarkError && e.code == 429) {
 				return fail(429, { message: e.message });

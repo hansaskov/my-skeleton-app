@@ -3,7 +3,7 @@ import { auth, emailVerificationToken } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
-import { sendEmailVerificationEmail } from '$lib/server/email/send';
+import { sendVerificationEmail } from '$lib/server/email/send';
 import { schema } from '$lib/schemas/authentication';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
@@ -41,7 +41,7 @@ export const actions: Actions = {
 			});
 			const session = await auth.createSession(user.userId);
 			const token = await emailVerificationToken.issue(user.userId);
-			await sendEmailVerificationEmail(user, token.toString());
+			await sendVerificationEmail(user, token.toString());
 
 			locals.auth.setSession(session);
 		} catch (e) {

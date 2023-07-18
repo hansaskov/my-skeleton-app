@@ -10,44 +10,59 @@ export const callbacks = {
 		page: '/login'
 	},
 	setup: {
-		type: 'success',
-		message: 'Please tell us about yourself before continuing',
-		page: '/signup/setup'
+		userInfo: {
+			type: 'success',
+			message: 'Please tell us about yourself before continuing',
+			page: '/signup/setup'
+		},
+		email: {
+			type: 'success',
+			message: 'Please check your inbox and verify your E-mail',
+			page: '/email/verification'
+		}
 	},
 	email: {
-		type: 'success',
-		message: 'Please check your inbox and verify your E-mail',
-		page: '/email/verification'
-	},
-	invalid_token: {
-		type: 'error',
-		message: 'Invalid Token, redirected to home-page',
-		page: '/'
+		verified: {
+			type: 'success',
+			message: 'Email was successfully verified!',
+			page: '/'
+		},
+		invalid_token: {
+			type: 'error',
+			message: 'Invalid Token, redirected to home-page',
+			page: '/'
+		}
 	}
 } as const;
 
 export async function redirectFromPrivatePage(user: User | null, event: RequestEvent) {
 	// Redirect to email verification or setup
 	if (!user) throw redirect(302, callbacks.login.page, callbacks.login, event);
-	if (!user.userInfoSet) throw redirect(302, callbacks.setup.page, callbacks.setup, event);
-	if (!user.emailVerified) throw redirect(302, callbacks.email.page, callbacks.email, event);
+	if (!user.userInfoSet)
+		throw redirect(302, callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
+	if (!user.emailVerified)
+		throw redirect(302, callbacks.setup.email.page, callbacks.setup.email, event);
 
 	const userInfo = await getUserInfo(user.userId);
 
-	if (!userInfo) throw redirect(302, callbacks.setup.page, callbacks.setup, event);
+	if (!userInfo)
+		throw redirect(302, callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
 
 	return { userInfo, user };
 }
 
 export function handleSignedinRedirect(user: User, event: RequestEvent): never {
-	if (!user.userInfoSet) throw redirect(302, callbacks.setup.page, callbacks.setup, event);
-	if (!user.emailVerified) throw redirect(302, callbacks.email.page, callbacks.email, event);
+	if (!user.userInfoSet)
+		throw redirect(302, callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
+	if (!user.emailVerified)
+		throw redirect(302, callbacks.setup.email.page, callbacks.setup.email, event);
 	throw redirect(302, '/');
 }
 
 export function redirectFromValidateEmail(user: User | null, event: RequestEvent) {
 	if (!user) throw redirect(302, callbacks.login.page, callbacks.login, event);
-	if (!user.userInfoSet) throw redirect(302, callbacks.setup.page, callbacks.setup, event);
+	if (!user.userInfoSet)
+		throw redirect(302, callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
 
 	return { user };
 }

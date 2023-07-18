@@ -29,7 +29,8 @@ export const load: PageServerLoad = async (event) => {
 		return { form };
 	}
 	// Is their email is not verified, redirect to the email verification otherwise redirect to the home page
-	if (!user.emailVerified) throw redirect(302, callbacks.email.page, callbacks.email, event);
+	if (!user.emailVerified)
+		throw redirect(302, callbacks.setup.email.page, callbacks.setup.email, event);
 
 	// If all is well, go to the homepage
 	throw redirect(302, '/');

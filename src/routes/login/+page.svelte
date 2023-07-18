@@ -57,7 +57,6 @@
 				<a class=" anchor text-blue-800" href="/signup{$page.url.search}"> Sign up</a>
 			</p>
 		</div>
-
 		<hr class="!border-t-2 my-4 bg-red-600" />
 	</form>
 
