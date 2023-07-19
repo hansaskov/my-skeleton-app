@@ -17,12 +17,12 @@
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];
 			for (const error of uniqueErrors) {
-				toastManager.trigger.error(error)
+				toastManager.trigger.error(error);
 			}
 		}
 	});
 
-	form.delayed.subscribe((v) => $isLoadingForm = v );
+	form.delayed.subscribe((v) => ($isLoadingForm = v));
 </script>
 
 <Seo title="Askov | Login" type="WebPage" description="Login to hjemmet.net" />
@@ -31,12 +31,7 @@
 	<form method="POST" use:form.enhance>
 		<div class="card p-8 w-full space-y-4">
 			<h3 class="h3 font-semibold">Sign in to your account</h3>
-			<TextField
-				{form}
-				field="email"
-				titleName="E-mail"
-				placeholder="Enter your E-mail"
-			/>
+			<TextField {form} field="email" titleName="E-mail" placeholder="Enter your E-mail" />
 			<TextField
 				{form}
 				field="password"

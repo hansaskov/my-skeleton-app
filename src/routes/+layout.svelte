@@ -14,7 +14,7 @@
 		LightSwitch,
 		Modal,
 		drawerStore,
-		storePopup,
+		storePopup
 	} from '@skeletonlabs/skeleton';
 	import 'iconify-icon';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
@@ -31,7 +31,6 @@
 	$: userInfo = data.userInfo;
 	$: positionClasses = $drawerStore.open ? 'translate-x-[25%]' : '';
 </script>
-
 
 <FlashMessageToast />
 <Modal />
@@ -90,13 +89,12 @@
 			<svelte:fragment slot="trail">
 				<div class="flex justify-between items-center gap-4">
 					<LightSwitch />
-					{#if user }
-						{#if userInfo?.imageUrl }
+					{#if user}
+						{#if userInfo?.imageUrl}
 							<Avatar src={userInfo?.imageUrl || undefined} />
 						{:else}
 							<Avatar initials={user.email} />
 						{/if}
-						
 					{:else}
 						<a href="/login" class="btn variant-filled-primary">Login</a>
 					{/if}

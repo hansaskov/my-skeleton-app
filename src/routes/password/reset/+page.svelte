@@ -13,19 +13,18 @@
 		delayMs: 150,
 		onUpdated: ({ form }) => {
 			if (form.posted) {
-				toastManager.trigger.success(`Password reset sent to ${form.data.email}`)
-			}
-			else if (!form.valid) {
+				toastManager.trigger.success(`Password reset sent to ${form.data.email}`);
+			} else if (!form.valid) {
 				const allErrors = Object.values(form.errors).flat();
 				const uniqueErrors = [...new Set(allErrors)];
 				for (const error of uniqueErrors) {
-					toastManager.trigger.error(error)
+					toastManager.trigger.error(error);
 				}
 			}
 		}
 	});
 
-	form.delayed.subscribe((v) => $isLoadingForm = v);
+	form.delayed.subscribe((v) => ($isLoadingForm = v));
 </script>
 
 <Seo

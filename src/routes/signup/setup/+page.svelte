@@ -18,12 +18,12 @@
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				toastManager.trigger.error(error)
+				toastManager.trigger.error(error);
 			}
 		}
 	});
 
-	form.delayed.subscribe((v) => $isLoadingForm = v );
+	form.delayed.subscribe((v) => ($isLoadingForm = v));
 
 	const form_data = form.form;
 </script>
@@ -35,8 +35,8 @@
 
 			<TextField field="fullname" {form} titleName="Your Full name" type="text" />
 			<TextField field="birthdate" {form} titleName="Your Birthdate" type="date" />
-			<TextAreaField field="description"	{form}	titleName="A description about you"	/>
- 
+			<TextAreaField field="description" {form} titleName="A description about you" />
+
 			<TextField
 				readonly
 				class="input variant-ghost-surface pointer-events-none opacity-50 bg-gray-200 "
@@ -45,26 +45,24 @@
 				titleName="Profile picture (optional)"
 			/>
 
-
 			<div class="flex w-fit items-center justify-between">
-			<FileDropzone
-				name="image.upload"
-				accept="image/*"
-				on:change={async (e) => {
-					$form_data.imageUrl = await handleFileUpload(e);
-				}}
-			>
-				<svelte:fragment slot="lead">
-					<iconify-icon icon="lucide:file-input" width="32" height="32" />
-				</svelte:fragment>
-				<svelte:fragment slot="meta">PNG, JPG and SVG allowed.</svelte:fragment>
-			</FileDropzone>
+				<FileDropzone
+					name="image.upload"
+					accept="image/*"
+					on:change={async (e) => {
+						$form_data.imageUrl = await handleFileUpload(e);
+					}}
+				>
+					<svelte:fragment slot="lead">
+						<iconify-icon icon="lucide:file-input" width="32" height="32" />
+					</svelte:fragment>
+					<svelte:fragment slot="meta">PNG, JPG and SVG allowed.</svelte:fragment>
+				</FileDropzone>
 
-
-			{#if $form_data.imageUrl}
-					<Avatar class="ml-4 w-1/3 "  src= "https://image.hjemmet.net/{$form_data.imageUrl}"></Avatar>
-			{/if}
-		</div>
+				{#if $form_data.imageUrl}
+					<Avatar class="ml-4 w-1/3 " src="https://image.hjemmet.net/{$form_data.imageUrl}" />
+				{/if}
+			</div>
 			<button class="btn variant-filled-primary w-full">Submit</button>
 		</div>
 	</form>

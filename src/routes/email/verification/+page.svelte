@@ -6,7 +6,6 @@
 
 	export let data: PageData;
 	export let form: ActionData;
-
 </script>
 
 <Seo
@@ -25,9 +24,9 @@
 			use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === 'success') {
-						toastManager.trigger.success('E-mail sent')
+						toastManager.trigger.success('E-mail sent');
 					} else if (result.type === 'failure' && result.data) {
-						toastManager.trigger.error('Too many requests sent, please wait')
+						toastManager.trigger.error('Too many requests sent, please wait');
 					}
 				};
 			}}

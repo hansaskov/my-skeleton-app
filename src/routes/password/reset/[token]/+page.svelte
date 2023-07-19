@@ -16,12 +16,11 @@
 			const uniqueErrors = [...new Set(allErrors)];
 
 			for (const error of uniqueErrors) {
-				toastManager.trigger.error(error)
+				toastManager.trigger.error(error);
 			}
 		}
 	});
-	form.delayed.subscribe(v =>	$isLoadingForm = v);
-
+	form.delayed.subscribe((v) => ($isLoadingForm = v));
 </script>
 
 <div class="flex flex-col items-center justify-center pt-8 mx-auto">

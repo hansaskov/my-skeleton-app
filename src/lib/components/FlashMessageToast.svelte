@@ -6,8 +6,8 @@
 	import { toastManager } from './ToastManager';
 
 	const flash = getFlash(page, {
-        clearOnNavigate: false
-    });
+		clearOnNavigate: false
+	});
 
 	let isGotoNavigated = false;
 	afterNavigate(({ type }) => {
@@ -19,10 +19,8 @@
 		if ($flash.page != $page.url.pathname) return;
 		if (!isGotoNavigated) return;
 
-		if ($flash.type === 'error') 
-			toastManager.trigger.error($flash.message);
-		if ($flash.type ==='success') 
-			toastManager.trigger.success($flash.message);
+		if ($flash.type === 'error') toastManager.trigger.error($flash.message);
+		if ($flash.type === 'success') toastManager.trigger.success($flash.message);
 	});
 </script>
 
