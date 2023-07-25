@@ -32,6 +32,13 @@ export const callbacks = {
 			message: 'Invalid Token, redirected to home-page',
 			page: '/'
 		}
+	},
+	family: {
+		created: {
+			type: 'success',
+			message: 'Family was successfully created!',
+			page: '/family'
+		}
 	}
 } as const;
 
@@ -46,8 +53,7 @@ export async function redirectFromPrivatePage(user: User | null, event: RequestE
 
 	const userInfo = await getUserInfo(user.userId);
 
-	if (!userInfo)
-		 throw redirect(callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
+	if (!userInfo) throw redirect(callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
 
 	return { userInfo, user };
 }

@@ -1,3 +1,4 @@
+import type { InferModel } from 'drizzle-orm';
 import {
 	mysqlTable,
 	bigint,
@@ -8,24 +9,23 @@ import {
 	unique
 } from 'drizzle-orm/mysql-core';
 
-// Enums for mysql schema
-const enums: {
-	currency: readonly [string, ...string[]];
-	wishlistRole: readonly [string, ...string[]];
-	familyRole: readonly [string, ...string[]];
-} = {
-	currency: ['DKK', 'EUR', 'USD', 'GBP'],
-	wishlistRole: ['EDITABLE', 'INTERACTABLE', 'VIEWABLE'],
-	familyRole: ['MODERATOR', 'MEMBER']
-};
+const currency = ['DKK', 'EUR', 'USD', 'GBP'] as const;
+const wishlistRole = ['EDITABLE', 'INTERACTABLE', 'VIEWABLE'] as const;
+const familyRole = ['MODERATOR', 'MEMBER'] as const;
+
+export type Currency = (typeof currency)[number];
+export type WishlistRole = (typeof wishlistRole)[number];
+export type FamilyRole = (typeof familyRole)[number];
 
 // Lucia Auth schema
 export const user = mysqlTable('auth_user', {
-	id: varchar('id', { length: 15 }).primaryKey(), // change this when using custom user ids
+	id: varchar('id', { length: 255 }).primaryKey(), // change this when using custom user ids
 	email: varchar('email', { length: 255 }).notNull(),
 	isEmailVerified: boolean('email_verified').notNull().default(false),
 	isUserInfoSet: boolean('user_info_set').notNull().default(false)
 });
+
+export type User = InferModel<typeof user>;
 
 export const session = mysqlTable('auth_session', {
 	id: varchar('id', { length: 128 }).primaryKey(),
@@ -50,15 +50,17 @@ export const userInfo = mysqlTable('user_info', {
 	description: varchar('description', { length: 1024 }).notNull(),
 	imageUrl: varchar('image_url', { length: 512 }),
 
-	userId: varchar('user_id', { length: 255 }).notNull().unique()
+	userId: varchar('user_id', { length: 255 }).notNull()
 });
+
+export type UserInfo = InferModel<typeof userInfo>;
 
 // Wish schema
 export const wish = mysqlTable('wish', {
 	id: varchar('id', { length: 255 }).primaryKey(),
 	name: varchar('name', { length: 256 }).notNull(),
 	price: bigint('price', { mode: 'number' }).notNull(),
-	currency: mysqlEnum('currency', enums.currency).default('DKK').notNull(),
+	currency: mysqlEnum('currency', currency).default('DKK').notNull(),
 	description: varchar('description', { length: 1024 }).notNull(),
 	imageUrl: varchar('image_url', { length: 512 }).notNull(),
 	updatedAt: datetime('updated_at').notNull(),
@@ -77,7 +79,7 @@ export const wishlistOnUsers = mysqlTable(
 	{
 		wishlistId: varchar('wishlist_id', { length: 255 }).notNull(),
 		userId: varchar('user_id', { length: 255 }).notNull(),
-		wishlistRole: mysqlEnum('wishlist_role', enums.wishlistRole).default('VIEWABLE').notNull(),
+		wishlistRole: mysqlEnum('wishlist_role', wishlistRole).default('VIEWABLE').notNull(),
 		updatedAt: datetime('updated_at').notNull()
 	},
 	(t) => ({
@@ -92,15 +94,21 @@ export const family = mysqlTable('family', {
 	is_public: boolean('is_public').notNull().default(true)
 });
 
+export type Family = InferModel<typeof family>;
+export type NewFamily = Omit<InferModel<typeof family, 'insert'>, 'id'>;
+
 export const familiesOnUsers = mysqlTable(
 	'families_on_users',
 	{
 		familyId: varchar('family_id', { length: 255 }).notNull(),
 		userId: varchar('user_id', { length: 255 }).notNull(),
-		familyRole: mysqlEnum('family_role', enums.familyRole).default('MEMBER').notNull(),
+		familyRole: mysqlEnum('family_role', familyRole).notNull(),
 		updatedAt: datetime('updated_at').notNull()
 	},
 	(t) => ({
 		first: unique().on(t.userId, t.familyId)
 	})
 );
+
+export type FamilyOnUsers = InferModel<typeof familiesOnUsers>;
+export type NewFamilyOnUsers = Omit<InferModel<typeof familiesOnUsers, 'insert'>, 'updatedAt'>;
