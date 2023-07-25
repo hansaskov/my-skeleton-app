@@ -11,30 +11,21 @@ import {
 	type UserInfo
 } from '../schema';
 
-export async function selectUsersOnFamily(familyId: string) {
-	const data = await db
-		.select({ user, userInfo })
-		.from(user)
-		.innerJoin(familiesOnUsers, eq(user.id, familiesOnUsers.userId))
-		.innerJoin(userInfo, eq(user.id, userInfo.userId))
-		.where(eq(familiesOnUsers.familyId, familyId))
-		.where(eq(userInfo.userId, user.id));
-	return data;
-}
+type GroupedData = Record<string, Family & { users: { user: User; userInfo: UserInfo }[] }>;
+
+const prepare = db
+	.select({ family, user, userInfo })
+	.from(family)
+	.innerJoin(familiesOnUsers, eq(familiesOnUsers.familyId, family.id))
+	.innerJoin(user, eq(familiesOnUsers.userId, placeholder('id')))
+	.innerJoin(userInfo, eq(userInfo.userId, placeholder('id')))
+	.where(eq(user.id, placeholder('id')))
+	.prepare();
 
 export async function selectAllFamilyMembersFromUser(userId: string) {
-	const data = await db
-		.select({ family, user, userInfo })
-		.from(family)
-		.innerJoin(familiesOnUsers, eq(family.id, familiesOnUsers.familyId))
-		.innerJoin(user, eq(user.id, familiesOnUsers.userId))
-		.innerJoin(userInfo, eq(user.id, userInfo.userId))
-		.where(eq(familiesOnUsers.userId, userId))
-		.where(eq(userInfo.userId, user.id));
+	const data = await prepare.execute({ id: userId });
 
-	type GroupedData = Record<string, Family & { users: { user: User; userInfo: UserInfo }[] }>;
-
-	// Group the data by family id
+	// Group data by unique family id
 	const groupedData = data.reduce((result: GroupedData, { family, user, userInfo }) => {
 		if (!result[family.id]) {
 			result[family.id] = { ...family, users: [] };
@@ -45,19 +36,8 @@ export async function selectAllFamilyMembersFromUser(userId: string) {
 		return result;
 	}, {});
 
-	// Convert the grouped data object to an array
+	// Then Convert the hashmap object to an array
 	const transformedData = Object.values(groupedData);
 
 	return transformedData;
-}
-
-export async function selectFamilyOnUsers(userId: string) {
-	const data = await db
-		.select({ family })
-		.from(family)
-		.leftJoin(familiesOnUsers, eq(family.id, familiesOnUsers.familyId))
-		.where(eq(familiesOnUsers.userId, userId));
-
-	const families = data.map(({ family }) => family);
-	return families;
 }
