@@ -1,10 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { redirectFromPrivatePage } from '$lib/server/redirects/redirects';
-import {
-	selectAllFamilyMembersFromUser,
-	selectFamilyOnUsers,
-	selectUsersOnFamily
-} from '$lib/server/drizzle/family/select';
+import { selectAllFamilyMembersFromUser } from '$lib/server/drizzle/family/select';
 
 export const load: PageServerLoad = async (event) => {
 	const { user: authUser } = await event.locals.auth.validateUser();

@@ -37,7 +37,7 @@
 
 	{#if data.families}
 		{#each data.families as family}
-            <h3 class="h3 capitalize">Family {family.name}</h3>
+			<h3 class="h3 capitalize">Family {family.name}</h3>
 			<div class="grid grid-cols-[auto_1fr_auto] gap-4 items-center">
 				<!-- Button: Left -->
 				<button type="button" class="btn-icon variant-filled" on:click={multiColumnLeft}>
