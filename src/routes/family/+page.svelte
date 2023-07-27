@@ -17,19 +17,6 @@
 			x = elemUsers.scrollLeft + elemUsers.clientWidth;
 		elemUsers.scroll(x, 0);
 	}
-
-	const users = [
-		{
-			url: '/users/hansaskov',
-			imageUrl: 'https://avatars0.githubusercontent.com/u/1000000?',
-			name: 'Hans Askov'
-		},
-		{
-			url: '/users/hansaskov',
-			imageUrl: 'https://avatars0.githubusercontent.com/u/1000000?',
-			name: 'Hans Askov'
-		}
-	];
 </script>
 
 <div class="flex flex-col gap-8 items-center justify-center">

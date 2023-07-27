@@ -3,7 +3,6 @@ import { db } from '../db';
 import {
 	family,
 	familiesOnUsers,
-	type NewFamily,
 	user,
 	userInfo,
 	type Family,

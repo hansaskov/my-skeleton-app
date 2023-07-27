@@ -1,12 +1,10 @@
 import type { Actions, PageServerLoad } from './$types';
 import {
 	callbacks,
-	handleSignedinRedirect,
 	redirectFromPrivatePage
 } from '$lib/server/redirects/redirects';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';
-import { fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import { createNewFamily } from '$lib/server/drizzle/family/insert';
 
