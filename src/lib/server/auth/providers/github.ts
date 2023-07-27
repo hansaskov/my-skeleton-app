@@ -1,7 +1,7 @@
 import { createUrl, handleRequest, authorizationHeaders } from '../request';
 import { scope, generateState, connectAuth } from '../core';
 
-import type { Auth } from 'lucia-auth';
+import type { Auth } from 'lucia';
 import type { OAuthConfig, OAuthProvider } from '../core';
 
 const PROVIDER_ID = 'github';

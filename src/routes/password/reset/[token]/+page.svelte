@@ -3,14 +3,12 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/form/TextField.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
-	import { schema } from '$lib/schemas/authentication';
 	import { toastManager } from '$lib/components/ToastManager';
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
 		delayMs: 150,
-		validators: schema.password,
 		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];

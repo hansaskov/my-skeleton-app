@@ -3,16 +3,16 @@ import type { LayoutServerLoad } from './$types';
 import { loadFlash } from 'sveltekit-flash-message/server';
 
 export const load: LayoutServerLoad = loadFlash(async (event) => {
-	const { user } = await event.locals.auth.validateUser();
+	const session = await event.locals.auth.validate();
 
-	if (!user) {
+	if (!session) {
 		return;
 	}
 
-	const userInfo = await getUserInfo(user.userId);
+	const userInfo = await getUserInfo(session.user.userId);
 
 	return {
-		user,
+		user: session.user,
 		userInfo
 	};
 });

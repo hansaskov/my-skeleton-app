@@ -1,32 +1,32 @@
 import { fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
-import { emailVerificationToken } from '$lib/server/lucia';
 import { sendVerificationEmail } from '$lib/server/email/send';
 
 import type { Actions, PageServerLoad } from './$types';
 import { callbacks } from '$lib/server/redirects/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
+import { generateEmailVerificationToken } from '$lib/server/token';
 
 export const load: PageServerLoad = async (event) => {
-	const { user } = await event.locals.auth.validateUser();
+	const session = await event.locals.auth.validate();
 
-	if (!user) throw redirect(302, callbacks.login.page, callbacks.login, event);
-	if (!user.userInfoSet)
+	if (!session) throw redirect(302, callbacks.login.page, callbacks.login, event);
+	if (!session.user.userInfoSet)
 		throw redirect(302, callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
-	if (!user.emailVerified) return { user };
+	if (!session.user.emailVerified) return { user: session.user };
 
 	throw redirect(302, '/');
 };
 
 export const actions: Actions = {
 	default: async ({ locals }) => {
-		const { user } = await locals.auth.validateUser();
-		if (!user || user.emailVerified) {
-			return fail(401, { message: 'Unauthorized' });
+		const session = await locals.auth.validate();
+		if (!session) throw redirect(302, '/login');
+		if (session.user.emailVerified) {
+			throw redirect(302, '/');
 		}
 		try {
-			const token = await emailVerificationToken.issue(user.userId);
-			await sendVerificationEmail(user, token.toString());
+			await sendVerificationEmail(session.user);
 		} catch (e) {
 			if (e instanceof PostmarkError && e.code == 429) {
 				return fail(429, { message: e.message });

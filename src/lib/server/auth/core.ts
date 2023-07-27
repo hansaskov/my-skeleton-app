@@ -1,6 +1,6 @@
-import { generateRandomString } from 'lucia-auth';
+import { generateRandomString } from 'lucia/utils';
 
-import type { Auth, Key, LuciaError } from 'lucia-auth';
+import type { Auth, Key, LuciaError } from 'lucia';
 import type { CreateUserAttributesParameter, LuciaUser } from './lucia';
 
 // deprecate in v2 for better api
@@ -101,8 +101,8 @@ export const connectAuth = async <_Auth extends Auth>(
 	return {
 		existingUser,
 		createPersistentKey: async (userId: string) => {
-			return await auth.createKey(userId, {
-				type: 'persistent',
+			return await auth.createKey({
+				userId,
 				providerId: providerId,
 				providerUserId,
 				password: null
@@ -112,7 +112,7 @@ export const connectAuth = async <_Auth extends Auth>(
 			attributes: CreateUserAttributesParameter<_Auth>
 		): Promise<LuciaUser<_Auth>> => {
 			const user = await auth.createUser({
-				primaryKey: {
+				key: {
 					providerId: providerId,
 					providerUserId,
 					password: null

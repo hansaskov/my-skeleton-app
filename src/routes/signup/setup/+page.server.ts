@@ -6,9 +6,9 @@ import { auth } from '$lib/server/lucia';
 import { callbacks } from '$lib/server/redirects/redirects';
 import { moveFileFromTempFolder } from '../../api/upload/server/renameFile';
 import { userInfo } from '$lib/server/drizzle/schema';
-import { generateRandomString } from 'lucia-auth';
 import { redirect } from 'sveltekit-flash-message/server';
 import { db } from '$lib/server/drizzle/db';
+import { generateRandomString } from 'lucia/utils';
 
 const schema = z.object({
 	fullname: z.string(),
@@ -18,18 +18,18 @@ const schema = z.object({
 });
 
 export const load: PageServerLoad = async (event) => {
-	const { user } = await event.locals.auth.validateUser();
+	const session = await event.locals.auth.validate();
 
 	// If the user is not logged in, return them to login page
-	if (!user) throw redirect(302, callbacks.login.page, callbacks.login, event);
+	if (!session) throw redirect(302, callbacks.login.page, callbacks.login, event);
 
 	// If the user is missing userdata keep them on the page
-	if (!user.userInfoSet) {
+	if (!session.user.userInfoSet) {
 		const form = await superValidate(schema);
 		return { form };
 	}
 	// Is their email is not verified, redirect to the email verification otherwise redirect to the home page
-	if (!user.emailVerified)
+	if (!session.user.emailVerified)
 		throw redirect(302, callbacks.setup.email.page, callbacks.setup.email, event);
 
 	// If all is well, go to the homepage
@@ -52,15 +52,15 @@ export const actions: Actions = {
 
 			// Create the user info
 			await db.insert(userInfo).values({
-				id: generateRandomString(255),
+				id: generateRandomString(63),
 				fullname: form.data.fullname,
 				birthdate: form.data.birthdate,
 				description: form.data.description,
 				imageUrl: form.data.imageUrl,
-				userId: session.userId
+				userId: session.user.userId
 			});
 
-			await auth.updateUserAttributes(session.userId, {
+			await auth.updateUserAttributes(session.user.userId, {
 				user_info_set: true
 			});
 		} catch (e) {

@@ -2,20 +2,20 @@ import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { LuciaError } from 'lucia-auth';
+import { LuciaError } from 'lucia';
 import { schema } from '$lib/schemas/authentication';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
 import { ratelimit } from '$lib/server/ratelimit/ratelimiter';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async (event) => {
-	const [form, { user }] = await Promise.all([
+	const [form, session] = await Promise.all([
 		superValidate(schema.login),
-		event.locals.auth.validateUser()
+		event.locals.auth.validate()
 	]);
-	if (!user) return { form };
+	if (!session) return { form };
 
-	handleSignedinRedirect(user, event);
+	handleSignedinRedirect(session.user, event);
 };
 
 export const actions: Actions = {
@@ -33,7 +33,10 @@ export const actions: Actions = {
 			}
 
 			const key = await auth.useKey('email', form.data.email, form.data.password);
-			const session = await auth.createSession(key.userId);
+			const session = await auth.createSession({
+				userId: key.userId,
+				attributes: {}
+			});
 			locals.auth.setSession(session);
 		} catch (e) {
 			if (e instanceof LuciaError) {

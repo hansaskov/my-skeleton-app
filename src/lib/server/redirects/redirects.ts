@@ -1,4 +1,4 @@
-import type { User } from 'lucia-auth';
+import type { Session, User } from 'lucia';
 import { redirect } from 'sveltekit-flash-message/server';
 import type { RequestEvent } from '@sveltejs/kit';
 import { getUserInfo } from '../drizzle/userinfo/select';
@@ -42,18 +42,19 @@ export const callbacks = {
 	}
 } as const;
 
-export async function redirectFromPrivatePage(user: User | null, event: RequestEvent) {
+export async function redirectFromPrivatePage(session: Session | null, event: RequestEvent) {
 	// Redirect to email verification or setup
-	if (!user) throw redirect(callbacks.login.page, callbacks.login, event);
-	if (!user.userInfoSet)
+	if (!session) throw redirect(callbacks.login.page, callbacks.login, event);
+	if (!session.user.userInfoSet)
 		throw redirect(callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
-	if (!user.emailVerified) throw redirect(callbacks.setup.email.page, callbacks.setup.email, event);
+	if (!session.user.emailVerified)
+		throw redirect(callbacks.setup.email.page, callbacks.setup.email, event);
 
-	const userInfo = await getUserInfo(user.userId);
+	const userInfo = await getUserInfo(session.user.userId);
 
 	if (!userInfo) throw redirect(callbacks.setup.userInfo.page, callbacks.setup.userInfo, event);
 
-	return { userInfo, user };
+	return { userInfo, user: session.user };
 }
 
 export function handleSignedinRedirect(user: User, event: RequestEvent): never {

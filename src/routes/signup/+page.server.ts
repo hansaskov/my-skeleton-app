@@ -1,24 +1,25 @@
 import { setError, superValidate } from 'sveltekit-superforms/server';
-import { auth, emailVerificationToken } from '$lib/server/lucia';
+import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
-import { LuciaError } from 'lucia-auth';
+import { LuciaError } from 'lucia';
 import type { PageServerLoad } from './$types';
 import { sendVerificationEmail } from '$lib/server/email/send';
 import { schema } from '$lib/schemas/authentication';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
+import { generateEmailVerificationToken } from '$lib/server/token';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async (event) => {
 	// Use Promise.all to await both promises simultaneously
-	const [form, { user }] = await Promise.all([
+	const [form, session] = await Promise.all([
 		superValidate(schema.login),
-		event.locals.auth.validateUser()
+		event.locals.auth.validate()
 	]);
 
-	if (!user) return { form };
+	if (!session) return { form };
 
-	handleSignedinRedirect(user, event);
+	handleSignedinRedirect(session.user, event);
 };
 
 export const actions: Actions = {
@@ -28,7 +29,7 @@ export const actions: Actions = {
 
 		try {
 			const user = await auth.createUser({
-				primaryKey: {
+				key: {
 					providerId: 'email',
 					providerUserId: form.data.email,
 					password: form.data.password
@@ -39,11 +40,14 @@ export const actions: Actions = {
 					user_info_set: false
 				}
 			});
-			const session = await auth.createSession(user.userId);
-			const token = await emailVerificationToken.issue(user.userId);
-			await sendVerificationEmail(user, token.toString());
-
+			const session = await auth.createSession({
+				userId: user.userId,
+				attributes: {}
+			});
 			locals.auth.setSession(session);
+
+			
+			await sendVerificationEmail(user);
 		} catch (e) {
 			if (e instanceof LuciaError && e.message === 'AUTH_DUPLICATE_KEY_ID') {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);

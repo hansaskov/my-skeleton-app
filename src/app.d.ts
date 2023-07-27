@@ -5,7 +5,7 @@
 declare global {
 	namespace App {
 		interface Locals {
-			auth: import('lucia-auth').AuthRequest;
+			auth: import('lucia').AuthRequest;
 		}
 		interface PageData {
 			flash?: {
@@ -21,15 +21,16 @@ declare global {
 	}
 }
 
-/// <reference types="lucia-auth" />
+/// <reference types="lucia" />
 declare global {
 	namespace Lucia {
 		type Auth = import('$lib/server/lucia').Auth;
-		type UserAttributes = {
+		type DatabaseUserAttributes = {
 			email: string;
 			email_verified: boolean;
 			user_info_set: boolean;
 		};
+		type DatabaseSessionAttributes = Record<string, never>;
 	}
 }
 

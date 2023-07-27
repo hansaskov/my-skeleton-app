@@ -3,8 +3,8 @@ import { redirectFromPrivatePage } from '$lib/server/redirects/redirects';
 import { selectAllFamilyMembersFromUser } from '$lib/server/drizzle/family/select';
 
 export const load: PageServerLoad = async (event) => {
-	const { user: authUser } = await event.locals.auth.validateUser();
-	const { userInfo, user } = await redirectFromPrivatePage(authUser, event);
+	const session = await event.locals.auth.validate();
+	const { userInfo, user } = await redirectFromPrivatePage(session, event);
 
 	try {
 		const families = await selectAllFamilyMembersFromUser(user.userId);

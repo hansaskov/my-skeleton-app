@@ -1,21 +1,24 @@
 import { sendPasswordResetEmail } from '$lib/server/email/send';
-import { passwordResetToken } from '$lib/server/lucia';
 import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import type { Actions, PageServerLoad } from './$types';
 import { schema } from '$lib/schemas/authentication';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
+import { generatePasswordResetToken } from '$lib/server/token';
+import { db } from '$lib/server/drizzle/db';
+import { user } from '$lib/server/drizzle/schema';
+import { eq } from 'drizzle-orm';
+import { auth } from '$lib/server/lucia';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async (event) => {
-	const [form, { user }] = await Promise.all([
+	const [form, session] = await Promise.all([
 		superValidate(schema.login),
-		event.locals.auth.validateUser()
+		event.locals.auth.validate()
 	]);
-
-	if (!user) return { form };
-	handleSignedinRedirect(user, event);
+	if (!session) return { form };
+	handleSignedinRedirect(session.user, event);
 };
 
 export const actions: Actions = {
@@ -24,14 +27,21 @@ export const actions: Actions = {
 		if (!form.valid) return fail(400, { form });
 
 		try {
-			const { user } = await locals.auth.validateUser();
+			const data = await db.select().from(user).where(eq(user.email, form.data.email))
+			const storedUser = data.at(0)
 
-			if (!user) {
+			if (!storedUser) {
 				return setError(form, 'email', `E-mail "${form.data.email}" does not exist`);
 			}
 
-			const token = await passwordResetToken.issue(user.userId);
-			await sendPasswordResetEmail(user, token.toString());
+			const token = await generatePasswordResetToken(storedUser.id);
+			await sendPasswordResetEmail({
+				userId: storedUser.id,
+				email: storedUser.email,
+				emailVerified: storedUser.isEmailVerified,
+				userInfoSet: storedUser.isUserInfoSet
+
+			}, token.toString());
 		} catch (e) {
 			if (e instanceof PostmarkError && e.code == 429) {
 				return setError(form, e.message);

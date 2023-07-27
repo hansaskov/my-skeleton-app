@@ -1,22 +1,23 @@
 // src/routes/password-reset/[token]/+page.server.ts
 // page to enter new password
 import { LuciaTokenError } from '@lucia-auth/tokens';
-import { auth, passwordResetToken } from '$lib/server/lucia';
+import { auth } from '$lib/server/lucia';
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';
 import { redirect } from 'sveltekit-flash-message/server';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
+import { validatePasswordResetToken } from '$lib/server/token';
 
 export const load: PageServerLoad = async (event) => {
-	const [form, { user }] = await Promise.all([
-		superValidate(schema.password),
-		event.locals.auth.validateUser()
+	const [form, session] = await Promise.all([
+		superValidate(schema.login),
+		event.locals.auth.validate()
 	]);
-	if (!user) return { form };
+	if (!session) return { form };
 
-	handleSignedinRedirect(user, event);
+	handleSignedinRedirect(session.user, event);
 };
 
 export const actions: Actions = {
@@ -25,11 +26,23 @@ export const actions: Actions = {
 		if (!form.valid) return fail(400, { form });
 
 		try {
-			const token = await passwordResetToken.validate(params.token ?? '');
-			const user = await auth.getUser(token.userId);
-			await auth.invalidateAllUserSessions(user.userId);
+			const { token } = params;
+			const userId = await validatePasswordResetToken(token);
+			let user = await auth.getUser(userId);
+			await auth.invalidateAllUserSessions(userId);
 			await auth.updateKeyPassword('email', user.email, form.data.password);
-			const session = await auth.createSession(user.userId);
+
+			if (!user.emailVerified) {
+				user = await auth.updateUserAttributes(user.userId, {
+					email_verified: true,
+				});
+			}
+
+			const session = await auth.createSession({
+				userId: user.userId,
+				attributes: {}
+			});
+
 			locals.auth.setSession(session);
 		} catch (e) {
 			if (e instanceof LuciaTokenError) {

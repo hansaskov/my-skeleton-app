@@ -33,7 +33,7 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 			});
 		};
 		const user = await getUser();
-		const session = await auth.createSession(user.userId);
+		const session = await auth.createSession({ userId: user.userId, attributes: {} });
 		locals.auth.setSession(session);
 	} catch (e) {
 		// invalid code

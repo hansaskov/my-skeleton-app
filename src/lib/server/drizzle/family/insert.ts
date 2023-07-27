@@ -1,9 +1,9 @@
+import { generateRandomString } from 'lucia/utils';
 import { db } from '../db';
 import { family, familiesOnUsers, type NewFamily } from '../schema';
-import { generateRandomString } from 'lucia-auth';
 
 export async function createNewFamily(newFamily: NewFamily, userId: string) {
-	const familyId = generateRandomString(255);
+	const familyId = generateRandomString(63);
 
 	await db.transaction(async (tx) => {
 		await tx.insert(family).values({

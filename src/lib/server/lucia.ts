@@ -1,23 +1,25 @@
-import lucia from 'lucia-auth';
-import { sveltekit } from 'lucia-auth/middleware';
+import { lucia } from 'lucia';
+import { sveltekit } from 'lucia/middleware';
 import { planetscale } from '@lucia-auth/adapter-mysql';
 import { dev } from '$app/environment';
-import { idToken } from '@lucia-auth/tokens';
 
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
-import { github } from './auth/providers/github';
 import { planetscale_connection } from './planetscale';
+import { github } from './auth/providers/github';
 
 export const auth = lucia({
-	adapter: planetscale(planetscale_connection as any),
+	adapter: planetscale(planetscale_connection as any, {
+		user: 'auth_user',
+		key: 'auth_key',
+		session: 'auth_session'
+	}),
 	env: dev ? 'DEV' : 'PROD',
 	middleware: sveltekit(),
-	transformDatabaseUser: (userData) => {
+	getUserAttributes: (data) => {
 		return {
-			userId: userData.id,
-			email: userData.email,
-			emailVerified: userData.email_verified,
-			userInfoSet: userData.user_info_set
+			email: data.email,
+			emailVerified: data.email_verified,
+			userInfoSet: data.user_info_set
 		};
 	}
 });
@@ -26,14 +28,6 @@ export const githubAuth = github(auth, {
 	clientId: GITHUB_CLIENT_ID,
 	clientSecret: GITHUB_CLIENT_SECRET,
 	scope: ['user:email']
-});
-
-export const emailVerificationToken = idToken(auth, 'email_verification', {
-	expiresIn: 60 * 60 * 8 // 8 hours
-});
-
-export const passwordResetToken = idToken(auth, 'password_reset', {
-	expiresIn: 60 * 30 // 30 minutes
 });
 
 export type Auth = typeof auth;
