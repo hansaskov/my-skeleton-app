@@ -1,13 +1,20 @@
 {
-  "version": "5",
-  "dialect": "mysql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "5",
-      "when": 1690475192999,
-      "tag": "0000_typical_killmonger",
-      "breakpoints": true
-    }
-  ]
+	"version": "5",
+	"dialect": "mysql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "5",
+			"when": 1690475192999,
+			"tag": "0000_typical_killmonger",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "5",
+			"when": 1690650556996,
+			"tag": "0001_even_malcolm_colcord",
+			"breakpoints": true
+		}
+	]
 }

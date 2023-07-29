@@ -5,7 +5,7 @@ import { sendVerificationEmail } from '$lib/server/email/send';
 import type { Actions, PageServerLoad } from './$types';
 import { callbacks } from '$lib/server/redirects/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
-import { generateEmailVerificationToken } from '$lib/server/token';
+import { generateToken } from '$lib/server/token';
 
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.auth.validate();

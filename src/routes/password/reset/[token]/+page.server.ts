@@ -8,7 +8,7 @@ import { setError, superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';
 import { redirect } from 'sveltekit-flash-message/server';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
-import { validatePasswordResetToken } from '$lib/server/token';
+import { validateToken } from '$lib/server/token';
 
 export const load: PageServerLoad = async (event) => {
 	const [form, session] = await Promise.all([
@@ -27,14 +27,14 @@ export const actions: Actions = {
 
 		try {
 			const { token } = params;
-			const userId = await validatePasswordResetToken(token);
+			const userId = await validateToken({ tokenId: token });
 			let user = await auth.getUser(userId);
 			await auth.invalidateAllUserSessions(userId);
 			await auth.updateKeyPassword('email', user.email, form.data.password);
 
 			if (!user.emailVerified) {
 				user = await auth.updateUserAttributes(user.userId, {
-					email_verified: true,
+					email_verified: true
 				});
 			}
 

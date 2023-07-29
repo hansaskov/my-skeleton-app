@@ -7,7 +7,6 @@ import { sendVerificationEmail } from '$lib/server/email/send';
 import { schema } from '$lib/schemas/authentication';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
-import { generateEmailVerificationToken } from '$lib/server/token';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async (event) => {
@@ -46,7 +45,6 @@ export const actions: Actions = {
 			});
 			locals.auth.setSession(session);
 
-			
 			await sendVerificationEmail(user);
 		} catch (e) {
 			if (e instanceof LuciaError && e.message === 'AUTH_DUPLICATE_KEY_ID') {

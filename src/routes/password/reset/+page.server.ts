@@ -5,11 +5,10 @@ import type { Actions, PageServerLoad } from './$types';
 import { schema } from '$lib/schemas/authentication';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
-import { generatePasswordResetToken } from '$lib/server/token';
+import { generateToken } from '$lib/server/token';
 import { db } from '$lib/server/drizzle/db';
 import { user } from '$lib/server/drizzle/schema';
 import { eq } from 'drizzle-orm';
-import { auth } from '$lib/server/lucia';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async (event) => {
@@ -22,26 +21,28 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	default: async ({ request }) => {
 		const form = await superValidate(request, schema.email);
 		if (!form.valid) return fail(400, { form });
 
 		try {
-			const data = await db.select().from(user).where(eq(user.email, form.data.email))
-			const storedUser = data.at(0)
+			const data = await db.select().from(user).where(eq(user.email, form.data.email));
+			const storedUser = data.at(0);
 
 			if (!storedUser) {
 				return setError(form, 'email', `E-mail "${form.data.email}" does not exist`);
 			}
 
-			const token = await generatePasswordResetToken(storedUser.id);
-			await sendPasswordResetEmail({
-				userId: storedUser.id,
-				email: storedUser.email,
-				emailVerified: storedUser.isEmailVerified,
-				userInfoSet: storedUser.isUserInfoSet
-
-			}, token.toString());
+			const token = await generateToken({ userId: storedUser.id, tokenType: 'PASSWORD RESET' });
+			await sendPasswordResetEmail(
+				{
+					userId: storedUser.id,
+					email: storedUser.email,
+					emailVerified: storedUser.isEmailVerified,
+					userInfoSet: storedUser.isUserInfoSet
+				},
+				token.toString()
+			);
 		} catch (e) {
 			if (e instanceof PostmarkError && e.code == 429) {
 				return setError(form, e.message);

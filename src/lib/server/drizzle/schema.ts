@@ -12,10 +12,12 @@ import {
 const currency = ['DKK', 'EUR', 'USD', 'GBP'] as const;
 const wishlistRole = ['EDITABLE', 'INTERACTABLE', 'VIEWABLE'] as const;
 const familyRole = ['MODERATOR', 'MEMBER'] as const;
+export const tokenType = ['VALIDATE EMAIL', 'PASSWORD RESET'] as const;
 
 export type Currency = (typeof currency)[number];
 export type WishlistRole = (typeof wishlistRole)[number];
 export type FamilyRole = (typeof familyRole)[number];
+export type TokenEnum = (typeof tokenType)[number];
 
 // Lucia Auth schema
 export type User = InferModel<typeof user>;
@@ -42,16 +44,10 @@ export const key = mysqlTable('auth_key', {
 });
 
 // Authentication tokens
-export type EmailVerificationToken = InferModel<typeof emailVerificationToken>;
-export const emailVerificationToken = mysqlTable('email_verification_token', {
+export type Token = InferModel<typeof token>;
+export const token = mysqlTable('auth_token', {
 	id: varchar('id', { length: 128 }).primaryKey(),
-	expires: bigint('expires', { mode: 'number' }).notNull(),
-	userId: varchar('user_id', { length: 128 }).notNull()
-});
-
-export type PasswordResetToken = InferModel<typeof passwordResetToken>;
-export const passwordResetToken = mysqlTable('password_reset_token', {
-	id: varchar('id', { length: 128 }).primaryKey(),
+	type: mysqlEnum('type', tokenType).notNull(),
 	expires: bigint('expires', { mode: 'number' }).notNull(),
 	userId: varchar('user_id', { length: 128 }).notNull()
 });

@@ -3,7 +3,7 @@ import { ratelimit } from '../ratelimit/ratelimiter';
 import { postmarkClient } from '../postmark';
 import type { User } from 'lucia';
 import { dev } from '$app/environment';
-import { generateEmailVerificationToken } from '../token';
+import { generateToken } from '../token';
 
 const sendEmail = async (user: User, subject: string, content: string) => {
 	await postmarkClient.sendEmail({
@@ -17,7 +17,10 @@ const sendEmail = async (user: User, subject: string, content: string) => {
 const domain = dev ? 'http://localhost:5173' : 'https://hjemmet.net';
 
 export const sendVerificationEmail = async (user: User) => {
-	const verificationToken = await generateEmailVerificationToken(user.userId);
+	const verificationToken = await generateToken({
+		userId: user.userId,
+		tokenType: 'VALIDATE EMAIL'
+	});
 	const rateLimitAttempt = await ratelimit.email.verification.limit(user.userId);
 	if (!rateLimitAttempt.success) {
 		const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);

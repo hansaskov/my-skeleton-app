@@ -3,12 +3,12 @@ import { LuciaTokenError } from '@lucia-auth/tokens';
 import type { RequestHandler } from './$types';
 import { redirect } from 'sveltekit-flash-message/server';
 import { callbacks } from '$lib/server/redirects/redirects';
-import { validateEmailVerificationToken } from '$lib/server/token';
+import { validateToken } from '$lib/server/token';
 
 export const GET: RequestHandler = async (event) => {
 	const { token } = event.params;
 	try {
-		const userId = await validateEmailVerificationToken(token);
+		const userId = await validateToken({ tokenId: token });
 		const user = await auth.getUser(userId);
 
 		await Promise.all([
@@ -31,7 +31,7 @@ export const GET: RequestHandler = async (event) => {
 					throw redirect(callbacks.email.invalid_token.page, callbacks.email.invalid_token, event);
 			}
 		}
-		console.log(e)
+		console.log(e);
 	}
 
 	throw redirect(callbacks.email.verified.page, callbacks.email.verified, event);

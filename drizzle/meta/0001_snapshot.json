@@ -1,44 +1,9 @@
 {
 	"version": "5",
 	"dialect": "mysql",
-	"id": "97d144a8-c29d-4f4f-b1b5-01b66acf2303",
-	"prevId": "00000000-0000-0000-0000-000000000000",
+	"id": "d5626a32-ee59-4be1-9675-7f20a457cef8",
+	"prevId": "97d144a8-c29d-4f4f-b1b5-01b66acf2303",
 	"tables": {
-		"email_verification_token": {
-			"name": "email_verification_token",
-			"columns": {
-				"id": {
-					"name": "id",
-					"type": "varchar(128)",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"expires": {
-					"name": "expires",
-					"type": "bigint",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"user_id": {
-					"name": "user_id",
-					"type": "varchar(128)",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				}
-			},
-			"indexes": {},
-			"foreignKeys": {},
-			"compositePrimaryKeys": {
-				"email_verification_token_id": {
-					"name": "email_verification_token_id",
-					"columns": ["id"]
-				}
-			},
-			"uniqueConstraints": {}
-		},
 		"families_on_users": {
 			"name": "families_on_users",
 			"columns": {
@@ -152,41 +117,6 @@
 			},
 			"uniqueConstraints": {}
 		},
-		"password_reset_token": {
-			"name": "password_reset_token",
-			"columns": {
-				"id": {
-					"name": "id",
-					"type": "varchar(128)",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"expires": {
-					"name": "expires",
-					"type": "bigint",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				},
-				"user_id": {
-					"name": "user_id",
-					"type": "varchar(128)",
-					"primaryKey": false,
-					"notNull": true,
-					"autoincrement": false
-				}
-			},
-			"indexes": {},
-			"foreignKeys": {},
-			"compositePrimaryKeys": {
-				"password_reset_token_id": {
-					"name": "password_reset_token_id",
-					"columns": ["id"]
-				}
-			},
-			"uniqueConstraints": {}
-		},
 		"auth_session": {
 			"name": "auth_session",
 			"columns": {
@@ -224,6 +154,48 @@
 			"compositePrimaryKeys": {
 				"auth_session_id": {
 					"name": "auth_session_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {}
+		},
+		"auth_token": {
+			"name": "auth_token",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"type": {
+					"name": "type",
+					"type": "enum('VALIDATE EMAIL','PASSWORD RESET')",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"expires": {
+					"name": "expires",
+					"type": "bigint",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "varchar(128)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {
+				"auth_token_id": {
+					"name": "auth_token_id",
 					"columns": ["id"]
 				}
 			},
