@@ -15,16 +15,16 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@floating-ui/dom": "^1.5.0",
+		"@floating-ui/dom": "^1.5.1",
 		"@playwright/test": "^1.36.2",
 		"@skeletonlabs/skeleton": "^1.10.0",
 		"@sveltejs/adapter-auto": "^2.1.0",
-		"@sveltejs/kit": "^1.22.3",
+		"@sveltejs/kit": "^1.22.4",
 		"@tailwindcss/forms": "^0.5.4",
 		"@tailwindcss/typography": "^0.5.9",
 		"@types/cookie": "^0.5.1",
-		"@typescript-eslint/eslint-plugin": "^6.2.0",
-		"@typescript-eslint/parser": "^6.2.0",
+		"@typescript-eslint/eslint-plugin": "^6.2.1",
+		"@typescript-eslint/parser": "^6.2.1",
 		"autoprefixer": "^10.4.14",
 		"dotenv": "^16.3.1",
 		"drizzle-kit": "^0.19.12",
@@ -35,7 +35,7 @@
 		"postcss": "^8.4.27",
 		"prettier": "^3.0.0",
 		"prettier-plugin-svelte": "^3.0.3",
-		"svelte": "^4.1.1",
+		"svelte": "^4.1.2",
 		"svelte-check": "^3.4.6",
 		"svelte-preprocess": "^5.0.4",
 		"sveltekit-flash-message": "^2.1.0",
@@ -43,7 +43,7 @@
 		"tailwindcss": "^3.3.3",
 		"tslib": "^2.6.1",
 		"typescript": "^5.1.6",
-		"vite": "^4.4.7",
+		"vite": "^4.4.8",
 		"vitest": "^0.33.0",
 		"zod": "^3.21.4"
 	},
@@ -52,15 +52,14 @@
 		"@aws-sdk/client-s3": "^3.379.1",
 		"@aws-sdk/s3-request-presigner": "^3.379.1",
 		"@lucia-auth/adapter-mysql": "^2.0.0",
-		"@lucia-auth/oauth": "^2.0.0",
-		"@lucia-auth/tokens": "^1.0.2",
+		"@lucia-auth/oauth": "^2.0.1",
 		"@planetscale/database": "^1.10.0",
-		"@sveltejs/adapter-vercel": "^3.0.2",
+		"@sveltejs/adapter-vercel": "^3.0.3",
 		"@upstash/ratelimit": "^0.4.3",
 		"@upstash/redis": "^1.22.0",
 		"drizzle-orm": "^0.27.2",
 		"iconify-icon": "^1.0.8",
 		"lucia": "^2.0.0",
-		"postmark": "^3.0.18"
+		"postmark": "^3.0.19"
 	}
 }
