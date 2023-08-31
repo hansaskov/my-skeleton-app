@@ -1,61 +1,95 @@
 <script lang="ts">
+	import Carosel from '$lib/components/carosel/Carosel.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	let elemUsers: HTMLDivElement;
+	import type { ModalComponent, ModalSettings } from '@skeletonlabs/skeleton';
+	import { modalStore } from '@skeletonlabs/skeleton';
+	import InviteComponent from './inviteComponent.svelte';
+	import DeleteComponent from './deleteComponent.svelte';
 
-	function multiColumnLeft(): void {
-		let x = elemUsers.scrollWidth;
-		if (elemUsers.scrollLeft !== 0) x = elemUsers.scrollLeft - elemUsers.clientWidth;
-		elemUsers.scroll(x, 0);
-	}
 
-	function multiColumnRight(): void {
-		let x = -0;
-		// -1 is used because different browsers use different methods to round scrollWidth pixels.
-		if (elemUsers.scrollLeft < elemUsers.scrollWidth - elemUsers.clientWidth - 1)
-			x = elemUsers.scrollLeft + elemUsers.clientWidth;
-		elemUsers.scroll(x, 0);
-	}
+function inviteUserModal(familyId: string) {
+	const modalComponent: ModalComponent = {
+		ref: InviteComponent,
+		props: { data: data.inviteFamilyMemberForm, familyId: familyId},
+	};
+
+	const modal: ModalSettings = {
+		type: 'component',
+		component: modalComponent
+	};
+
+	modalStore.trigger(modal)
+	return undefined
+} 
+
+function deleteFamilyModal({familyId, familyName}: { familyId: string, familyName: string}) {
+	const modalComponent: ModalComponent = {
+		ref: DeleteComponent,
+		props: { familyId, familyName},
+	};
+
+	const modal: ModalSettings = {
+		type: 'component',
+		component: modalComponent
+	};
+
+	modalStore.trigger(modal)
+	return undefined
+
+}
+
 </script>
 
-<div class="flex flex-col gap-8 items-center justify-center">
-	<h1 class="h1 capitalize">Your family page</h1>
+<div class="flex flex-col items-center justify-center pt-8 mx-auto">
+	<div class="flex flex-col gap-8 items-center justify-center">
+		<h1 class="h1 capitalize">Your family page</h1>
 
-	{#if data.families}
-		{#each data.families as family}
-			<h3 class="h3 capitalize">Family {family.name}</h3>
-			<div class="grid grid-cols-[auto_1fr_auto] gap-4 items-center">
-				<!-- Button: Left -->
-				<button type="button" class="btn-icon variant-filled" on:click={multiColumnLeft}>
-					<iconify-icon class="w-5 justify-center" icon="lucide:arrow-left" />
-				</button>
-				<!-- Carousel -->
-				<div
-					bind:this={elemUsers}
-					class="snap-x snap-mandatory scroll-smooth flex gap-2 pb-2 overflow-x-auto"
-				>
-					{#each family.users as familyMember}
-						<a
-							href={familyMember.userInfo?.imageUrl}
-							target="_blank"
-							class="shrink-0 w-[28%] snap-start"
-						>
-							<img
-								class="rounded-container-token hover:brightness-75"
-								src={familyMember.userInfo?.imageUrl}
-								alt={familyMember.userInfo?.fullname}
-								title={familyMember.userInfo?.fullname}
-								loading="lazy"
-							/>
-						</a>
-					{/each}
+		{#if data.families}
+			{#each data.families as {family, familyRole}}
+				<div class="flex flex-col px-2 variant-glass-surface card items-center">
+					<header class="card-header">
+						<h2 class="h2 capitalize">{family.name}</h2>
+					</header>
+					<section class="p-2">
+						<Carosel>
+							{#each family.familiesOnUsers as {user}}
+								<div class="relative card-hover w-32 h-48">
+									<a href={user.info?.imageUrl} target="_blank">
+										<img
+											class="rounded-container-token object-cover w-full h-full"
+											src={user.info?.imageUrl}
+											alt={user.info?.fullname}
+											title={user.info?.fullname}
+											loading="lazy"
+										/>
+									</a>
+									{#if familyRole == 'MODERATOR'}
+										<button
+										type="button"
+										class="btn-icon btn-icon-sm absolute top-2 right-2 variant-ghost-error">
+										<iconify-icon width="16" height="16" icon="lucide:x" />
+									</button>
+										
+									{/if}
+
+								</div>
+							{/each}
+						</Carosel>
+					</section>
+					{#if familyRole == 'MODERATOR'}
+					<footer class="card-footer flex flex-row gap-4">
+						<button class="btn btn-sm variant-filled font-semibold w-16" on:click={inviteUserModal(family.id)}>Invite</button>
+						<button class="btn btn-sm variant-filled font-semibold w-16" on:click={deleteFamilyModal({familyId: family.id, familyName: family.name })}>Delete</button>
+					</footer>
+					{/if}
 				</div>
-				<!-- Button-Right -->
-				<button type="button" class="btn-icon variant-filled" on:click={multiColumnRight}>
-					<iconify-icon class="w-5 justify-center" icon="lucide:arrow-right" />
-				</button>
-			</div>
-		{/each}
-	{/if}
+			{/each}
+		{/if}
+
+		<a href="/family/create" class="text-md btn variant-filled font-semibold capitalize"
+			>Create family
+		</a>
+	</div>
 </div>

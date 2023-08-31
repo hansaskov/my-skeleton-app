@@ -8,19 +8,19 @@
 	export let form: SuperForm<ZodValidation<T>, unknown>;
 	export let field: FormPathLeaves<z.infer<T>>;
 
-	const { path, value, errors, constraints } = formFieldProxy(form, field);
+	const { path, value, errors, constraints, } = formFieldProxy(form, field);
 
 	export let titleName = String(path);
 	export let useError = true;
 </script>
 
-<label>
+<label class= "flex flex-col gap-2">
 	<span>{titleName}</span>
 	<input
 		name={field}
 		type="text"
 		aria-invalid={useError && $errors ? 'true' : undefined}
-		class="input variant-form-material"
+		class="input variant-form"
 		data-invalid={$errors}
 		bind:value={$value}
 		{...$constraints}

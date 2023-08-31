@@ -1,4 +1,4 @@
-import type { InferModel } from 'drizzle-orm';
+import { type InferSelectModel, type InferInsertModel, relations } from 'drizzle-orm';
 import {
 	mysqlTable,
 	bigint,
@@ -20,7 +20,7 @@ export type FamilyRole = (typeof familyRole)[number];
 export type TokenEnum = (typeof tokenType)[number];
 
 // Lucia Auth schema
-export type User = InferModel<typeof user>;
+export type User = typeof user.$inferSelect;
 export const user = mysqlTable('auth_user', {
 	id: varchar('id', { length: 128 }).primaryKey(), // change this when using custom user ids
 	email: varchar('email', { length: 255 }).notNull(),
@@ -28,7 +28,18 @@ export const user = mysqlTable('auth_user', {
 	isUserInfoSet: boolean('user_info_set').notNull()
 });
 
-export type Session = InferModel<typeof session>;
+export const userInfoRelations = relations(user, ({ one, many }) => ({
+	// one-to-one relationship to userInfo
+	info: one(userInfo, {
+		fields: [user.id],
+		references: [userInfo.userId]
+	}),
+	// many-to-one relationship with familyInvitation
+	familyInvitation: many(familyInvitation),
+	familiesOnUsers: many(familiesOnUsers)
+}));
+
+export type Session = typeof session.$inferSelect;
 export const session = mysqlTable('auth_session', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	activeExpires: bigint('active_expires', { mode: 'number' }).notNull(),
@@ -36,7 +47,7 @@ export const session = mysqlTable('auth_session', {
 	userId: varchar('user_id', { length: 128 }).notNull()
 });
 
-export type Key = InferModel<typeof key>;
+export type Key = typeof key.$inferSelect;
 export const key = mysqlTable('auth_key', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	hashedPassword: varchar('hashed_password', { length: 255 }),
@@ -44,7 +55,7 @@ export const key = mysqlTable('auth_key', {
 });
 
 // Authentication tokens
-export type Token = InferModel<typeof token>;
+export type Token = typeof token.$inferSelect;
 export const token = mysqlTable('auth_token', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	type: mysqlEnum('type', tokenType).notNull(),
@@ -53,7 +64,7 @@ export const token = mysqlTable('auth_token', {
 });
 
 // User info schema
-export type UserInfo = InferModel<typeof userInfo>;
+export type UserInfo = typeof userInfo.$inferSelect;
 export const userInfo = mysqlTable('user_info', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	fullname: varchar('full_name', { length: 256 }).notNull(),
@@ -65,8 +76,8 @@ export const userInfo = mysqlTable('user_info', {
 });
 
 // Wish schema
-export type Wish = InferModel<typeof wish>;
-export type NewWish = Omit<InferModel<typeof wish, 'insert'>, 'id' | 'updatedAt'>;
+export type Wish = typeof wish.$inferSelect;
+export type NewWish = Omit<InferInsertModel<typeof wish>, 'id' | 'updatedAt'>;
 export const wish = mysqlTable('wish', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	name: varchar('name', { length: 256 }).notNull(),
@@ -78,15 +89,15 @@ export const wish = mysqlTable('wish', {
 
 	wishlistId: varchar('wishlist_id', { length: 128 }).notNull().unique()
 });
-export type Wishlist = InferModel<typeof wishlist>;
-export type NewWishlist = Omit<InferModel<typeof wishlist, 'insert'>, 'id'>;
+export type Wishlist = typeof wishlist.$inferSelect;
+export type NewWishlist = Omit<InferInsertModel<typeof wishlist>, 'id'>;
 export const wishlist = mysqlTable('wishlist', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	name: varchar('name', { length: 255 }).notNull(),
 	is_public: boolean('is_public').notNull()
 });
 
-export type WishlistOnUsers = InferModel<typeof wishlistOnUsers>;
+export type WishlistOnUsers = typeof wishlistOnUsers.$inferSelect;
 export const wishlistOnUsers = mysqlTable(
 	'wishlist_on_users',
 	{
@@ -100,16 +111,22 @@ export const wishlistOnUsers = mysqlTable(
 );
 
 // Family schema
-export type Family = InferModel<typeof family>;
-export type NewFamily = Omit<InferModel<typeof family, 'insert'>, 'id'>;
+export type Family = typeof family.$inferSelect;
+export type NewFamily = Omit<InferInsertModel<typeof family>, 'id'>;
 export const family = mysqlTable('family', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	name: varchar('name', { length: 255 }).notNull(),
 	is_public: boolean('is_public').notNull().default(true)
 });
 
-export type FamilyOnUsers = InferModel<typeof familiesOnUsers>;
-export type NewFamilyOnUsers = Omit<InferModel<typeof familiesOnUsers, 'insert'>, 'updatedAt'>;
+// one-to-many relationship
+export const familyRelation = relations(family, ({ many }) => ({
+	familyInvitation: many(familyInvitation),
+	familiesOnUsers: many(familiesOnUsers)
+}));
+
+export type FamilyOnUsers = typeof familiesOnUsers.$inferSelect;
+export type NewFamilyOnUsers = Omit<InferInsertModel<typeof familiesOnUsers>, 'updatedAt'>;
 export const familiesOnUsers = mysqlTable(
 	'families_on_users',
 	{
@@ -122,3 +139,43 @@ export const familiesOnUsers = mysqlTable(
 		first: unique().on(t.userId, t.familyId)
 	})
 );
+
+// Many-To-Many Relationship
+export const familiesOnUsersRelations = relations(familiesOnUsers, ({ one }) => ({
+	family: one(family, {
+		fields: [familiesOnUsers.familyId],
+		references: [family.id]
+	}),
+	user: one(user, {
+		fields: [familiesOnUsers.userId],
+		references: [user.id]
+	})
+}));
+
+
+
+export type FamilyInvitation = typeof familyInvitation.$inferSelect;
+export type NewFamilyInvitation = Omit<InferInsertModel<typeof familyInvitation>, 'id'>;
+export const familyInvitation = mysqlTable(
+	'family_invitation',
+	{
+		id: varchar('id', { length: 128 }).primaryKey(),
+		email: varchar('email', { length: 255 }).notNull(),
+		familyId: varchar('family_id', { length: 128 }).notNull(),
+		invitingUserId: varchar('inviting_user_id', { length: 128 }).notNull()
+	},
+	(t) => ({
+		first: unique().on(t.email, t.familyId)
+	})
+);
+// Many-To-Many Relationship
+export const familyInvitationRelations = relations(familyInvitation, ({ one }) => ({
+	family: one(family, {
+		fields: [familyInvitation.familyId],
+		references: [family.id]
+	}),
+	user: one(user, {
+		fields: [familyInvitation.invitingUserId],
+		references: [user.id]
+	})
+}));

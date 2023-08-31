@@ -1,9 +1,8 @@
 import { auth } from '$lib/server/lucia';
-import { LuciaTokenError } from '@lucia-auth/tokens';
 import type { RequestHandler } from './$types';
 import { redirect } from 'sveltekit-flash-message/server';
 import { callbacks } from '$lib/server/redirects/redirects';
-import { validateToken } from '$lib/server/token';
+import { TokenError, validateToken } from '$lib/server/token';
 
 export const GET: RequestHandler = async (event) => {
 	const { token } = event.params;
@@ -23,7 +22,7 @@ export const GET: RequestHandler = async (event) => {
 
 		event.locals.auth.setSession(session);
 	} catch (e) {
-		if (e instanceof LuciaTokenError) {
+		if (e instanceof TokenError) {
 			switch (e.message) {
 				case 'EXPIRED_TOKEN':
 					throw redirect(callbacks.email.invalid_token.page, callbacks.email.invalid_token, event);

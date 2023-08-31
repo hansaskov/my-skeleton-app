@@ -5,15 +5,15 @@
 	import CheckboxField from '$lib/components/form/CheckboxField.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import Seo from '$lib/components/Seo.svelte';
-	import { schema } from '$lib/schemas/authentication';
 	import { toastManager } from '$lib/components/ToastManager';
+	import { familySchema } from '$lib/schemas/family';
 
 	export let data: PageData;
 
-	const form = superForm(data.form, {
+	const form = superForm(data.form, {	
 		taintedMessage: null,
 		delayMs: 150,
-		validators: schema.family,
+		validators: familySchema,
 		onUpdate: ({ form }) => {
 			const allErrors = Object.values(form.errors).flat();
 			const uniqueErrors = [...new Set(allErrors)];

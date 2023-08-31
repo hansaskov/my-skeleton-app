@@ -15,6 +15,20 @@
 			"when": 1690650556996,
 			"tag": "0001_even_malcolm_colcord",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "5",
+			"when": 1693033343922,
+			"tag": "0002_blushing_echo",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "5",
+			"when": 1693050990840,
+			"tag": "0003_lowly_shadow_king",
+			"breakpoints": true
 		}
 	]
 }

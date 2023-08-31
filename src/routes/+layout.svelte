@@ -13,8 +13,9 @@
 		Drawer,
 		LightSwitch,
 		Modal,
+		
 		drawerStore,
-		storePopup
+		storePopup, 
 	} from '@skeletonlabs/skeleton';
 	import 'iconify-icon';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
@@ -23,7 +24,9 @@
 	import PageTransition from '$lib/components/PageTransition.svelte';
 	import PageLoadSpinner from '$lib/components/PageLoadSpinner.svelte';
 	import FlashMessageToast from '$lib/components/FlashMessageToast.svelte';
+	import Navigation from '$lib/components/Navigation.svelte';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
 
 	export let data: LayoutData;
 
@@ -34,13 +37,11 @@
 
 <FlashMessageToast />
 <Modal />
+
 <Drawer>
-	<nav class="list-nav p-4">
-		<ul>
-			<li><a href="/public" on:click={drawerStore.close}>Public</a></li>
-			<li><a href="/protected" on:click={drawerStore.close}>Protected</a></li>
-		</ul>
-	</nav>
+	<h2 class="h2 p-4">Navigation</h2>
+	<hr />
+	<Navigation/>
 </Drawer>
 
 <AppShell
@@ -72,17 +73,17 @@
 				</div>
 			</svelte:fragment>
 
-			<div class="flex justify-between items-center gap-4">
+			<div class="flex flex-row justify-between items-center gap-4">
 				<a
-					href="/public"
-					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase"
-					>Public</a
-				>
+					href="/wishlist"
+					class="hidden md:block text-md btn bg-primary-hover-token font-semibold capitalize"
+					>my wishlists
+				</a>
 				<a
-					href="/protected"
-					class="hidden md:block text-md btn bg-primary-hover-token font-semibold uppercase"
-					>protected</a
-				>
+					href="/family"
+					class="hidden md:block text-md btn bg-primary-hover-token font-semibold capitalize"
+					>my family
+				</a>
 			</div>
 
 			<svelte:fragment slot="trail">

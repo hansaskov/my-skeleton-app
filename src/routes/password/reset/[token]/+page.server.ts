@@ -1,6 +1,5 @@
 // src/routes/password-reset/[token]/+page.server.ts
 // page to enter new password
-import { LuciaTokenError } from '@lucia-auth/tokens';
 import { auth } from '$lib/server/lucia';
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
@@ -8,7 +7,7 @@ import { setError, superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';
 import { redirect } from 'sveltekit-flash-message/server';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
-import { validateToken } from '$lib/server/token';
+import { TokenError, validateToken } from '$lib/server/token';
 
 export const load: PageServerLoad = async (event) => {
 	const [form, session] = await Promise.all([
@@ -45,8 +44,8 @@ export const actions: Actions = {
 
 			locals.auth.setSession(session);
 		} catch (e) {
-			if (e instanceof LuciaTokenError) {
-				switch (e.message) {
+			if (e instanceof TokenError) {
+				switch (e.cause) {
 					case 'EXPIRED_TOKEN':
 						return setError(form, 'Your password reset link has expired');
 					case 'INVALID_TOKEN':
