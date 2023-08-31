@@ -77,13 +77,18 @@
 				<a
 					href="/wishlist"
 					class="hidden md:block text-md btn bg-primary-hover-token font-semibold capitalize"
-					>my wishlists
+					>Wishlist
 				</a>
 				<a
 					href="/family"
 					class="hidden md:block text-md btn bg-primary-hover-token font-semibold capitalize"
-					>my family
+					>Family
 				</a>
+				<a
+				href="/invites"
+				class="hidden md:block text-md btn bg-primary-hover-token font-semibold capitalize"
+				>invites
+			</a>
 			</div>
 
 			<svelte:fragment slot="trail">
