@@ -15,7 +15,7 @@ export const deleteFamilySchema = z.object({
 });
 
 export const famiilyInviteDeclineSchema = z.object({
-	familyId: z.string().min(1),
+	familyId: z.string().min(1)
 });
 
 export const familyInviteAcceptSchema = z.object({

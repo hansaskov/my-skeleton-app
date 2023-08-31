@@ -1,19 +1,10 @@
 import { eq, like, placeholder, sql, or, and, inArray } from 'drizzle-orm';
 import { db } from '../db';
-import {
-	family,
-	familiesOnUsers,
-	user,
-	userInfo,
-	type Family,
-	type User,
-	type UserInfo
-} from '../schema';
+import { family, familiesOnUsers } from '../schema';
 
-export async function selectFamiliesAndMembersForUser2(userId:string) {
-
+export async function selectFamiliesAndMembersForUser2(userId: string) {
 	const user = await db.query.user.findFirst({
-		where: (user, {eq}) => eq(user.id, userId),
+		where: (user, { eq }) => eq(user.id, userId),
 		columns: {},
 		with: {
 			familiesOnUsers: {
@@ -32,24 +23,23 @@ export async function selectFamiliesAndMembersForUser2(userId:string) {
 											info: {
 												columns: {
 													fullname: true,
-													imageUrl: true,
+													imageUrl: true
 												}
 											}
 										}
 									}
-								},
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-	})
+	});
 
-	if (!user) return undefined
-	
-	return user.familiesOnUsers
-	
+	if (!user) return undefined;
+
+	return user.familiesOnUsers;
 }
 
 export async function searchFamily(familyName: string) {

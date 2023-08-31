@@ -152,8 +152,6 @@ export const familiesOnUsersRelations = relations(familiesOnUsers, ({ one }) => 
 	})
 }));
 
-
-
 export type FamilyInvitation = typeof familyInvitation.$inferSelect;
 export type NewFamilyInvitation = Omit<InferInsertModel<typeof familyInvitation>, 'id'>;
 export const familyInvitation = mysqlTable(

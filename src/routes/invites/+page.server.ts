@@ -28,23 +28,21 @@ export const actions = {
 		const { userId, email } = session.user;
 
 		const formData = await event.request.formData();
-		const familyId = formData.get("familyId")?.toString();
-		
-		if (!familyId) return { message: 'failed' };
-		
-		try {
+		const familyId = formData.get('familyId')?.toString();
 
+		if (!familyId) return { message: 'failed' };
+
+		try {
 			// Add user as a member of the family
 			await addUserToFamily({ familyId, userId, familyRole: 'MEMBER' });
 			// Remove all invites to join this family
 			await deleteInvitesFromFamilyWithEmail({ email, familyId });
 		} catch (e) {
-			console.error(e)
+			console.error(e);
 		}
 
-		console.log("Success decline")
-		return { message: 'succesfully accepted' };		
-
+		console.log('Success decline');
+		return { message: 'succesfully accepted' };
 	},
 	decline: async (event) => {
 		// Validate session
@@ -52,16 +50,16 @@ export const actions = {
 		if (!session) throw redirect(callbacks.login.page, callbacks.login, event);
 
 		const formData = await event.request.formData();
-		const inviteId = formData.get("inviteId")?.toString();
+		const inviteId = formData.get('inviteId')?.toString();
 		if (!inviteId) return { message: 'failed' };
 
 		try {
 			await deleteInvite(inviteId);
 		} catch (e) {
-			console.error(e)
+			console.error(e);
 		}
 
-		console.log("Success decline")
+		console.log('Success decline');
 		return { message: 'succesfully declined' };
 	}
 } satisfies Actions;

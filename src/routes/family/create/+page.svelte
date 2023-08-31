@@ -24,7 +24,6 @@
 		}
 	});
 
-	form.delayed.subscribe((v) => ($isLoadingForm = v));
 </script>
 
 <Seo
