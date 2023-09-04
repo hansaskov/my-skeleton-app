@@ -1,7 +1,9 @@
 <script>
 
-	import { drawerStore } from "@skeletonlabs/skeleton";
+	import { getDrawerStore } from "@skeletonlabs/skeleton";
     import { page } from "$app/stores";
+
+    const drawerStore = getDrawerStore()
 
     $page.url.pathname
 

@@ -4,9 +4,11 @@
 	export let data: PageData;
 
 	import type { ModalComponent, ModalSettings } from '@skeletonlabs/skeleton';
-	import { modalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore } from '@skeletonlabs/skeleton';
 	import InviteComponent from './inviteComponent.svelte';
 	import DeleteComponent from './deleteComponent.svelte';
+
+	const modalStore = getModalStore()
 
 
 function inviteUserModal(familyId: string) {

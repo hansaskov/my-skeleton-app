@@ -14,13 +14,13 @@
 	export let useError = true;
 </script>
 
-<label class= "flex flex-col gap-2">
+<label class= "label">
 	<span>{titleName}</span>
 	<input
 		name={field}
 		type="text"
 		aria-invalid={useError && $errors ? 'true' : undefined}
-		class="input variant-form"
+		class="input p-1.5"
 		data-invalid={$errors}
 		bind:value={$value}
 		{...$constraints}

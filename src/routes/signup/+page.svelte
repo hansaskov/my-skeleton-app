@@ -6,7 +6,7 @@
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import Seo from '$lib/components/Seo.svelte';
 	import { schema } from '$lib/schemas/authentication';
-	import { toastManager } from '$lib/components/ToastManager';
+	// import { toastManager } from '$lib/components/ToastManager';
 
 	export let data: PageData;
 
@@ -14,14 +14,6 @@
 		taintedMessage: null,
 		delayMs: 150,
 		validators: schema.login,
-		onUpdate: ({ form }) => {
-			const allErrors = Object.values(form.errors).flat();
-			const uniqueErrors = [...new Set(allErrors)];
-
-			for (const error of uniqueErrors) {
-				toastManager.trigger.error(error);
-			}
-		}
 	});
 
 	form.delayed.subscribe((v) => ($isLoadingForm = v));

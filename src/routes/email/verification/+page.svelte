@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Seo from '$lib/components/Seo.svelte';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 	import type { ActionData, PageData } from './$types';
-	import { toastManager } from '$lib/components/ToastManager';
+	import { errorToastSettings, sucessToastSettings } from '$lib/components/ToastManager';
+
+	const toastStore = getToastStore()
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -24,9 +27,11 @@
 			use:enhance={() => {
 				return async ({ result }) => {
 					if (result.type === 'success') {
-						toastManager.trigger.success('E-mail sent');
+						const sucessToast = sucessToastSettings("Email sent")
+						toastStore.trigger(sucessToast)
 					} else if (result.type === 'failure' && result.data) {
-						toastManager.trigger.error('Too many requests sent, please wait');
+						const errorToast = errorToastSettings("Too many requests sent, please wait")
+						toastStore.trigger(errorToast)
 					}
 				};
 			}}

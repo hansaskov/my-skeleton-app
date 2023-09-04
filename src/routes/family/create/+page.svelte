@@ -3,9 +3,8 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/form/TextField.svelte';
 	import CheckboxField from '$lib/components/form/CheckboxField.svelte';
-	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import Seo from '$lib/components/Seo.svelte';
-	import { toastManager } from '$lib/components/ToastManager';
+	//import { toastManager } from '$lib/components/ToastManager';
 	import { familySchema } from '$lib/schemas/family';
 
 	export let data: PageData;
@@ -14,14 +13,6 @@
 		taintedMessage: null,
 		delayMs: 150,
 		validators: familySchema,
-		onUpdate: ({ form }) => {
-			const allErrors = Object.values(form.errors).flat();
-			const uniqueErrors = [...new Set(allErrors)];
-
-			for (const error of uniqueErrors) {
-				toastManager.trigger.error(error);
-			}
-		}
 	});
 
 </script>

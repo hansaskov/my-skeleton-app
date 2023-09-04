@@ -1,6 +1,8 @@
 <script lang="ts">
 	// Stores
-	import { modalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore } from '@skeletonlabs/skeleton';
+
+	const modalStore = getModalStore()
 
 	export let familyId: string;
 	export let familyName: string;

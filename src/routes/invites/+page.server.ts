@@ -3,10 +3,7 @@ import { callbacks, redirectFromPrivatePage } from '$lib/server/redirects/redire
 import { redirect } from 'sveltekit-flash-message/server';
 import type { Actions } from './$types';
 import type { PageServerLoad } from './$types';
-import { superValidate } from 'sveltekit-superforms/server';
-import { familyInviteAcceptSchema, famiilyInviteDeclineSchema } from '$lib/schemas/family';
-import { fail } from '@sveltejs/kit';
-import { addUserToFamily, sendFamilyInvite } from '$lib/server/drizzle/family/insert';
+import { addUserToFamily } from '$lib/server/drizzle/family/insert';
 import { deleteInvite, deleteInvitesFromFamilyWithEmail } from '$lib/server/drizzle/invite/delete';
 
 export const load: PageServerLoad = async (event) => {

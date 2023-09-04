@@ -6,21 +6,12 @@
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import { Avatar, FileDropzone } from '@skeletonlabs/skeleton';
 	import { handleFileUpload } from '../../api/upload/client/handleFileUpload';
-	import { toastManager } from '$lib/components/ToastManager';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
 		delayMs: 150,
-		onUpdate: ({ form }) => {
-			const allErrors = Object.values(form.errors).flat();
-			const uniqueErrors = [...new Set(allErrors)];
-
-			for (const error of uniqueErrors) {
-				toastManager.trigger.error(error);
-			}
-		}
 	});
 
 	form.delayed.subscribe((v) => ($isLoadingForm = v));

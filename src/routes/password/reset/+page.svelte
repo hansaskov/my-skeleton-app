@@ -4,24 +4,13 @@
 	import TextField from '$lib/components/form/TextField.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
-	import { toastManager } from '$lib/components/ToastManager';
+//	import { toastManager } from '$lib/components/ToastManager';
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
 		delayMs: 150,
-		onUpdated: ({ form }) => {
-			if (form.posted) {
-				toastManager.trigger.success(`Password reset sent to ${form.data.email}`);
-			} else if (!form.valid) {
-				const allErrors = Object.values(form.errors).flat();
-				const uniqueErrors = [...new Set(allErrors)];
-				for (const error of uniqueErrors) {
-					toastManager.trigger.error(error);
-				}
-			}
-		}
 	});
 
 	form.delayed.subscribe((v) => ($isLoadingForm = v));
