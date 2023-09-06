@@ -4,13 +4,27 @@
 	import TextField from '$lib/components/form/TextField.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
-//	import { toastManager } from '$lib/components/ToastManager';
+	import { errorToastSettings, sucessToastSettings } from '$lib/components/ToastManager';
+	import { getToastStore } from '@skeletonlabs/skeleton';
+	const toastStore = getToastStore()
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
 		delayMs: 150,
+		onUpdated({form}) {
+			if (form.message) {
+				if (form.message.type === 'error'){
+				const errorToast = errorToastSettings(form.message.text)
+				toastStore.trigger(errorToast)
+			} else if (form.message.type === 'success') {
+				const sucessToast = sucessToastSettings(form.message.text)
+				toastStore.trigger(sucessToast)
+			}
+				
+			}
+		},
 	});
 
 	form.delayed.subscribe((v) => ($isLoadingForm = v));

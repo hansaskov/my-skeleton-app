@@ -18,7 +18,7 @@
 	<span class="capitalize">{titleName}</span>
 	<textarea
 		name={field}
-		class="textarea variant-form-material"
+		class="textarea p-1.5 px-3"
 		data-invalid={$errors}
 		bind:value={$value}
 		{...$constraints}

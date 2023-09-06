@@ -10,6 +10,6 @@ export function errorToastSettings(message: string) {
 export function sucessToastSettings(message: string) {
 	return {
 		message: message,
-		background: 'variant-filled-sucess'
+		background: 'variant-filled-success'
 	} satisfies ToastSettings;
 }
