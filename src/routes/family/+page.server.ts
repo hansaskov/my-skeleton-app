@@ -6,17 +6,19 @@ import {
 } from '$lib/server/drizzle/family/select';
 
 import { redirect } from 'sveltekit-flash-message/server';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { deleteFamilySchema, inviteFamilyMemberSchema } from '$lib/schemas/family';
 import { sendFamilyInvite } from '$lib/server/drizzle/family/insert';
 import { deleteFamily } from '$lib/server/drizzle/family/delete';
+import type { Message } from '$lib/schemas/message';
+import { DatabaseError } from '@planetscale/database';
 
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.auth.validate();
 	const { userInfo, user } = await redirectFromPrivatePage(session, event);
-	const inviteFamilyMemberForm = await superValidate(inviteFamilyMemberSchema);
-	const deleteFamilyForm = await superValidate(deleteFamilySchema);
+	const inviteFamilyMemberForm = await superValidate<typeof inviteFamilyMemberSchema, Message>(inviteFamilyMemberSchema);
+	const deleteFamilyForm = await superValidate<typeof deleteFamilySchema, Message>(deleteFamilySchema);
 
 	try {
 		const families = await selectFamiliesAndMembersForUser2(user.userId);
@@ -37,7 +39,7 @@ export const actions = {
 		const userId = session.user.userId;
 
 		// Validate form
-		const form = await superValidate(event.request, inviteFamilyMemberSchema);
+		const form = await superValidate<typeof inviteFamilyMemberSchema, Message>(event.request, inviteFamilyMemberSchema);
 		if (!form.valid) return fail(400, { form });
 
 		const familyId = form.data.familyId;
@@ -46,16 +48,28 @@ export const actions = {
 		try {
 			// Validate if user is autherized to do action
 			const userRelation = await selectFamilyOnUser({ userId, familyId });
-			if (!userRelation || userRelation.familyRole !== 'MODERATOR') return fail(400, { form });
+			if (!userRelation || userRelation.familyRole !== 'MODERATOR') 
+			    return message(form, {type: 'error', text: 'You are not a moderator 🤓'});
+
+			if (form.data.email === session.user.email)
+				return message(form, {type: 'error', text: 'Invite declined, try inviting someone else 😉'})
+
+			
 
 			// Create new invite
 			await sendFamilyInvite({ email, familyId, invitingUserId: userId });
 		} catch (e) {
+			if (e instanceof DatabaseError) {
+				if (e.body.message.includes("code = AlreadyExists")){
+					return message(form, {type: 'error', text: `You have already invited ${email} 🙄`})
+				}
+			}
+
 			console.error(e);
-			return setError(form, 'Unknown error');
+			return message(form, {type: 'error', text: 'Unknown Error, try again 😔'});
 		}
 
-		return { form };
+        return message(form, {type: 'success', text: `invite sent to ${email} 😎`})
 	},
 
 	deleteFamily: async (event) => {

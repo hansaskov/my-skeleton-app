@@ -4,17 +4,32 @@
 	export let data: PageData;
 
 	import type { ModalComponent, ModalSettings } from '@skeletonlabs/skeleton';
-	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import InviteComponent from './inviteComponent.svelte';
 	import DeleteComponent from './deleteComponent.svelte';
+	import { superForm } from 'sveltekit-superforms/client';
+	import { inviteFamilyMemberSchema } from '$lib/schemas/family';
+	import { handleMessage } from '$lib/components/ToastManager';
 
 	const modalStore = getModalStore()
+	const toastStore = getToastStore()
+
+	const inviteFamilyMemberForm = superForm(data.inviteFamilyMemberForm, {
+		resetForm: true,
+		validationMethod: 'oninput',
+		validators: inviteFamilyMemberSchema,
+		onUpdated({form}) {
+			if (form.message) {
+				handleMessage(form.message, toastStore)
+			}
+		},
+	});
 
 
 function inviteUserModal(familyId: string) {
 	const modalComponent: ModalComponent = {
 		ref: InviteComponent,
-		props: { data: data.inviteFamilyMemberForm, familyId: familyId},
+		props: { form: inviteFamilyMemberForm , familyId: familyId},
 	};
 
 	const modal: ModalSettings = {

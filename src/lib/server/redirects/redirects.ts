@@ -38,6 +38,11 @@ export const callbacks = {
 			type: 'success',
 			message: 'Family was successfully created!',
 			page: '/family'
+		},
+		invite: {
+			type: 'success',
+			message: "invite was successfully sent",
+			page: '/family'
 		}
 	}
 } as const;

@@ -4,7 +4,7 @@
 	import TextField from '$lib/components/form/TextField.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
-	import { errorToastSettings, sucessToastSettings } from '$lib/components/ToastManager';
+	import { handleMessage } from '$lib/components/ToastManager';
 	import { getToastStore } from '@skeletonlabs/skeleton';
 	const toastStore = getToastStore()
 
@@ -15,14 +15,7 @@
 		delayMs: 150,
 		onUpdated({form}) {
 			if (form.message) {
-				if (form.message.type === 'error'){
-				const errorToast = errorToastSettings(form.message.text)
-				toastStore.trigger(errorToast)
-			} else if (form.message.type === 'success') {
-				const sucessToast = sucessToastSettings(form.message.text)
-				toastStore.trigger(sucessToast)
-			}
-				
+				handleMessage(form.message, toastStore)
 			}
 		},
 	});

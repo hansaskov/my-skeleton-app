@@ -3,15 +3,16 @@
 import { auth } from '$lib/server/lucia';
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';
 import { redirect } from 'sveltekit-flash-message/server';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
 import { TokenError, validateToken } from '$lib/server/token';
+import type { Message } from '$lib/schemas/message';
 
 export const load: PageServerLoad = async (event) => {
 	const [form, session] = await Promise.all([
-		superValidate(schema.login),
+		superValidate<typeof schema.password, Message>(event, schema.password),
 		event.locals.auth.validate()
 	]);
 	if (!session) return { form };
@@ -21,7 +22,7 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals, params }) => {
-		const form = await superValidate(request, schema.password);
+		const form = await superValidate<typeof schema.password, Message>(request, schema.password);
 		if (!form.valid) return fail(400, { form });
 
 		try {
@@ -47,14 +48,14 @@ export const actions: Actions = {
 			if (e instanceof TokenError) {
 				switch (e.cause) {
 					case 'EXPIRED_TOKEN':
-						return setError(form, 'Your password reset link has expired');
+						return message(form, {type: 'error', text: 'Your password reset link has expired'});
 					case 'INVALID_TOKEN':
-						return setError(form, 'Your password reset link is invalid');
+						return message(form, {type: 'error', text: 'Your password reset link is invalid'});
 				}
 			}
 
 			console.error(e);
-			return setError(form, 'Unknown Error');
+			return message(form, {type: 'error', text: 'Invalid Error'});
 		}
 
 		throw redirect(303, '/');

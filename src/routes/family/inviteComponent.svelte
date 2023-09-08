@@ -1,21 +1,16 @@
 <script lang="ts">
 	// Stores
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import type { SuperValidated } from 'sveltekit-superforms';
-	import { superForm } from 'sveltekit-superforms/client';
-	import { inviteFamilyMemberSchema } from '$lib/schemas/family';
+	import type { SuperForm } from 'sveltekit-superforms/client';
+	import type { inviteFamilyMemberSchema } from '$lib/schemas/family';
 	import TextField from '$lib/components/form/TextField.svelte';
+	import type { Message } from '$lib/schemas/message';
 
 	const modalStore = getModalStore()
 
-	export let data: SuperValidated<typeof inviteFamilyMemberSchema>;
+	export let form: SuperForm<typeof inviteFamilyMemberSchema, Message>;
 	export let familyId: string;
 
-	const form = superForm(data, {
-		resetForm: true,
-		validationMethod: 'oninput',
-		validators: inviteFamilyMemberSchema
-	});
 
 	const errors = form.allErrors;
 </script>
