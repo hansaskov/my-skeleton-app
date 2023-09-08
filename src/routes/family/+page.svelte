@@ -74,15 +74,7 @@ function deleteFamilyModal({familyId, familyName}: { familyId: string, familyNam
 							{#each family.familiesOnUsers as {user}}
 								<div class="relative card-hover w-32 h-48">
 									{#if user.info?.imageUrl}
-									<a href={user.info?.imageUrl} target="_blank">
-										<img
-											class="rounded-container-token object-cover w-full h-full"
-											src={user.info.imageUrl ?? "static/Default_pfp.svg"}
-											alt={user.info.fullname}
-											title={user.info.fullname}
-											loading="lazy"
-										/>
-									</a>
+									<Avatar src={user.info.imageUrl} width="w-full h-full"  border="rounded-lg"  ></Avatar>
 									{:else}
 									<Avatar initials={user.info.fullname} width="w-full h-full" background="bg-surface-300-600-token" border="rounded-lg"  ></Avatar>
 									{/if}
@@ -90,7 +82,7 @@ function deleteFamilyModal({familyId, familyName}: { familyId: string, familyNam
 										<button
 										type="button"
 										class="btn-icon btn-icon-sm absolute top-2 right-2 variant-ghost-error">
-										<iconify-icon width="16" height="16" icon="lucide:x" />
+										<iconify-icon width="16" height="16" icon="lucide:trash-2" />
 									</button>
 										
 									{/if}
