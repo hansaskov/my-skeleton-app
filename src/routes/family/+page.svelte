@@ -3,7 +3,7 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	import type { ModalComponent, ModalSettings } from '@skeletonlabs/skeleton';
+	import { Avatar, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import { getModalStore, getToastStore } from '@skeletonlabs/skeleton';
 	import InviteComponent from './inviteComponent.svelte';
 	import DeleteComponent from './deleteComponent.svelte';
@@ -73,15 +73,19 @@ function deleteFamilyModal({familyId, familyName}: { familyId: string, familyNam
 						<Carosel>
 							{#each family.familiesOnUsers as {user}}
 								<div class="relative card-hover w-32 h-48">
+									{#if user.info?.imageUrl}
 									<a href={user.info?.imageUrl} target="_blank">
 										<img
 											class="rounded-container-token object-cover w-full h-full"
-											src={user.info?.imageUrl}
-											alt={user.info?.fullname}
-											title={user.info?.fullname}
+											src={user.info.imageUrl ?? "static/Default_pfp.svg"}
+											alt={user.info.fullname}
+											title={user.info.fullname}
 											loading="lazy"
 										/>
 									</a>
+									{:else}
+									<Avatar initials={user.info.fullname} width="w-full h-full" background="bg-surface-300-600-token" border="rounded-lg"  ></Avatar>
+									{/if}
 									{#if familyRole == 'MODERATOR'}
 										<button
 										type="button"
@@ -90,7 +94,7 @@ function deleteFamilyModal({familyId, familyName}: { familyId: string, familyNam
 									</button>
 										
 									{/if}
-
+ 
 								</div>
 							{/each}
 						</Carosel>
