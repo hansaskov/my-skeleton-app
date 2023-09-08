@@ -70,7 +70,7 @@
 							</svg>
 						</span>
 					</button>
-					<a href="/" class="text-xl btn bg-primary-hover-token font-semibold uppercase">Askov</a>
+					<a href="/" class="text-xl btn bg-primary-hover-token font-semibold uppercase">Hjemmet</a>
 					<PageLoadSpinner />
 				</div>
 			</svelte:fragment>
