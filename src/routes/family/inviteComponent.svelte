@@ -22,11 +22,11 @@
 
 	<form method="post" action="?/inviteToFamily" >
 		<div class="modal-form border border-surface-500 p-4 space-y-4 rounded-container-token">
-			<TextField {form} field="email" titleName="E-mail" placeholder="Your email" />
+			<TextField {form} field="email" titleName="E-mail" placeholder="Their email" />
 			<input type="hidden" name="familyId" bind:value={familyId} />
 		</div>
 		<div class=" mt-4 flex justify-start flex-row-reverse gap-4">
-			<button class="btn variant-filled" disabled={$errors.length > 0} >Submit Form</button>
+			<button class="btn variant-filled" disabled={$errors.length > 0} >Invite member</button>
 			<button class="btn variant-outline" on:click={() => modalStore.close()}>Close</button>
 		</div>
 	</form>
