@@ -6,7 +6,10 @@
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import Seo from '$lib/components/Seo.svelte';
 	import { schema } from '$lib/schemas/authentication';
-	// import { toastManager } from '$lib/components/ToastManager';
+	import { handleMessage } from '$lib/components/ToastManager';
+	import { getToastStore } from '@skeletonlabs/skeleton';
+
+	const toastStore = getToastStore()
 
 	export let data: PageData;
 
@@ -14,6 +17,11 @@
 		taintedMessage: null,
 		delayMs: 150,
 		validators: schema.login,
+		onUpdated({form}) {
+			if (form.message) {
+				handleMessage(form.message, toastStore)
+			}
+		},
 	});
 
 	form.delayed.subscribe((v) => ($isLoadingForm = v));

@@ -6,13 +6,21 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { page } from '$app/stores';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
-	// import { toastManager } from '$lib/components/ToastManager';
+	import { handleMessage } from '$lib/components/ToastManager';
+	import { getToastStore } from '@skeletonlabs/skeleton';
+
+	const toastStore = getToastStore()
 
 	export let data: PageData;
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
 		delayMs: 150,
+		onUpdated({form}) {
+			if (form.message) {
+				handleMessage(form.message, toastStore)
+			}
+		},
 	});
 
 	form.delayed.subscribe((v) => ($isLoadingForm = v));

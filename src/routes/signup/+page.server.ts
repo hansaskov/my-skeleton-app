@@ -1,4 +1,4 @@
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import { LuciaError } from 'lucia';
@@ -7,6 +7,7 @@ import { sendVerificationEmail } from '$lib/server/email/send';
 import { schema } from '$lib/schemas/authentication';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
 import { PostmarkError } from 'postmark/dist/client/errors/Errors';
+import type { Message } from '$lib/schemas/message';
 
 // If the user exists, redirect authenticated users to the profile page.
 export const load: PageServerLoad = async (event) => {
@@ -23,7 +24,7 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
-		const form = await superValidate(request, schema.signup);
+		const form = await superValidate<typeof schema.signup, Message>(request, schema.signup);
 		if (!form.valid) return fail(400, { form });
 
 		try {
@@ -51,13 +52,13 @@ export const actions: Actions = {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
 			}
 			if (e instanceof PostmarkError && e.code == 429) {
-				return setError(form, 'Rate Limit Exceeded');
+				return message(form, {type: 'error', text: 'Rate Limit Exceeded'} )
 			}
 
 			console.error(e);
-			return setError(form, 'Unknown error has occured');
+			return message(form, {type: 'error', text: 'Unknown error has occured'} )
 		}
 
-		return { form };
+		return message(form, {type: 'success', text: 'Signup completed 😎'} )
 	}
 };
