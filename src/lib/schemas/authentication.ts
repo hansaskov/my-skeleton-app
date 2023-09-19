@@ -6,7 +6,7 @@ function containsNumber(str: string) {
 
 const auth = z.object({
 	remember: z.boolean().optional().default(false),
-	email: z.string().trim().min(1).max(255).email(),
+	email: z.string().trim().min(1).max(255).email().toLowerCase(),
 	password: z
 		.string()
 		.min(8)
