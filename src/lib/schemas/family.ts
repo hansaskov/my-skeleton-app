@@ -7,7 +7,7 @@ export const familySchema = z.object({
 
 export const inviteFamilyMemberSchema = z.object({
 	familyId: z.string().min(1),
-	email: z.string().email().min(1)
+	email: z.string().email().min(1).toLowerCase()
 });
 
 export const deleteFamilySchema = z.object({
