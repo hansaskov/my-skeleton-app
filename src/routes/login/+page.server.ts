@@ -43,9 +43,9 @@ export const actions: Actions = {
 			if (e instanceof LuciaError) {
 				switch (e.message) {
 					case 'AUTH_INVALID_KEY_ID':
-						return message(form, {type: 'error', text: 'Incorrect credentials'} )
+						return message(form, {type: 'error', text: 'Incorrect credentials, please try again 😊'} )
 					case 'AUTH_INVALID_PASSWORD':
-						return message(form, {type: 'error', text: 'Incorrect credentials'} )
+						return message(form, {type: 'error', text: 'Incorrect credentials, please try again 😊'} )
 					case 'AUTH_OUTDATED_PASSWORD':
 						return message(form, {type: 'error', text: 'Outdated password'} )
 
