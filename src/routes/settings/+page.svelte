@@ -21,6 +21,5 @@
 		<h1 class="h1">{data.userInfo.fullname}</h1>
 		<p>E-mail: {data.user?.email}</p>
 		<p>Birthday: {day} / {month} / {year}</p>
-		<p>Description: {data.userInfo?.description}</p>
 	</div>
 </div>

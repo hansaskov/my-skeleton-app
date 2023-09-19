@@ -69,7 +69,6 @@ export const userInfo = mysqlTable('user_info', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	fullname: varchar('full_name', { length: 256 }).notNull(),
 	birthdate: datetime('birthdate').notNull(),
-	description: varchar('description', { length: 1024 }).notNull(),
 	imageUrl: varchar('image_url', { length: 512 }),
 
 	userId: varchar('user_id', { length: 128 }).notNull()

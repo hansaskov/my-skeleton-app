@@ -2,7 +2,6 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/form/TextField.svelte';
-	import TextAreaField from '$lib/components/form/TextAreaField.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
 	import { Avatar, FileDropzone } from '@skeletonlabs/skeleton';
 	import { handleFileUpload } from '../../api/upload/client/handleFileUpload';
@@ -26,9 +25,8 @@
 
 			<TextField field="fullname" {form} titleName="Your Full name" type="text" />
 			<TextField field="birthdate" {form} titleName="Your Birthdate" type="date" />
-			<TextAreaField field="description" {form} titleName="A description about you" />
-
 			<TextField
+				type="hidden"
 				readonly
 				class="input variant-ghost-surface pointer-events-none opacity-50 bg-gray-200 "
 				field="imageUrl"
@@ -36,7 +34,6 @@
 				titleName="Profile picture (optional)"
 			/>
 
-			<div class="flex w-fit items-center justify-between">
 				<FileDropzone
 					name="image.upload"
 					accept="image/*"
@@ -49,11 +46,12 @@
 					</svelte:fragment>
 					<svelte:fragment slot="meta">PNG, JPG and SVG allowed.</svelte:fragment>
 				</FileDropzone>
+				<div class="w-full flex justify-center">
+					{#if $form_data.imageUrl}
+						<Avatar width="w-32" rounded="rounded-container-token" src="https://image.hjemmet.net/{$form_data.imageUrl}" />
+					{/if}
+				</div>
 
-				{#if $form_data.imageUrl}
-					<Avatar class="ml-4 w-1/3 " src="https://image.hjemmet.net/{$form_data.imageUrl}" />
-				{/if}
-			</div>
 			<button class="btn variant-filled-primary w-full">Submit</button>
 		</div>
 	</form>
