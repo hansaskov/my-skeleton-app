@@ -1,4 +1,4 @@
-import { getUserInfo } from '$lib/server/drizzle/userinfo/select';
+import { getUserInfo } from '$lib/server/drizzle/user/select';
 import type { LayoutServerLoad } from './$types';
 import { loadFlash } from 'sveltekit-flash-message/server';
 

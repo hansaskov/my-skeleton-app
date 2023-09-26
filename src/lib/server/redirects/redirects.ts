@@ -1,7 +1,7 @@
 import type { Session, User } from 'lucia';
 import { redirect } from 'sveltekit-flash-message/server';
 import type { RequestEvent } from '@sveltejs/kit';
-import { getUserInfo } from '../drizzle/userinfo/select';
+import { getUserInfo } from '../drizzle/user/select';
 
 export const callbacks = {
 	login: {

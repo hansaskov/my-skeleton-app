@@ -9,7 +9,7 @@ import { userInfo } from '$lib/server/drizzle/schema';
 import { redirect } from 'sveltekit-flash-message/server';
 import { db } from '$lib/server/drizzle/db';
 import { generateRandomString } from 'lucia/utils';
-import { userSettingsSchema } from '$lib/schemas/userSettings'
+import { userSetupSchema } from '$lib/schemas/userSettings'
 
 
 export const load: PageServerLoad = async (event) => {
@@ -20,7 +20,7 @@ export const load: PageServerLoad = async (event) => {
 
 	// If the user is missing userdata keep them on the page
 	if (!session.user.userInfoSet) {
-		const form = await superValidate(userSettingsSchema);
+		const form = await superValidate(userSetupSchema);
 		return { form };
 	}
 	// Is their email is not verified, redirect to the email verification otherwise redirect to the home page
@@ -33,7 +33,7 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
-		const form = await superValidate(request, userSettingsSchema);
+		const form = await superValidate(request, userSetupSchema);
 		if (!form.valid) return fail(400, { form });
 
 		const session = await locals.auth.validate();

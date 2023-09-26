@@ -1,4 +1,4 @@
-import { type InferSelectModel, type InferInsertModel, relations } from 'drizzle-orm';
+import { type InferInsertModel, relations } from 'drizzle-orm';
 import {
 	mysqlTable,
 	bigint,

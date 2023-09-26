@@ -1,11 +1,13 @@
-import { eq, placeholder } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { db } from '../db';
 import { userInfo } from '../schema';
+
+
 
 const prepared = db
 	.select()
 	.from(userInfo)
-	.where(eq(userInfo.userId, placeholder('id')))
+	.where(eq(userInfo.userId, sql.placeholder('id')))
 	.limit(1)
 	.prepare();
 
