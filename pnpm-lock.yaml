@@ -15,8 +15,8 @@ dependencies:
     specifier: ^2.1.0
     version: 2.1.0(@planetscale/database@1.11.0)(lucia@2.7.0)(mysql2@3.6.1)
   '@lucia-auth/oauth':
-    specifier: ^2.2.0
-    version: 2.2.0(lucia@2.7.0)
+    specifier: ^3.3.0
+    version: 3.3.0(lucia@2.7.0)
   '@planetscale/database':
     specifier: ^1.11.0
     version: 1.11.0
@@ -53,8 +53,8 @@ devDependencies:
     specifier: ^2.1.0
     version: 2.1.0(svelte@4.2.1)
   '@skeletonlabs/tw-plugin':
-    specifier: ^0.1.0
-    version: 0.1.0(tailwindcss@3.3.3)
+    specifier: ^0.2.0
+    version: 0.2.0(tailwindcss@3.3.3)
   '@sveltejs/adapter-auto':
     specifier: ^2.1.0
     version: 2.1.0(@sveltejs/kit@1.25.1)
@@ -1075,8 +1075,8 @@ packages:
       mysql2: 3.6.1
     dev: false
 
-  /@lucia-auth/oauth@2.2.0(lucia@2.7.0):
-    resolution: {integrity: sha512-3gY21t62PikfRvkrG3EfILT5etB7IhjwakdJMEXicb8wESTnjYyjS+SFqL05oud7NmLZjCDxnsqjKPQ+GMBlWQ==}
+  /@lucia-auth/oauth@3.3.0(lucia@2.7.0):
+    resolution: {integrity: sha512-vb9BBcZXOeeijGndnvq/AoJJZU6MAKG7UCqV1n9tQ81edSPaWZWsxSDrDjmNFrY0tSyATZMWo/LXbzt/WQdKdA==}
     peerDependencies:
       lucia: ^2.0.0
     dependencies:
@@ -1159,8 +1159,8 @@ packages:
       svelte: 4.2.1
     dev: true
 
-  /@skeletonlabs/tw-plugin@0.1.0(tailwindcss@3.3.3):
-    resolution: {integrity: sha512-ufnm4FS+s/khuho4yJ/uqfW91u2YXnH3E5N541MtX9XjmoimQzYIcxWyTIuX9AM/brIPP6M6l0et3nRx17CRoQ==}
+  /@skeletonlabs/tw-plugin@0.2.0(tailwindcss@3.3.3):
+    resolution: {integrity: sha512-Mtao12JMrmlYvhv9AfvKNBd5qz+v5MImMG9tri++/4FUORAmzB3F3Qq9+ukfdDtoPT/+Q1CRPn1CL05gDxsKSQ==}
     peerDependencies:
       tailwindcss: '>=3.0.0'
     dependencies:
