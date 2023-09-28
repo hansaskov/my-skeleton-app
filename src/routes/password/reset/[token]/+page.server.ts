@@ -3,7 +3,7 @@
 import { auth } from '$lib/server/lucia';
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
-import { message, setError, superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 import { schema } from '$lib/schemas/authentication';
 import { redirect } from 'sveltekit-flash-message/server';
 import { handleSignedinRedirect } from '$lib/server/redirects/redirects';
@@ -48,14 +48,14 @@ export const actions: Actions = {
 			if (e instanceof TokenError) {
 				switch (e.cause) {
 					case 'EXPIRED_TOKEN':
-						return message(form, {type: 'error', text: 'Your password reset link has expired'});
+						return message(form, { type: 'error', text: 'Your password reset link has expired' });
 					case 'INVALID_TOKEN':
-						return message(form, {type: 'error', text: 'Your password reset link is invalid'});
+						return message(form, { type: 'error', text: 'Your password reset link is invalid' });
 				}
 			}
 
 			console.error(e);
-			return message(form, {type: 'error', text: 'Invalid Error'});
+			return message(form, { type: 'error', text: 'Invalid Error' });
 		}
 
 		throw redirect(303, '/');

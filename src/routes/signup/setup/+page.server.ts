@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
@@ -9,8 +8,7 @@ import { userInfo } from '$lib/server/drizzle/schema';
 import { redirect } from 'sveltekit-flash-message/server';
 import { db } from '$lib/server/drizzle/db';
 import { generateRandomString } from 'lucia/utils';
-import { userSetupSchema } from '$lib/schemas/userSettings'
-
+import { userSetupSchema } from '$lib/schemas/userSettings';
 
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.auth.validate();

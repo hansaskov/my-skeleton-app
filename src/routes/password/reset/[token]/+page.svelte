@@ -3,17 +3,18 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import TextField from '$lib/components/form/TextField.svelte';
 	import { isLoadingForm } from '$lib/stores.ts/loading';
+	import { handleMessage } from '$lib/components/ToastManager';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 	export let data: PageData;
+
+	const toastStore = getToastStore()
 
 	const form = superForm(data.form, {
 		taintedMessage: null,
 		delayMs: 150,
-		onUpdate: ({ form }) => {
-			const allErrors = Object.values(form.errors).flat();
-			const uniqueErrors = [...new Set(allErrors)];
-
-			for (const error of uniqueErrors) {
-			//	toastManager.trigger.error(error);
+		onUpdated({ form }) {
+			if (form.message) {
+				handleMessage(form.message, toastStore);
 			}
 		}
 	});

@@ -28,3 +28,22 @@ export async function selectAllFamilyInvitesFromEmail(email: string) {
 
 	return invites;
 }
+
+export async function selectPendingFamilyInvitesFromUserId(userId: string) {
+	const invites = await db.query.familyInvitation.findMany({
+		columns: {
+			id: true,
+			email: true
+		},
+		with: {
+			family: {
+				columns: {
+					name: true
+				}
+			}
+		},
+		where: eq(familyInvitation.invitingUserId, userId)
+	});
+
+	return invites;
+}

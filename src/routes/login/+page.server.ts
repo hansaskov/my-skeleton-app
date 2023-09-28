@@ -1,4 +1,4 @@
-import { message, setError, superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
@@ -21,7 +21,7 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals, getClientAddress }) => {
-		const form = await superValidate<typeof schema.login, Message>(request, schema.login)
+		const form = await superValidate<typeof schema.login, Message>(request, schema.login);
 		if (!form.valid) return fail(400, { form });
 
 		try {
@@ -30,7 +30,10 @@ export const actions: Actions = {
 
 			if (!rateLimitAttempt.success) {
 				const timeRemaining = Math.floor((rateLimitAttempt.reset - new Date().getTime()) / 1000);
-				return message(form, {type: 'error', text: 'Too many requests. Please try again in ${timeRemaining} seconds.'} )
+				return message(form, {
+					type: 'error',
+					text: `Too many requests. Please try again in ${timeRemaining} seconds.`
+				});
 			}
 
 			const key = await auth.useKey('email', form.data.email, form.data.password);
@@ -43,19 +46,23 @@ export const actions: Actions = {
 			if (e instanceof LuciaError) {
 				switch (e.message) {
 					case 'AUTH_INVALID_KEY_ID':
-						return message(form, {type: 'error', text: 'Incorrect credentials, please try again 😊'} )
+						return message(form, {
+							type: 'error',
+							text: 'Incorrect credentials, please try again 😊'
+						});
 					case 'AUTH_INVALID_PASSWORD':
-						return message(form, {type: 'error', text: 'Incorrect credentials, please try again 😊'} )
+						return message(form, {
+							type: 'error',
+							text: 'Incorrect credentials, please try again 😊'
+						});
 					case 'AUTH_OUTDATED_PASSWORD':
-						return message(form, {type: 'error', text: 'Outdated password'} )
-
+						return message(form, { type: 'error', text: 'Outdated password' });
 				}
 			}
 			console.error(e);
-			return message(form, {type: 'error', text: 'Something went wront, please try again'} )
-			
+			return message(form, { type: 'error', text: 'Something went wront, please try again' });
 		}
 
-		return message(form, {type: 'success', text: 'Login sucessfull 😎'} )
+		return message(form, { type: 'success', text: 'Login sucessfull 😎' });
 	}
 };

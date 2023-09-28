@@ -52,13 +52,13 @@ export const actions: Actions = {
 				return setError(form, 'email', `E-mail "${form.data.email}" already in use`);
 			}
 			if (e instanceof PostmarkError && e.code == 429) {
-				return message(form, {type: 'error', text: 'Rate Limit Exceeded'} )
+				return message(form, { type: 'error', text: 'Rate Limit Exceeded' });
 			}
 
 			console.error(e);
-			return message(form, {type: 'error', text: 'Unknown error has occured'} )
+			return message(form, { type: 'error', text: 'Unknown error has occured' });
 		}
 
-		return message(form, {type: 'success', text: 'Signup completed 😎'} )
+		return message(form, { type: 'success', text: 'Signup completed 😎' });
 	}
 };

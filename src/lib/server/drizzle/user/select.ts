@@ -2,8 +2,6 @@ import { eq, sql } from 'drizzle-orm';
 import { db } from '../db';
 import { userInfo } from '../schema';
 
-
-
 const prepared = db
 	.select()
 	.from(userInfo)

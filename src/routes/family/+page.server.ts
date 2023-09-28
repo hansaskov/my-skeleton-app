@@ -17,8 +17,12 @@ import { DatabaseError } from '@planetscale/database';
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.auth.validate();
 	const { userInfo, user } = await redirectFromPrivatePage(session, event);
-	const inviteFamilyMemberForm = await superValidate<typeof inviteFamilyMemberSchema, Message>(inviteFamilyMemberSchema);
-	const deleteFamilyForm = await superValidate<typeof deleteFamilySchema, Message>(deleteFamilySchema);
+	const inviteFamilyMemberForm = await superValidate<typeof inviteFamilyMemberSchema, Message>(
+		inviteFamilyMemberSchema
+	);
+	const deleteFamilyForm = await superValidate<typeof deleteFamilySchema, Message>(
+		deleteFamilySchema
+	);
 
 	try {
 		const families = await selectFamiliesAndMembersForUser2(user.userId);
@@ -39,7 +43,10 @@ export const actions = {
 		const userId = session.user.userId;
 
 		// Validate form
-		const form = await superValidate<typeof inviteFamilyMemberSchema, Message>(event.request, inviteFamilyMemberSchema);
+		const form = await superValidate<typeof inviteFamilyMemberSchema, Message>(
+			event.request,
+			inviteFamilyMemberSchema
+		);
 		if (!form.valid) return fail(400, { form });
 
 		const familyId = form.data.familyId;
@@ -48,28 +55,29 @@ export const actions = {
 		try {
 			// Validate if user is autherized to do action
 			const userRelation = await selectFamilyOnUser({ userId, familyId });
-			if (!userRelation || userRelation.familyRole !== 'MODERATOR') 
-			    return message(form, {type: 'error', text: 'You are not a moderator 🤓'});
+			if (!userRelation || userRelation.familyRole !== 'MODERATOR')
+				return message(form, { type: 'error', text: 'You are not a moderator 🤓' });
 
 			if (form.data.email === session.user.email)
-				return message(form, {type: 'error', text: 'Invite declined, try inviting someone else 😉'})
-
-			
+				return message(form, {
+					type: 'error',
+					text: 'Invite declined, try inviting someone else 😉'
+				});
 
 			// Create new invite
 			await sendFamilyInvite({ email, familyId, invitingUserId: userId });
 		} catch (e) {
 			if (e instanceof DatabaseError) {
-				if (e.body.message.includes("code = AlreadyExists")){
-					return message(form, {type: 'error', text: `You have already invited ${email} 🙄`})
+				if (e.body.message.includes('code = AlreadyExists')) {
+					return message(form, { type: 'error', text: `You have already invited ${email} 🙄` });
 				}
 			}
 
 			console.error(e);
-			return message(form, {type: 'error', text: 'Unknown Error, try again 😔'});
+			return message(form, { type: 'error', text: 'Unknown Error, try again 😔' });
 		}
 
-        return message(form, {type: 'success', text: `invite sent to ${email} 😎`})
+		return message(form, { type: 'success', text: `invite sent to ${email} 😎` });
 	},
 
 	deleteFamily: async (event) => {

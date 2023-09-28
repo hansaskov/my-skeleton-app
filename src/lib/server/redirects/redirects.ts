@@ -41,7 +41,7 @@ export const callbacks = {
 		},
 		invite: {
 			type: 'success',
-			message: "invite was successfully sent",
+			message: 'invite was successfully sent',
 			page: '/family'
 		}
 	}

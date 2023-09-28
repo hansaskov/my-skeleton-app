@@ -1,4 +1,7 @@
-import { selectAllFamilyInvitesFromEmail } from '$lib/server/drizzle/invite/select';
+import {
+	selectAllFamilyInvitesFromEmail,
+	selectPendingFamilyInvitesFromUserId
+} from '$lib/server/drizzle/invite/select';
 import { callbacks, redirectFromPrivatePage } from '$lib/server/redirects/redirects';
 import { redirect } from 'sveltekit-flash-message/server';
 import type { Actions } from './$types';
@@ -8,12 +11,14 @@ import { deleteInvite, deleteInvitesFromFamilyWithEmail } from '$lib/server/driz
 
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.auth.validate();
-	const { userInfo, user } = await redirectFromPrivatePage(session, event);
+	const { user } = await redirectFromPrivatePage(session, event);
 
-	// Query all invites
-	const familyInvites = await selectAllFamilyInvitesFromEmail(user.email);
+	const [familyInvites, pendingInvites] = await Promise.all([
+		selectAllFamilyInvitesFromEmail(user.email),
+		selectPendingFamilyInvitesFromUserId(user.userId)
+	]);
 
-	return { familyInvites };
+	return { familyInvites, pendingInvites };
 };
 
 export const actions = {
