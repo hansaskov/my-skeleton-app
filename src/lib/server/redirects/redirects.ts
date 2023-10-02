@@ -44,7 +44,8 @@ export const callbacks = {
 			message: 'invite was successfully sent',
 			page: '/family'
 		}
-	}
+	},
+	wishlist: {}
 } as const;
 
 export async function redirectFromPrivatePage(session: Session | null, event: RequestEvent) {

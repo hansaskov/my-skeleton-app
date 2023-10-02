@@ -8,6 +8,8 @@ import {
 	mysqlEnum,
 	unique
 } from 'drizzle-orm/mysql-core';
+import { createInsertSchema } from 'drizzle-zod';
+import type { z } from 'zod';
 
 const currency = ['DKK', 'EUR', 'USD', 'GBP'] as const;
 const wishlistRole = ['EDITABLE', 'INTERACTABLE', 'VIEWABLE'] as const;
@@ -28,7 +30,7 @@ export const user = mysqlTable('auth_user', {
 	isUserInfoSet: boolean('user_info_set').notNull()
 });
 
-export const userInfoRelations = relations(user, ({ one, many }) => ({
+export const userRelations = relations(user, ({ one, many }) => ({
 	// one-to-one relationship to userInfo
 	info: one(userInfo, {
 		fields: [user.id],
@@ -36,7 +38,8 @@ export const userInfoRelations = relations(user, ({ one, many }) => ({
 	}),
 	// many-to-one relationship with familyInvitation
 	familyInvitation: many(familyInvitation),
-	familiesOnUsers: many(familiesOnUsers)
+	familiesOnUsers: many(familiesOnUsers),
+	wishlistOnUsers: many(wishlistOnUsers)
 }));
 
 export type Session = typeof session.$inferSelect;
@@ -75,19 +78,35 @@ export const userInfo = mysqlTable('user_info', {
 });
 
 // Wish schema
-export type Wish = typeof wish.$inferSelect;
-export type NewWish = Omit<InferInsertModel<typeof wish>, 'id' | 'updatedAt'>;
 export const wish = mysqlTable('wish', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	name: varchar('name', { length: 256 }).notNull(),
 	price: bigint('price', { mode: 'number' }).notNull(),
 	currency: mysqlEnum('currency', currency).default('DKK').notNull(),
-	description: varchar('description', { length: 1024 }).notNull(),
-	imageUrl: varchar('image_url', { length: 512 }).notNull(),
+	imageUrl: varchar('image_url', { length: 512 }),
 	updatedAt: datetime('updated_at').notNull(),
 
-	wishlistId: varchar('wishlist_id', { length: 128 }).notNull().unique()
+	wishlistId: varchar('wishlist_id', { length: 128 }).notNull()
 });
+
+export const NewWishSchema = createInsertSchema(wish, {
+	wishlistId: ({ wishlistId }) => wishlistId.min(1),
+	name: ({ name }) => name.min(1),
+	price: ({ price }) => price.positive().default('' as unknown as number)
+}).omit({
+	updatedAt: true,
+	id: true
+});
+
+export type NewWish = z.infer<typeof NewWishSchema>;
+
+export const wishRelations = relations(wish, ({ one }) => ({
+	wishlists: one(wishlist, {
+		fields: [wish.wishlistId],
+		references: [wishlist.id]
+	})
+}));
+
 export type Wishlist = typeof wishlist.$inferSelect;
 export type NewWishlist = Omit<InferInsertModel<typeof wishlist>, 'id'>;
 export const wishlist = mysqlTable('wishlist', {
@@ -95,6 +114,11 @@ export const wishlist = mysqlTable('wishlist', {
 	name: varchar('name', { length: 255 }).notNull(),
 	is_public: boolean('is_public').notNull()
 });
+
+export const wishlistRelation = relations(wishlist, ({ many }) => ({
+	wishs: many(wish),
+	wishlistOnUsers: many(wishlistOnUsers)
+}));
 
 export type WishlistOnUsers = typeof wishlistOnUsers.$inferSelect;
 export const wishlistOnUsers = mysqlTable(
@@ -108,6 +132,18 @@ export const wishlistOnUsers = mysqlTable(
 	},
 	(t) => ({ first: unique().on(t.userId, t.wishlistId) })
 );
+
+// Many-To-Many Relationship
+export const wishlistOnUsersRelations = relations(wishlistOnUsers, ({ one }) => ({
+	wishlist: one(wishlist, {
+		fields: [wishlistOnUsers.wishlistId],
+		references: [wishlist.id]
+	}),
+	user: one(user, {
+		fields: [wishlistOnUsers.userId],
+		references: [user.id]
+	})
+}));
 
 // Family schema
 export type Family = typeof family.$inferSelect;

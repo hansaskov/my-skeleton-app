@@ -1,1 +1,0 @@
-ALTER TABLE `families_on_users` MODIFY COLUMN `family_role` enum('MODERATOR','MEMBER','INVITED') NOT NULL;

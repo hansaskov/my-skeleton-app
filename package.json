@@ -61,6 +61,7 @@
 		"@upstash/ratelimit": "^0.4.4",
 		"@upstash/redis": "^1.22.0",
 		"drizzle-orm": "^0.28.6",
+		"drizzle-zod": "^0.5.1",
 		"iconify-icon": "^1.0.8",
 		"lucia": "^2.7.0",
 		"postmark": "^3.0.19"
