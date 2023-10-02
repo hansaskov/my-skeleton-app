@@ -23,7 +23,7 @@ export let data: PageData;
 
 
     <a href="/wishlist/create" class="text-md btn variant-filled font-semibold capitalize">   
-        Create family
+        Create new wishlist
     </a>
 </div>
 
