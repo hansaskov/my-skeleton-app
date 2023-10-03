@@ -11,6 +11,7 @@ import type { Message } from '$lib/schemas/message';
 import { fail } from '@sveltejs/kit';
 import { createWishlist } from '$lib/server/drizzle/wishlist/insert';
 import { createWish } from '$lib/server/drizzle/wish/insert';
+import { deleteWishSchema } from '$lib/schemas/wishlist';
 
 export const load: PageServerLoad = async (event) => {
 	const [form, session] = await Promise.all([
@@ -43,6 +44,13 @@ export const actions = {
 		// Validate session
 		const session = await event.locals.auth.validate();
 		if (!session) throw redirect(callbacks.login.page, callbacks.login, event);
+
+		const form = await superValidate(event.request, deleteWishSchema);
+		if (!form.valid) return fail(400, { form });
+
+		if (form.data.wishId)
+
+
 
 		return;
 	},

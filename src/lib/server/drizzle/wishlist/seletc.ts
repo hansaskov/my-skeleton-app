@@ -44,3 +44,27 @@ export async function selectRoleforWishlistOnUser({
 		where: (table, { eq, and }) => and(eq(table.userId, userId), eq(table.wishlistId, wishlistId))
 	});
 }
+
+export async function selectRoleforWishOnUser({
+	wishId,
+	userId
+}: {
+	wishId: string;
+	userId: string;
+}) {
+	return await db.query.wish.findFirst({
+		where: (wish, { eq }) => eq(wish.id, wishId),
+		columns: {},
+		with: {
+			wishlists: {
+				columns: {},
+				with: {
+					wishlistOnUsers: {
+						columns: {wishlistRole: true},
+						where: (table, {eq}) => eq(table.userId, userId)
+					}
+				}
+			}
+		}
+	})
+}
