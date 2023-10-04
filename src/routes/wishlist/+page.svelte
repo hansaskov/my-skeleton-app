@@ -23,7 +23,7 @@ export let data: PageData;
 
             <!-- Items within Wishlist -->
             <div class="snap-x scroll-px-4 snap-mandatory scroll-smooth flex gap-4 overflow-x-auto">
-                {#each wishlist.wishs as wish, i}
+                {#each wishlist.wishs as wish}
                     <div class="snap-start shrink-0 card bg-surface-backdrop-token py-20 w-40 md:w-80 text-center relative overflow-hidden rounded-lg hover:shadow-md transition-shadow duration-300">
                         
                         <!-- Wish Image -->

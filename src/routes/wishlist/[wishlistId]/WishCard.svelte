@@ -1,15 +1,7 @@
 <script lang="ts">
-	export let wish: {
-		id: string;
-		name: string;
-		imageUrl: string | null;
-		updatedAt: Date;
-		wishlistId: string;
-		price: number;
-		currency: 'DKK' | 'EUR' | 'USD' | 'GBP';
-	};
+	import type { Wish } from "$lib/server/drizzle/schema";
 
-    
+	export let wish: Wish
 
 </script>
 
@@ -17,9 +9,16 @@
 	<button type="button" class="btn-icon btn-icon-sm absolute top-2 left-2 variant-filled-tertiary">
 		<iconify-icon width="16" height="16" icon="lucide:pen" />
 	</button>
-	<button type="button" class="btn-icon btn-icon-sm absolute top-2 right-2 variant-filled-error">
-		<iconify-icon width="16" height="16" icon="lucide:trash-2" />
-	</button>
+
+	<form method="post" action="?/delete" >
+		<input type="hidden" name="wishId" bind:value={wish.id} />
+
+		<button class="btn-icon btn-icon-sm absolute top-2 right-2 variant-filled-error">
+			<iconify-icon width="16" height="16" icon="lucide:trash-2" />
+		</button>
+
+	</form>
+
 	<div>
 		<img
 			class="rounded-t-lg w-full object-cover"

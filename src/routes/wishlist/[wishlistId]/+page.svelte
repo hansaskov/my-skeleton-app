@@ -4,15 +4,24 @@
     import { superForm } from 'sveltekit-superforms/client';
     import type { PageData } from './$types';
     import { getToastStore } from '@skeletonlabs/skeleton';
-    import TextField from '$lib/components/form/TextField.svelte';
-    import SelectField from '$lib/components/form/SelectField.svelte';
 	import WishCard from './WishCard.svelte';
+	import CreateForm from './CreateForm.svelte';
 
     const toastStore = getToastStore();
 
     export let data: PageData;
 
-    const form = superForm(data.form, {
+    const createForm = superForm(data.createForm, {
+        taintedMessage: null,
+        delayMs: 150,
+        onUpdated({ form }) {
+            if (form.message) {
+                handleMessage(form.message, toastStore);
+            }
+        }
+    });
+
+    superForm(data.deleteForm, {
         taintedMessage: null,
         delayMs: 150,
         onUpdated({ form }) {
@@ -50,26 +59,4 @@
 
 <hr class="border-t border-gray-200 my-8" />
 
-<div class="flex flex-col items-center justify-center pt-12 mx-auto space-y-8">
-    <form method="POST" action="?/create" use:form.enhance>
-        <div class="card p-8 w-full space-y-4">
-            <h3 class="h3 font-semibold">Add a new item to your wishlist!</h3>
-            <TextField {form} field="name" titleName="Name" placeholder="Iphone 7" />
-            <TextField {form} field="price" type="number" titleName="Price" placeholder="799" />
-            <SelectField
-                {form}
-                field="currency"
-                titleName="Currency"
-                choises={['DKK', 'EUR', 'USD', 'GBP']}
-            />
-            <TextField
-                {form}
-                field="imageUrl"
-                titleName="Image url (optional)"
-                placeholder="https://apple.com/iphone_7.png"
-            />
-            <TextField {form} field="wishlistId" type="hidden" />
-            <button class="btn variant-filled-primary w-full">Submit</button>
-        </div>
-    </form>
-</div>
+<CreateForm form = {createForm} />

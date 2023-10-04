@@ -8,7 +8,7 @@ import { planetscale_connection } from './planetscale';
 import { github } from './auth/providers/github';
 
 export const auth = lucia({
-	adapter: planetscale(planetscale_connection as any, {
+	adapter: planetscale(planetscale_connection, {
 		user: 'auth_user',
 		key: 'auth_key',
 		session: 'auth_session'

@@ -5,7 +5,6 @@ export const wishlistSchema = z.object({
 	is_public: z.boolean()
 });
 
-
 export const deleteWishSchema = z.object({
 	wishId: z.string().min(1)
 });

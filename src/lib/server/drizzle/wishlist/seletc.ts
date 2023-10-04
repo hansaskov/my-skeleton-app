@@ -52,7 +52,7 @@ export async function selectRoleforWishOnUser({
 	wishId: string;
 	userId: string;
 }) {
-	return await db.query.wish.findFirst({
+	const wish = await db.query.wish.findFirst({
 		where: (wish, { eq }) => eq(wish.id, wishId),
 		columns: {},
 		with: {
@@ -60,11 +60,18 @@ export async function selectRoleforWishOnUser({
 				columns: {},
 				with: {
 					wishlistOnUsers: {
-						columns: {wishlistRole: true},
-						where: (table, {eq}) => eq(table.userId, userId)
+						columns: { wishlistRole: true },
+						where: (table, { eq }) => eq(table.userId, userId),
+						limit: 1
 					}
 				}
 			}
 		}
-	})
+	});
+
+	if (!wish) return wish;
+
+	const role = wish.wishlists.wishlistOnUsers.at(0);
+
+	return role;
 }

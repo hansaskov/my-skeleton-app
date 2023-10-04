@@ -2,6 +2,7 @@ import { callbacks, redirectFromPrivatePage } from '$lib/server/redirects/redire
 import { redirect } from 'sveltekit-flash-message/server';
 import type { Actions, PageServerLoad } from './$types';
 import {
+	selectRoleforWishOnUser,
 	selectRoleforWishlistOnUser,
 	selectWishlistsOnId
 } from '$lib/server/drizzle/wishlist/seletc';
@@ -9,17 +10,18 @@ import { NewWishSchema } from '$lib/server/drizzle/schema';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import type { Message } from '$lib/schemas/message';
 import { fail } from '@sveltejs/kit';
-import { createWishlist } from '$lib/server/drizzle/wishlist/insert';
 import { createWish } from '$lib/server/drizzle/wish/insert';
 import { deleteWishSchema } from '$lib/schemas/wishlist';
+import { deleteWish } from '$lib/server/drizzle/wish/delete';
 
 export const load: PageServerLoad = async (event) => {
-	const [form, session] = await Promise.all([
+	const [createForm, deleteForm, session] = await Promise.all([
 		superValidate(NewWishSchema),
+		superValidate(deleteWishSchema),
 		event.locals.auth.validate()
 	]);
 
-	const { userInfo, user } = await redirectFromPrivatePage(session, event);
+	const { userInfo } = await redirectFromPrivatePage(session, event);
 
 	const wishlist = await selectWishlistsOnId(event.params.wishlistId);
 
@@ -33,9 +35,9 @@ export const load: PageServerLoad = async (event) => {
 		throw redirect(fMessage.page, fMessage, event);
 	}
 
-	form.data.wishlistId = wishlist.id;
+	createForm.data.wishlistId = wishlist.id;
 
-	return { userInfo, wishlist, form };
+	return { userInfo, wishlist, createForm, deleteForm };
 };
 
 export const actions = {
@@ -45,15 +47,40 @@ export const actions = {
 		const session = await event.locals.auth.validate();
 		if (!session) throw redirect(callbacks.login.page, callbacks.login, event);
 
+		// Validate form data
 		const form = await superValidate(event.request, deleteWishSchema);
 		if (!form.valid) return fail(400, { form });
 
-		if (form.data.wishId)
+		// Verify user permissions
+		const role = await selectRoleforWishOnUser({
+			userId: session.user.userId,
+			wishId: form.data.wishId
+		});
 
+		if (!role || role.wishlistRole !== 'EDITABLE') {
+			return message(form, {
+				type: 'error',
+				text: 'User not authenticated to delete wish'
+			});
+		}
 
+		// Delete new wish
+		try {
+			await deleteWish(form.data);
+		} catch (e) {
+			console.log(e);
+			return message(form, {
+				type: 'error',
+				text: 'Something went wrong, please try again'
+			});
+		}
 
-		return;
+		return message(form, {
+			type: 'success',
+			text: `Wish removed 😎`
+		});
 	},
+
 	// Create wish on wishlist
 	create: async (event) => {
 		// Validate session
@@ -78,7 +105,6 @@ export const actions = {
 		}
 
 		// Create new wish
-
 		try {
 			await createWish(form.data);
 		} catch (e) {

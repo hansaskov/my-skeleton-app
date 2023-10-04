@@ -1,7 +1,7 @@
 import type { NewWish } from '../schema';
 
 import { generateRandomString } from 'lucia/utils';
-import { wishlist, type NewWishlist, wishlistOnUsers, wish } from '../schema';
+import { wish } from '../schema';
 import { db } from '../db';
 import type { Prettify } from '$lib/types/wrappers';
 

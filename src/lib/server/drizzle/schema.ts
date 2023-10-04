@@ -78,6 +78,7 @@ export const userInfo = mysqlTable('user_info', {
 });
 
 // Wish schema
+export type Wish = typeof wish.$inferInsert;
 export const wish = mysqlTable('wish', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	name: varchar('name', { length: 256 }).notNull(),
