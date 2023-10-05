@@ -25,23 +25,43 @@ function redirectHelper(page: string, Message: Message, event: RequestEvent): ne
 	throw redirect(page, { type: Message.type, message: Message.text, page: page} as const , event);
 }
 
+
 export const load: PageServerLoad = async (event) => {
-	const [createForm, deleteForm, session] = await Promise.all([
-		superValidate(NewWishSchema),
-		superValidate(deleteWishSchema),
-		event.locals.auth.validate()
-	]);
+    // 1. Validate session and forms
+    const [createForm, deleteForm, session] = await Promise.all([
+        superValidate(NewWishSchema),
+        superValidate(deleteWishSchema),
+        event.locals.auth.validate()
+    ]);
 
-	const { userInfo } = await redirectFromPrivatePage(session, event);
-	const wishlist = await selectWishlistsOnId(event.params.wishlistId);
+    // 2. Fetch the wishlist
+    const wishlist = await selectWishlistsOnId(event.params.wishlistId);
+    if (!wishlist) {
+        redirectHelper('/wishlist', { type: 'error', text: 'Wishlist not found' }, event);
+    }
 
-	if (!wishlist) {
-		redirectHelper('/wishlist', {type: 'error', text: 'Wishlist not found'}, event)
-	}
+    // 3. Determine user role
+    let userRole 
+    if (session) {
+        userRole = await selectRoleforWishlistOnUser({
+            userId: session.user.userId,
+            wishlistId: event.params.wishlistId
+        });
+    }
 
-	createForm.data.wishlistId = wishlist.id;
-	return { userInfo, wishlist, createForm, deleteForm };
+    // 4. Check for access permissions
+    if (!wishlist.is_public && !userRole) {
+        throw redirect(callbacks.login.page, callbacks.login, event);
+    }
+
+	const wishlistRole = userRole?.wishlistRole || 'VIEWABLE' 
+
+    // 5. Set the wishlist ID for the create form
+    createForm.data.wishlistId = wishlist.id;
+
+    return { wishlistRole, wishlist, createForm, deleteForm };
 };
+
 
 export const actions = {
 	delete: async (event) => {

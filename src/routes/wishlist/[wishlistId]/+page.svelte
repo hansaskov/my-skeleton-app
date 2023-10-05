@@ -54,13 +54,15 @@
         <div class="grid gap-4">
             {#each wishblock as wish}
 			<div>
-               <WishCard {wish} {createForm} {selectedWishId}/>
+               <WishCard {wish} {createForm} {selectedWishId} wishlistRole={data.wishlistRole}/>
 			</div>
             {/each}
         </div>
     {/each}
 </section>
 
-<hr class="border-t border-gray-200 my-8" />
 
-<CreateForm form = {createForm} {selectedWishId} />
+ {#if data.wishlistRole === 'EDITABLE'}
+ <hr class="border-t border-gray-200 my-8" />
+    <CreateForm form = {createForm} {selectedWishId} />
+ {/if}

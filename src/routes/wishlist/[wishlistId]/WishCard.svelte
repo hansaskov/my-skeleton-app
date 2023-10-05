@@ -1,12 +1,13 @@
 <script lang="ts">
 	import type { SuperForm } from "sveltekit-superforms/client";
-	import type { NewWishSchema, Wish } from "$lib/server/drizzle/schema";
+	import type { NewWishSchema, Wish, WishlistRole } from "$lib/server/drizzle/schema";
 	import type { Writable } from "svelte/store";
 	import type { Message } from "$lib/schemas/message";
 
 	export let wish: Wish;
 	export let createForm: SuperForm<typeof NewWishSchema, Message>;
 	export let selectedWishId: Writable<string>;
+	export let wishlistRole: WishlistRole
 
 	const { form: formStore } = createForm;
 
@@ -30,17 +31,19 @@
 </script>
 
 <article class={`card variant-glass overflow-hidden relative transition-transform duration-300 transform ${isSelected ? 'border-2 border-blue-500 shadow-md scale-105' : ''}`}>
-	<button type="button" on:click={toggleEditMode} class="btn-icon btn-icon-sm absolute top-2 left-2 variant-filled-tertiary">
-		<iconify-icon width="16" height="16" icon="lucide:pen" />
-	</button>
-
-	<form method="post" action="?/delete">
-		<input type="hidden" name="wishId" bind:value={wish.id} />
-		<button class="btn-icon btn-icon-sm absolute top-2 right-2 variant-filled-error">
-			<iconify-icon width="16" height="16" icon="lucide:trash-2" />
+	{#if wishlistRole === 'EDITABLE'}
+		<button type="button" on:click={toggleEditMode} class="btn-icon btn-icon-sm absolute top-2 left-2 variant-filled-tertiary">
+			<iconify-icon width="16" height="16" icon="lucide:pen" />
 		</button>
-	</form>
 
+		<form method="post" action="?/delete">
+			<input type="hidden" name="wishId" bind:value={wish.id} />
+			<button class="btn-icon btn-icon-sm absolute top-2 right-2 variant-filled-error">
+				<iconify-icon width="16" height="16" icon="lucide:trash-2" />
+			</button>
+		</form>
+	{/if}
+	
 	<div>
 		<img
 			class="rounded-t-lg w-full object-cover"
