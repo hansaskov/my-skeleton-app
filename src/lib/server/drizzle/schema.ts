@@ -9,7 +9,7 @@ import {
 	unique
 } from 'drizzle-orm/mysql-core';
 import { createInsertSchema } from 'drizzle-zod';
-import type { z } from 'zod';
+import { z } from 'zod';
 
 const currency = ['DKK', 'EUR', 'USD', 'GBP'] as const;
 const wishlistRole = ['EDITABLE', 'INTERACTABLE', 'VIEWABLE'] as const;
@@ -92,11 +92,16 @@ export const wish = mysqlTable('wish', {
 
 export const NewWishSchema = createInsertSchema(wish, {
 	wishlistId: ({ wishlistId }) => wishlistId.min(1),
-	name: ({ name }) => name.min(1),
-	price: ({ price }) => price.positive().default('' as unknown as number)
+	name: ({name}) => name.min(1),
+	price: ({ price }) => price.positive().default('' as unknown as number),
+	imageUrl: ({imageUrl}) => imageUrl.url() 
 }).omit({
 	updatedAt: true,
 	id: true
+});
+
+export const UpdateWishSchema = NewWishSchema.extend({
+	id: z.string().min(1)
 });
 
 export type NewWish = z.infer<typeof NewWishSchema>;

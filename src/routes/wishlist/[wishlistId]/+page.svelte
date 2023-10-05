@@ -6,6 +6,7 @@
     import { getToastStore } from '@skeletonlabs/skeleton';
 	import WishCard from './WishCard.svelte';
 	import CreateForm from './CreateForm.svelte';
+	import { writable } from 'svelte/store';
 
     const toastStore = getToastStore();
 
@@ -43,6 +44,9 @@
     }
 
     const nestedWishes = convertToNestedList(data.wishlist.wishs, 4);
+
+    export const selectedWishId = writable("")
+   
 </script>
 
 <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -50,7 +54,7 @@
         <div class="grid gap-4">
             {#each wishblock as wish}
 			<div>
-               <WishCard {wish}/>
+               <WishCard {wish} {createForm} {selectedWishId}/>
 			</div>
             {/each}
         </div>
@@ -59,4 +63,4 @@
 
 <hr class="border-t border-gray-200 my-8" />
 
-<CreateForm form = {createForm} />
+<CreateForm form = {createForm} {selectedWishId} />

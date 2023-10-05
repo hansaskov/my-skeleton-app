@@ -1,1 +1,1 @@
-export type Message = { type: 'error' | 'success' | 'warning'; text: string };
+export type Message = { type: 'error' | 'success'; text: string };
