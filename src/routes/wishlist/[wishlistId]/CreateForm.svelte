@@ -19,7 +19,7 @@
 		selectedWishId.set('');
 		formStore.set({
 			name: "",
-			price: 0,
+			price: '' as unknown as number,
 			wishlistId: "",
 			currency: 'DKK',
 			imageUrl: undefined
@@ -27,13 +27,14 @@
 	}
 </script>
 
-<div class="flex flex-col items-center justify-center pt-12 mx-auto space-y-8">
+<div class="flex flex-col items-center justify-center mx-auto space-y-8">
 	<form method="POST" action={formAction}>
 		<div class="card p-8 w-full space-y-4">
 			<h3 class="h3 font-semibold">{headerText}</h3>
 			<TextField {form} field="name" titleName="Name" placeholder="Iphone 7" />
 			<TextField {form} field="price" type="number" titleName="Price" placeholder="799" />
 			<SelectField {form} field="currency" titleName="Currency" choises={['DKK', 'EUR', 'USD', 'GBP']} />
+			<TextField {form} field="pageUrl" titleName="Page url (optional)" placeholder="https://apple.com/iphone" />
 			<TextField {form} field="imageUrl" titleName="Image url (optional)" placeholder="https://apple.com/iphone_7.png" />
 			<TextField {form} field="wishlistId" type="hidden" />
 			<input type="hidden" name="id" bind:value={$selectedWishId} />

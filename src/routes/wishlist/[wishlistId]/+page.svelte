@@ -32,32 +32,13 @@
         }
     });
 
-    function convertToNestedList<T>(items: T[], chunkSize: number): T[][] {
-        const nestedLists: T[][] = Array.from({ length: chunkSize }, () => []);
-
-        items.forEach((item, index) => {
-            const innerListIndex = index % chunkSize;
-            nestedLists[innerListIndex].push(item);
-        });
-
-        return nestedLists;
-    }
-
-    const nestedWishes = convertToNestedList(data.wishlist.wishs, 4);
-
     export const selectedWishId = writable("")
    
 </script>
 
-<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-    {#each nestedWishes as wishblock}
-        <div class="grid gap-4">
-            {#each wishblock as wish}
-			<div>
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    {#each data.wishlist.wishs as wish}
                <WishCard {wish} {createForm} {selectedWishId} wishlistRole={data.wishlistRole}/>
-			</div>
-            {/each}
-        </div>
     {/each}
 </section>
 

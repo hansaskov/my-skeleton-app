@@ -83,7 +83,8 @@ export const wish = mysqlTable('wish', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	name: varchar('name', { length: 256 }).notNull(),
 	price: bigint('price', { mode: 'number' }).notNull(),
-	currency: mysqlEnum('currency', currency).default('DKK').notNull(),
+	currency: mysqlEnum('currency', currency).notNull(),
+	pageUrl: varchar('page_url', {length: 512}),
 	imageUrl: varchar('image_url', { length: 512 }),
 	updatedAt: datetime('updated_at').notNull(),
 
@@ -94,7 +95,8 @@ export const NewWishSchema = createInsertSchema(wish, {
 	wishlistId: ({ wishlistId }) => wishlistId.min(1),
 	name: ({name}) => name.min(1),
 	price: ({ price }) => price.positive().default('' as unknown as number),
-	imageUrl: ({imageUrl}) => imageUrl.url() 
+	imageUrl: ({imageUrl}) => imageUrl.url(),
+	pageUrl: ({pageUrl}) => pageUrl.url()
 }).omit({
 	updatedAt: true,
 	id: true
