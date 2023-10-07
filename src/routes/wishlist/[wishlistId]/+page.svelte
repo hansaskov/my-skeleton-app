@@ -36,9 +36,12 @@
    
 </script>
 
-<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+<section class="columns-2 lg:columns-3  gap-8">
     {#each data.wishlist.wishs as wish}
-               <WishCard {wish} {createForm} {selectedWishId} wishlistRole={data.wishlistRole}/>
+            <div class="py-4">
+               <WishCard {wish} {createForm} {selectedWishId} wishlistRole={data.wishlistRole} />
+            </div>
+            
     {/each}
 </section>
 
