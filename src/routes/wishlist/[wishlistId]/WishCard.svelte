@@ -71,7 +71,7 @@
 				<PriceDisplay price={wish.price} currency={wish.currency} />
 			</span>
 			{#if wish.pageUrl}
-				<a href={wish.pageUrl} class="text-blue-600 hover:underline text-md">Click for website</a>
+				<a href={wish.pageUrl} class="text-blue-600 hover:underline text-md">Website</a>
 			{/if}
 		</div>
 	</footer>
