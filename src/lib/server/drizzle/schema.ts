@@ -69,13 +69,22 @@ export const token = mysqlTable('auth_token', {
 // User info schema
 export type UserInfo = typeof userInfo.$inferSelect;
 export const userInfo = mysqlTable('user_info', {
-	id: varchar('id', { length: 128 }).primaryKey(),
+	username: varchar('id', { length: 128 }).primaryKey(),
 	fullname: varchar('full_name', { length: 256 }).notNull(),
 	birthdate: datetime('birthdate').notNull(),
 	imageUrl: varchar('image_url', { length: 512 }),
 
 	userId: varchar('user_id', { length: 128 }).notNull()
 });
+
+export const newUserInfoSchema = createInsertSchema(userInfo, {
+	username: ({username}) => username.min(1).max(128),
+	fullname: ({fullname}) => fullname.min(1).max(256),
+	birthdate: ({birthdate}) => birthdate,
+	imageUrl: ({imageUrl}) => imageUrl.max(512),
+	userId: ({userId}) => userId.min(1).max(128)
+})
+
 
 // Wish schema
 export type Wish = typeof wish.$inferInsert;

@@ -1,4 +1,5 @@
 import { db } from '../db';
+import { selectUserInfoOnUsername } from '../user/select';
 
 export async function selectWishlistsOnUser(userId: string) {
 	const wishlistOnUsers = await db.query.wishlistOnUsers.findMany({
@@ -43,6 +44,28 @@ export async function selectRoleforWishlistOnUser({
 	return await db.query.wishlistOnUsers.findFirst({
 		where: (table, { eq, and }) => and(eq(table.userId, userId), eq(table.wishlistId, wishlistId))
 	});
+	
+}
+
+export async function selectRoleOnWishlistNameandUserId({
+	wishlistName,
+	userId
+}: {
+	wishlistName: string;
+	userId: string;
+}) {
+	const wishlist = await db.query.wishlist.findFirst({
+		where: (wishlist, {eq}) => eq(wishlist.name, wishlistName),
+		with: {
+			wishlistOnUsers: {
+				where: (wishlistOnUser, {eq}) => eq(wishlistOnUser.userId, userId)
+			}
+		}
+	});
+
+	const role = wishlist?.wishlistOnUsers.at(0)
+
+	return role
 }
 
 export async function selectRoleforWishOnUser({
@@ -74,4 +97,34 @@ export async function selectRoleforWishOnUser({
 	const role = wish.wishlists.wishlistOnUsers.at(0);
 
 	return role;
+}
+
+export async function selectWishlistOnNameAndUserId({wishlistName, userId}: {wishlistName: string, userId: string}) {
+	const data = await db.query.wishlist.findFirst({
+		where: (wish, { eq }) => eq(wish.name, wishlistName),
+		with: {
+			wishlistOnUsers: {
+				where: (wishlistOnUsers, {eq}) => eq(wishlistOnUsers.userId, userId),
+			},
+			wishs: true
+		}
+	})
+
+	if (!data)
+		return undefined
+
+	const {wishlistOnUsers, ...wishlist} = data
+
+	return wishlist
+}
+
+export async function selectWishlistOnNameAndUsername({wishlistName, username}: {wishlistName: string, username: string}) {
+
+	const userInfo = await selectUserInfoOnUsername(username)
+
+	if (!userInfo) 
+		return undefined
+
+	return await selectWishlistOnNameAndUserId({wishlistName, userId: userInfo.userId})
+
 }

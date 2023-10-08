@@ -17,3 +17,9 @@ export async function getUserInfo(userId: string) {
 		return null;
 	}
 }
+
+export async function selectUserInfoOnUsername(username: string) {
+	return await db.query.userInfo.findFirst({
+		where: (userInfo, {eq}) => eq(userInfo.username, username)
+	})
+}

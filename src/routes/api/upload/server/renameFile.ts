@@ -29,4 +29,5 @@ async function moveFileFromTempFolder(url: string) {
 	return `https://image.hjemmet.net/${newKey}`;
 }
 
+
 export { renameObjectKey, moveFileFromTempFolder };

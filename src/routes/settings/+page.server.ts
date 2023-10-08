@@ -6,6 +6,9 @@ import type { Message } from '$lib/schemas/message';
 import { redirect } from 'sveltekit-flash-message/server';
 import { updateUserInfo } from '$lib/server/drizzle/user/update';
 import { stringToDate } from '$lib/date.ts/dateTransforms';
+import { NewWishSchema, newUserInfoSchema } from '$lib/server/drizzle/schema';
+import { DatabaseError } from '@planetscale/database';
+
 
 export const load: PageServerLoad = async (event) => {
 	const [form, session] = await Promise.all([
@@ -15,8 +18,9 @@ export const load: PageServerLoad = async (event) => {
 
 	const { userInfo, user } = await redirectFromPrivatePage(session, event);
 
-	form.data.birthdate = userInfo.birthdate.toISOString().slice(0, 10);
+	form.data.username = userInfo.username
 	form.data.fullname = userInfo.fullname;
+	form.data.birthdate = userInfo.birthdate.toISOString().slice(0, 10);
 
 	return { form, userInfo, user };
 };
@@ -36,11 +40,17 @@ export const actions = {
 			await updateUserInfo({
 				userId: session.user.userId,
 				fullname: form.data.fullname,
+				username: form.data.username,
 				birthdate: birthdate
 			});
 		} catch (e) {
+			if (e instanceof DatabaseError) {
+				if (e.body.message.includes('code = AlreadyExists')) {
+					return setError(form, 'username', `The username \"${form.data.username}\" is Already taken`);
+				}
+			}
 			console.error(e);
-			message(form, { type: 'error', text: 'Unknown error' });
+			return message(form, { type: 'error', text: 'Unknown error' });
 		}
 
 		return message(form, { type: 'success', text: 'Settings updated successfully' });

@@ -23,7 +23,8 @@
 		<div class="card p-8 w-fit text-token space-y-4">
 			<h3 class="h3 font-semibold">Tell me about yourself</h3>
 
-			<TextField field="fullname" {form} titleName="Your Full name" type="text" />
+			<TextField field="username" {form} titleName="Unique Username" type="text" />
+			<TextField field="fullname" {form} titleName="Full Name" type="text" />
 			<TextField field="birthdate" {form} titleName="Your Birthdate" type="date" />
 			<TextField
 				type="hidden"

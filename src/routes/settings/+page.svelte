@@ -10,6 +10,7 @@
 	export let data: PageData;
 
 	const toastStore = getToastStore()
+	let oldUsername = ''
 	let oldBirthdate = ''
 	let oldFullname = ''
 
@@ -21,6 +22,7 @@
 			if (form.message) {
 				handleMessage(form.message, toastStore)
 				if (form.message.type === 'success'){
+					oldUsername = form.data.username
 					oldBirthdate = form.data.birthdate
 					oldFullname = form.data.fullname
 					changed = false
@@ -31,12 +33,13 @@
 
 	const {form: formData} = form
 
+	oldUsername = $formData.username
 	oldBirthdate = $formData.birthdate
 	oldFullname = $formData.fullname
 	let changed = false
 
-	form.form.subscribe(({birthdate, fullname}) => {
-		changed = (oldBirthdate != birthdate) || (oldFullname != fullname)
+	form.form.subscribe(({birthdate, fullname, username}) => {
+		changed = (oldBirthdate != birthdate) || (oldFullname != fullname) || oldUsername != username
 	})
 
 </script>
@@ -53,7 +56,8 @@
 		<div class="card p-8 w-fit text-token space-y-4">
 			<h3 class="h3 font-semibold">{$formData.fullname} settings</h3>
 
-			<TextField field="fullname"  type="text" {form} titleName="Your Full name"  />
+			<TextField field="username"  type="text" {form} titleName="Username"  />
+			<TextField field="fullname"  type="text" {form} titleName="Full Name"  />
 			<TextField field="birthdate" type="date" {form} titleName="Your Birthdate"   />
 
 			<button class="btn variant-filled-primary w-full" disabled={!changed} >Submit</button>

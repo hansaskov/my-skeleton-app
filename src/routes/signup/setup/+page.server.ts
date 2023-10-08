@@ -4,11 +4,13 @@ import { setError, superValidate } from 'sveltekit-superforms/server';
 import { auth } from '$lib/server/lucia';
 import { callbacks } from '$lib/server/redirects/redirects';
 import { moveFileFromTempFolder } from '../../api/upload/server/renameFile';
-import { userInfo } from '$lib/server/drizzle/schema';
+import { newUserInfoSchema, userInfo } from '$lib/server/drizzle/schema';
 import { redirect } from 'sveltekit-flash-message/server';
 import { db } from '$lib/server/drizzle/db';
-import { generateRandomString } from 'lucia/utils';
-import { userSetupSchema } from '$lib/schemas/userSettings';
+import { DatabaseError } from '@planetscale/database';
+
+const schema = newUserInfoSchema.omit({userId: true})
+
 
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.auth.validate();
@@ -18,7 +20,7 @@ export const load: PageServerLoad = async (event) => {
 
 	// If the user is missing userdata keep them on the page
 	if (!session.user.userInfoSet) {
-		const form = await superValidate(userSetupSchema);
+		const form = await superValidate(schema);
 		return { form };
 	}
 	// Is their email is not verified, redirect to the email verification otherwise redirect to the home page
@@ -31,31 +33,39 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
-		const form = await superValidate(request, userSetupSchema);
+		const form = await superValidate(request, schema);
 		if (!form.valid) return fail(400, { form });
 
 		const session = await locals.auth.validate();
 		if (!session) throw redirect(302, '/login');
 
 		try {
-			// Move the file away from the temp storage for it to become persistant.
+			// Move the image file away from the temp storage for it to become persistant.
 			if (form.data.imageUrl) {
 				form.data.imageUrl = await moveFileFromTempFolder(form.data.imageUrl);
 			}
-
 			// Create the user info
 			await db.insert(userInfo).values({
-				id: generateRandomString(63),
+				username: form.data.username,
 				fullname: form.data.fullname,
 				birthdate: form.data.birthdate,
 				imageUrl: form.data.imageUrl,
 				userId: session.user.userId
 			});
 
+			// Update user attributes
 			await auth.updateUserAttributes(session.user.userId, {
 				user_info_set: true
 			});
+
 		} catch (e) {
+			// Throw error if username already exist. 
+			if (e instanceof DatabaseError) {
+				if (e.body.message.includes('code = AlreadyExists')) {
+					return setError(form, 'username', `The username \"${form.data.username}\" is Already taken`);
+				}
+			}
+
 			console.error(e);
 			return setError(form, 'Unknown error');
 		}

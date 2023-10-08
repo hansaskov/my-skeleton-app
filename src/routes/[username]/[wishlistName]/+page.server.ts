@@ -10,10 +10,14 @@ import { deleteWish } from '$lib/server/drizzle/wish/delete';
 import { updateWish } from '$lib/server/drizzle/wish/update';
 import { deleteWishSchema } from '$lib/schemas/wishlist';
 import {
+	selectRoleOnWishlistNameandUserId,
 	selectRoleforWishOnUser,
 	selectRoleforWishlistOnUser,
+	selectWishlistOnNameAndUserId,
+	selectWishlistOnNameAndUsername,
 	selectWishlistsOnId
 } from '$lib/server/drizzle/wishlist/seletc';
+import { selectUserInfoOnUsername } from '$lib/server/drizzle/user/select';
 
 async function validateSession(event: RequestEvent) {
 	const session = await event.locals.auth.validate();
@@ -34,8 +38,10 @@ export const load: PageServerLoad = async (event) => {
         event.locals.auth.validate()
     ]);
 
+	
+
     // 2. Fetch the wishlist
-    const wishlist = await selectWishlistsOnId(event.params.wishlistId);
+    const wishlist = await selectWishlistOnNameAndUsername({username: event.params.username, wishlistName: event.params.wishlistName});
     if (!wishlist) {
         redirectHelper('/wishlist', { type: 'error', text: 'Wishlist not found' }, event);
     }
@@ -45,7 +51,7 @@ export const load: PageServerLoad = async (event) => {
     if (session) {
         userRole = await selectRoleforWishlistOnUser({
             userId: session.user.userId,
-            wishlistId: event.params.wishlistId
+            wishlistId: wishlist.id
         });
     }
 
@@ -93,10 +99,11 @@ export const actions = {
 		const form = await superValidate<typeof NewWishSchema, Message>(event.request, NewWishSchema);
 		if (!form.valid) return fail(400, { form });
 
-		const wishlistRole = await selectRoleforWishlistOnUser({
+
+		const wishlistRole = await selectRoleOnWishlistNameandUserId({
 			userId: session.user.userId,
-			wishlistId: event.params.wishlistId
-		});
+			wishlistName: event.params.wishlistName
+		})
 
 		if (!wishlistRole || wishlistRole.wishlistRole !== 'EDITABLE') {
 			return message(form, { type: 'error', text: 'User not authenticated to create wish' });
@@ -119,7 +126,7 @@ export const actions = {
 
 		const wishlistRole = await selectRoleforWishlistOnUser({
 			userId: session.user.userId,
-			wishlistId: event.params.wishlistId
+			wishlistId: form.data.wishlistId
 		});
 
 		if (!wishlistRole || wishlistRole.wishlistRole !== 'EDITABLE') {

@@ -2,11 +2,11 @@
 <script lang="ts">
     import { handleMessage } from '$lib/components/ToastManager';
     import { superForm } from 'sveltekit-superforms/client';
-    import type { PageData } from './$types';
     import { getToastStore } from '@skeletonlabs/skeleton';
 	import WishCard from './WishCard.svelte';
 	import CreateForm from './CreateForm.svelte';
 	import { writable } from 'svelte/store';
+	import type { PageData } from './$types';
 
     const toastStore = getToastStore();
 

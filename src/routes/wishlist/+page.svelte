@@ -13,7 +13,7 @@ export let data: PageData;
 
     <!-- Wishlist Loop -->
     {#each data.wishlists as wishlist}
-        <a class="w-full md:w-2/3 card card-hover p-4 mb-4 border border-gray-700 rounded-lg hover:shadow-lg transition-shadow duration-300" href="wishlist/{wishlist.id}">
+        <a class="w-full md:w-2/3 card card-hover p-4 mb-4 border border-gray-700 rounded-lg hover:shadow-lg transition-shadow duration-300" href="{data.userInfo.username}/{wishlist.name}">
 
             <!-- Wishlist Title and Count -->
             <h2 class="h2 flex justify-between items-center pb-4">
