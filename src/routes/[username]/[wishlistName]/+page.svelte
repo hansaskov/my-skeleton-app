@@ -7,6 +7,7 @@
 	import CreateForm from './CreateForm.svelte';
 	import { writable } from 'svelte/store';
 	import type { PageData } from './$types';
+	import Seo from '$lib/components/Seo.svelte';
 
     const toastStore = getToastStore();
 
@@ -36,6 +37,11 @@
    
 </script>
 
+<Seo
+	title="Askov | Wishlist"
+	type="WebPage"
+	description="A website to share and show wishlists"
+/>
 <section class="columns-2 lg:columns-3  gap-8">
     {#each data.wishlist.wishs as wish}
             <div class="py-4">
